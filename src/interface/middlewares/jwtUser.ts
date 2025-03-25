@@ -1,5 +1,4 @@
 import { Request, Response, NextFunction } from "express";
-import { Jwt } from "jsonwebtoken";
 import { JWTAdapter } from "../../Infrastructure/jwt.js";
 import { TokenRepository } from "../../Infrastructure/repositories/otherRepo.js";
 export interface jwtInterface {

@@ -10,9 +10,9 @@ import { MessageService } from "../../application/services/messageServie.js";
 import { OtpService } from "../../application/services/OtpService.js";
 import { FixedDataService } from "../../application/services/InterestAndFeatures.js";
 import { UserRepsitories } from "../../Infrastructure/repositories/userRepository.js";
-import { MessageRepository } from "../../Infrastructure/repositories/messageRepository.js";
 
-const userRep=new UserRepsitories
+
+
 export const signup=async (req:Request,res:Response,authService:AuthService)=>{
     try {
         const user=await authService.signupFirstBatch(req.body)
