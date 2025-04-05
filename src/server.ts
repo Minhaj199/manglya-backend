@@ -44,12 +44,12 @@ app.use(express.urlencoded({ extended: false }))
 
 
 ///////logger/////////////
-// const __filename=fileURLToPath(import.meta.url)
-// const __dirname=dirname(__filename)
-// const accessLogStream=createWriteStream(join(__dirname, '/logger/morganLogs.log'),{ flags: 'a' })
+const __filename=fileURLToPath(import.meta.url)
+const __dirname=dirname(__filename)
+const accessLogStream=createWriteStream(join(__dirname, '/logger/morganLogs.log'),{ flags: 'a' })
 
 app.use(morgan('tiny'))
-// app.use(morgan('combined',{stream:accessLogStream }))
+app.use(morgan('combined',{stream:accessLogStream }))
 
 
 app.use('/user',userRoutes)

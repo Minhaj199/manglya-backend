@@ -5,7 +5,7 @@
   "type": "module",
   "scripts": {
     "start": "ts-node src/server.ts",
-    "build":"tsc&& nodemon ./dist/server.js",
+    "build": "tsc&& nodemon ./dist/server.js",
     "dev": "npx nodemon /dist/server.js"
   },
   "author": "",
@@ -13,7 +13,6 @@
   "description": "",
   "dependencies": {
     "@stripe/stripe-js": "^4.10.0",
-    "axios": "^1.7.8",
     "bcryptjs": "^2.4.3",
     "cloudinary": "^2.5.1",
     "cookie-parser": "^1.4.7",
