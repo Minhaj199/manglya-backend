@@ -50,6 +50,7 @@ cd mangalya-backend
 
 ### 2. Create .env
 
+```bash
 JWT_ACCESS_SECRET_ADMIN=
 JWT__ACCESS_SECRET_USER=
 JWT_REFRESH_SECRET_ADMIN=
@@ -65,7 +66,7 @@ CLOUDINARY_KEY=
 CLOUDINARY_SECRET_KEY=
 
 STRIPE_PUBLISH_KEY=
-
+```
 ### 3. Install Dependencies
 ```bash
 npm install
