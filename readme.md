@@ -46,9 +46,9 @@ This is the backend service for the **Mangalya** matrimonial platform, built wit
 ```bash
 git clone https://github.com/your-username/mangalya-backend.git
 cd mangalya-backend
+```
 
 
-### 2. create .env
 
 JWT_ACCESS_SECRET_ADMIN=
 JWT__ACCESS_SECRET_USER=
@@ -71,5 +71,5 @@ STRIPE_PUBLISH_KEY=
 npm install
 ### 4. Start the Server
 
-Build the Project
+npm run build
 
