@@ -44,7 +44,7 @@ This is the backend service for the **Mangalya** matrimonial platform, built wit
 ### 1. Clone the Repository
 
 ```bash
-git clone https://github.com/your-username/mangalya-backend.git
+git clone https://github.com/Minhaj199/manglya-backend.git
 cd mangalya-backend
 ```
 
