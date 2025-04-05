@@ -48,7 +48,7 @@ git clone https://github.com/your-username/mangalya-backend.git
 cd mangalya-backend
 ```
 
-
+### 2. Create .env
 
 JWT_ACCESS_SECRET_ADMIN=
 JWT__ACCESS_SECRET_USER=
@@ -67,9 +67,11 @@ CLOUDINARY_SECRET_KEY=
 STRIPE_PUBLISH_KEY=
 
 ### 3. Install Dependencies
-
+```bash
 npm install
+```
 ### 4. Start the Server
-
+```bash
 npm run build
+```
 
