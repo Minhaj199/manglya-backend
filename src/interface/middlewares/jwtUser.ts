@@ -20,7 +20,7 @@ declare global {
 }
 const jwtAdmpter = new JWTAdapter(new TokenRepository());
 export const userJwtAuthenticator = async (
-  req: Request,
+  req: Request, 
   res: Response,
   next: NextFunction
 ) => {

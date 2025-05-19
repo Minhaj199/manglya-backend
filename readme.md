@@ -34,6 +34,7 @@ This is the backend service for the **Mangalya** matrimonial platform, built wit
 - User management
 - Admin dashboard support
 - Stripe-powered payments
+- Zod (for input validation)
 - Image uploads via Cloudinary
 - Scheduled background jobs using `node-cron`
 - Real-time features with `Socket.io`
