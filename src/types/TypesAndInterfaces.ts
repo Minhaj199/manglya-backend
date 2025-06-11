@@ -1,13 +1,13 @@
 
 import {Document, Types} from 'mongoose'
-import { User } from "../domain/entity/userEntity.js"
-import { OtpEntity } from '../domain/entity/otpEntity.js'
-import { UserRepository } from '../domain/interface/userRepositoryInterface.js'
-import { SubscriptionPlan } from '../domain/entity/PlanEntity.js'
+import { User } from "../domain/entity/userEntity.ts"
+import { OtpEntity } from '../domain/entity/otpEntity.ts'
+import { UserRepository } from '../domain/interface/userRepository.ts'
+import { SubscriptionPlan } from '../domain/entity/PlanEntity.ts'
 
 
 
-import { AbuserReport } from '../domain/entity/abuse.js'
+import { AbuserReport } from '../domain/entity/abuseEntiy.ts' 
 
 
 

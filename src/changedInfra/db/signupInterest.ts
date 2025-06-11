@@ -1,5 +1,5 @@
 import mongoose, { Schema,Document } from "mongoose";
-import { InterestInterface } from "../../types/TypesAndInterfaces.js";
+import { InterestInterface } from "../../types/TypesAndInterfaces.ts";
 
 
 

@@ -1,5 +1,5 @@
 import mongoose,{Schema,Document} from "mongoose";
-import { OTPWithID } from "../../types/TypesAndInterfaces.js";
+import { OTPWithID } from "../../types/TypesAndInterfaces.ts";
 
 
 

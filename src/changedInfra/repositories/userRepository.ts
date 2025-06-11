@@ -1,13 +1,13 @@
-import { UserRepository } from "../../domain/interface/userRepositoryInterface.js";
-import { IUserModel, UserModel } from "../db/userModel.js";
-import {   adminPlanType, LandingShowUesrsInterface, PlanOrdersEntity, RequestInterface, suggestionType, updateData, UserCurrentPlan, UserWithID } from "../../types/TypesAndInterfaces.js";
+import { UserRepository } from "../../domain/interface/userRepository.ts";
+import {   adminPlanType, LandingShowUesrsInterface, PlanOrdersEntity, RequestInterface, suggestionType, updateData, UserCurrentPlan, UserWithID } from "../../types/TypesAndInterfaces.ts";
 import {  Types,UpdateWriteOpResult } from "mongoose";
-import { planOrderModel } from "../db/planOrder.js";
-import { PlanOrder } from "../../types/TypesAndInterfaces.js";
-import { MatchedProfile, profileTypeFetch, userForLanding } from "../../types/TypesAndInterfaces.js";
-import { getDateFromAge } from "../../interface/utility/getDateFromAge.js";
-import BaseRepository from "./baseRepository.js";
-import { objectIdToString } from "../../interface/utility/objectIdToString.js";
+import { planOrderModel } from "../db/planOrder.ts";
+import { PlanOrder } from "../../types/TypesAndInterfaces.ts";
+import { MatchedProfile, profileTypeFetch, userForLanding } from "../../types/TypesAndInterfaces.ts";
+import { getDateFromAge } from "../../interface/utility/getDateFromAge.ts";
+import BaseRepository from "./baseRepository.ts";
+import { objectIdToString } from "../../interface/utility/objectIdToString.ts";
+import { IUserModel, UserModel } from "../db/userModel.ts";
 
 
 

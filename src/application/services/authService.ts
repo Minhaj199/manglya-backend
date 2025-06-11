@@ -1,13 +1,13 @@
-import { BcryptAdapter } from "../../Infrastructure/bcryptAdapter.js";
-import { JWTAdapter } from "../../Infrastructure/jwt.js";
-import { UserRepository } from "../../domain/interface/userRepositoryInterface.js";
+import { BcryptAdapter } from "../../infrastructure/bcryptAdapter.ts";
+import { JWTAdapter } from "../../infrastructure/jwt.ts";
+import { UserRepository } from "../../domain/interface/userRepository.ts";
 import {
   FirstBatch,
   UserWithID,
 } from "../../types/TypesAndInterfaces.js";
 import { User } from "../../domain/entity/userEntity.js";
 import dotEnv from "dotenv";
-import { AuthSeviceInteface } from "../../types/serviceLayerInterfaces.js";
+import { AuthSeviceInteface } from "../../types/serviceLayerInterfaces.ts";
 
 
 dotEnv.config();

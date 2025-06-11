@@ -1,9 +1,9 @@
-import { FeaturesRepositoryInterface, OtherRepositoriesInterface, RefreshTokenInterface } from "../../domain/interface/otherRepositories.js";
-import { InterestInterface, RefeshToken, RefreshWithPopulatedData } from "../../types/TypesAndInterfaces.js";
-import { featureModel, Features } from "../db/featureModel.js";
-import { InterestModel } from "../db/signupInterest.js";
-import BaseRepository from "./baseRepository.js";
-import { refeshTokenModel } from "../db/refreshToken.js";
+import { FeaturesRepositoryInterface, OtherRepositoriesInterface, RefreshTokenInterface } from "../../domain/interface/otherRepositories.ts";
+import { InterestInterface, RefeshToken, RefreshWithPopulatedData } from "../../types/TypesAndInterfaces.ts";
+import { featureModel, Features } from "../db/featureModel.ts";
+import { InterestModel } from "../db/signupInterest.ts";
+import BaseRepository from "./baseRepository.ts";
+import { refeshTokenModel } from "../db/refreshToken.ts";
 import { Types } from "mongoose";
 
 export class InterestRepo extends BaseRepository<InterestInterface> implements OtherRepositoriesInterface{

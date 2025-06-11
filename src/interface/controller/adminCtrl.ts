@@ -1,18 +1,15 @@
 import {  Request,Response } from "express";
-import { AdminAuth } from "../../application/services/adminAuthService.js";
-import { PlanRepository } from "../../Infrastructure/repositories/planRepositories.js"; 
-import { SubscriptionPlan } from "../../domain/entity/PlanEntity.js";
+import { AdminAuth } from "../../application/services/adminAuthService.ts";
+import { PlanRepository } from "../../infrastructure/repositories/planRepositories.ts"; 
+import { SubscriptionPlan } from "../../domain/entity/PlanEntity.ts";
 
-import { UserProfileService } from "../../application/services/userService.js";
-import { PlanService } from "../../application/services/planService.js";
-import { FixedDataService } from "../../application/services/InterestAndFeatures.js";
-import { DashService } from "../../application/services/adminDashService.js";
-import { ReportAbuseService } from "../../application/services/reportAbuseService.js";
+import { UserProfileService } from "../../application/services/userService.ts";
+import { PlanService } from "../../application/services/planService.ts";
+import { FixedDataService } from "../../application/services/InterestAndFeatures.ts";
+import { DashService } from "../../application/services/adminDashService.ts";
+import { ReportAbuseService } from "../../application/services/reportAbuseService.ts";
 
-import { resportAbuserService } from "../routes/userRoutes.js";
-
-
-
+import { resportAbuserService } from "../routes/userRoutes.ts";
 const planRepo=new PlanRepository()
 
 export const login=(req:Request,res:Response,adminAuth:AdminAuth)=>{
@@ -210,4 +207,7 @@ export const deleteMsg=async(req:Request,res:Response,reportAbuseService:ReportA
    
 
 }
+
+
+
 

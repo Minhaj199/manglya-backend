@@ -1,9 +1,9 @@
 import { Types } from "mongoose"
-import { AbuserRepositoryInterface } from "../../domain/interface/abuseRepository.js"
-import { AbuserMongoDoc } from "../../types/TypesAndInterfaces.js"
-import { reportUser } from "../db/reportedUser.js"
-import BaseRepository from "./baseRepository.js"
-import { AbuserReport } from "../../domain/entity/abuse.js"
+import { AbuserRepositoryInterface } from "../../domain/interface/abuseRepository.ts"
+import { AbuserMongoDoc } from "../../types/TypesAndInterfaces.ts"
+import { reportUser } from "../db/reportedUser.ts"
+import BaseRepository from "./baseRepository.ts"
+import { AbuserReport } from "../../domain/entity/abuseEntiy.ts" 
 
 export class ReportUser extends BaseRepository<AbuserMongoDoc> implements AbuserRepositoryInterface{
   constructor(){

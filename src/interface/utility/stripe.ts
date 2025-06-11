@@ -3,7 +3,7 @@ import Stripe from 'stripe';
 import { Token } from '@stripe/stripe-js';
 
 
-import {  UserCurrentPlan } from '../../types/TypesAndInterfaces.js';
+import {  UserCurrentPlan } from '../../types/TypesAndInterfaces.ts';
 
 const publicshKey=process.env.STRIPE_PUBLISH_KEY||''
 const stripe=new Stripe(publicshKey)

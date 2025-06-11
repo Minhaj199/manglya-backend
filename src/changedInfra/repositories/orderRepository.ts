@@ -1,8 +1,8 @@
 import { Types } from "mongoose";
-import { PurchasedPlanInterface } from "../../domain/interface/otherRepositories.js";
-import { PlanOrder, PlanOrderMongo } from "../../types/TypesAndInterfaces.js";
-import { planOrderModel } from "../db/planOrder.js";
-import BaseRepository from "./baseRepository.js";
+import { PurchasedPlanInterface } from "../../domain/interface/otherRepositories.ts";
+import { PlanOrder, PlanOrderMongo } from "../../types/TypesAndInterfaces.ts";
+import { planOrderModel } from "../db/planOrder.ts";
+import BaseRepository from "./baseRepository.ts";
 
 export class PurchasedPlan extends BaseRepository<PlanOrderMongo> implements PurchasedPlanInterface {
   constructor(){

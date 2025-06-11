@@ -1,4 +1,4 @@
-import { OtpEntity } from "../entity/otpEntity.js";
+import { OtpEntity } from "../entity/otpEntity.ts";
 
 export interface OTPrespository{
     create(otpData:OtpEntity):Promise<OtpEntity>,

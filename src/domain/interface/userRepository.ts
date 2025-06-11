@@ -1,10 +1,10 @@
-import {User} from "../entity/userEntity.js";
-import { adminPlanType, LandingShowUesrsInterface, PlanOrder, PlanOrdersEntity, RequestInterface, suggestionType, UserWithID } from "../../types/TypesAndInterfaces.js";
-import { MatchedProfile, profileTypeFetch } from "../../types/TypesAndInterfaces.js";
-import { updateData } from "../../types/TypesAndInterfaces.js"; 
+import {User} from "../entity/userEntity.ts";
+import { adminPlanType, LandingShowUesrsInterface, PlanOrder, PlanOrdersEntity, RequestInterface, suggestionType, UserWithID } from "../../types/TypesAndInterfaces.ts";
+import { MatchedProfile, profileTypeFetch } from "../../types/TypesAndInterfaces.ts";
+import { updateData } from "../../types/TypesAndInterfaces.ts"; 
 
-import { subscriptionPlanModel } from "../../types/TypesAndInterfaces.js";
-import { IUserModel } from "../../Infrastructure/db/userModel.js";
+import { subscriptionPlanModel } from "../../types/TypesAndInterfaces.ts";
+import { IUserModel } from "../../infrastructure/db/userModel.ts";
 
 
 

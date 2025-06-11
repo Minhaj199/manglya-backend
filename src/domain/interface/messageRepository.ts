@@ -1,4 +1,4 @@
-import {  IMessage, IMessageWithoutId, Messages } from "../../types/TypesAndInterfaces.js";
+import {  IMessage, IMessageWithoutId, Messages } from "../../types/TypesAndInterfaces.ts";
 
 
 export interface MessageRepositoryInterface{

@@ -1,5 +1,5 @@
 
-import { PlanOrdersEntity } from "../../types/TypesAndInterfaces.js" 
+import { PlanOrdersEntity } from "../../types/TypesAndInterfaces.ts" 
 
 export  interface User{
     PersonalInfo:{

@@ -1,5 +1,5 @@
 import nodemailer,{Transporter} from 'nodemailer'
-import { IEmailService } from '../types/TypesAndInterfaces.js'; 
+import { IEmailService } from '../../types/TypesAndInterfaces.ts'; 
 import dotenv from 'dotenv'
 dotenv.config()
 export class EmailService implements IEmailService{

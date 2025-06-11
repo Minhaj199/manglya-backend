@@ -1,6 +1,6 @@
 
 
-import { ChatRoom, FetchedChat } from "../../types/TypesAndInterfaces.js";
+import { ChatRoom, FetchedChat } from "../../types/TypesAndInterfaces.ts";
 
 
 export interface ChatRepository{

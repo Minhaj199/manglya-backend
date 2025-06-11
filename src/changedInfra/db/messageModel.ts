@@ -1,5 +1,5 @@
 import mongoose, { Types } from "mongoose";
-import { IMessage } from "../../types/TypesAndInterfaces.js";
+import { IMessage } from "../../types/TypesAndInterfaces.ts";
 
 const messageSchema=new mongoose.Schema<IMessage>({
     chatRoomId:mongoose.Schema.ObjectId,

@@ -1,5 +1,5 @@
-import { UserRepository } from "../../domain/interface/userRepositoryInterface.js"
-import { CronServiceInterface } from "../../types/serviceLayerInterfaces.js"
+import { UserRepository } from "../../domain/interface/userRepository.ts"
+import { CronServiceInterface } from "../../types/serviceLayerInterfaces.ts"
 
 
 export class CroneService implements CronServiceInterface{

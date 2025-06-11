@@ -1,6 +1,6 @@
-import { PurchasedPlan } from "../../Infrastructure/repositories/orderRepository.js";
-import { UserRepsitories } from "../../Infrastructure/repositories/userRepository.js";
-import { AdminDashServiceInterface } from "../../types/serviceLayerInterfaces.js";
+import { PurchasedPlan } from "../../infrastructure/repositories/orderRepository.ts";
+import { UserRepsitories } from "../../infrastructure/repositories/userRepository.ts";
+import { AdminDashServiceInterface } from "../../types/serviceLayerInterfaces.ts";
 
 export class DashService implements AdminDashServiceInterface {
   private userRepo: UserRepsitories;

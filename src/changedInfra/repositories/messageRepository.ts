@@ -1,8 +1,8 @@
 import { Types } from "mongoose"
-import { MessageRepositoryInterface } from "../../domain/interface/messageRepository.js"
-import { IMessage } from "../../types/TypesAndInterfaces.js"
-import { messageModel } from "../db/messageModel.js"
-import BaseRepository from "./baseRepository.js"
+import { MessageRepositoryInterface } from "../../domain/interface/messageRepository.ts"
+import { IMessage } from "../../types/TypesAndInterfaces.ts"
+import { messageModel } from "../db/messageModel.ts"
+import BaseRepository from "./baseRepository.ts"
 
 export class MessageRepository extends BaseRepository<IMessage>implements MessageRepositoryInterface{
     constructor(){

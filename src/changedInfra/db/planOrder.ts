@@ -1,5 +1,5 @@
 import mongoose, { Schema,Types } from "mongoose";
-import {  PlanOrderMongo } from "../../types/TypesAndInterfaces.js";
+import {  PlanOrderMongo } from "../../types/TypesAndInterfaces.ts";
 
 
 

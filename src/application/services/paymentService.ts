@@ -1,11 +1,11 @@
-import { doStripePayment } from "../../interface/utility/stripe.js"; 
+import { doStripePayment } from "../../interface/utility/stripe.ts"; 
 import { Token } from '@stripe/stripe-js';
-import { PlanOrder, PlanOrderMongo, PlanOrdersEntity, UserCurrentPlan } from "../../types/TypesAndInterfaces.js";
-import {UserRepsitories} from "../../Infrastructure/repositories/userRepository.js";
-import { PurchasedPlan } from "../../Infrastructure/repositories/orderRepository.js";
+import { PlanOrder, PlanOrderMongo, PlanOrdersEntity, UserCurrentPlan } from "../../types/TypesAndInterfaces.ts";
+import {UserRepsitories} from "../../infrastructure/repositories/userRepository.ts";
+import { PurchasedPlan } from "../../infrastructure/repositories/orderRepository.ts";
 import { Types } from "mongoose";
-import { GetExpiryPlan } from "../../interface/utility/getExpiryDateOfPlan.js";
-import { PaymentSeriviceInterface } from "../../types/serviceLayerInterfaces.js";
+import { GetExpiryPlan } from "../../interface/utility/getExpiryDateOfPlan.ts";
+import { PaymentSeriviceInterface } from "../../types/serviceLayerInterfaces.ts";
 
 
 export class PaymentSerivice implements PaymentSeriviceInterface {

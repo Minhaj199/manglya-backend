@@ -1,5 +1,5 @@
 import mongoose,{ Schema } from "mongoose";
-import { RefeshToken } from "../../types/TypesAndInterfaces.js";
+import { RefeshToken } from "../../types/TypesAndInterfaces.ts";
 
 
 

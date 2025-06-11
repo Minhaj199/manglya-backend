@@ -1,9 +1,9 @@
 import { Types } from "mongoose";
-import { AbuserReport } from "../../domain/entity/abuse.js";
-import { ReportUser } from "../../Infrastructure/repositories/reportUser.js"; 
-import { EmailService } from "../../Infrastructure/emailService.js";
-import { UserRepsitories } from "../../Infrastructure/repositories/userRepository.js";
-import { ReportAbuseServiceInterface } from "../../types/serviceLayerInterfaces.js";
+import { AbuserReport } from "../../domain/entity/abuseEntiy.ts";
+import { ReportUser } from "../../infrastructure/repositories/reportUser.ts"; 
+import { EmailService } from "../../interface/utility/emailService.ts";
+import { UserRepsitories } from "../../infrastructure/repositories/userRepository.ts";
+import { ReportAbuseServiceInterface } from "../../types/serviceLayerInterfaces.ts";
 
 
 

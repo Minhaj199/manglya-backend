@@ -1,33 +1,25 @@
 import express from "express";
-import { createWriteStream } from "fs";
-import { fileURLToPath } from "url";
-import { dirname, join } from "path";
 import mongoose from "mongoose";
 import dotenv from "dotenv";
-import userRoutes, {
-  authService,
-  messageService,
-  partnerServiece,
-  userProfileService,
-} from "./interface/routes/userRoutes.js";
-import adminRoutes from "./interface/routes/adminRoute.js";
+import adminRoutes from "./interface/routes/adminRoute.ts";
 import cors from "cors";
 import morgan from "morgan";
 import { createServer } from "http";
 import { Server } from "socket.io";
-import { socketMethod } from "./socket.js";
-import { JWTAdapter } from "./Infrastructure/jwt.js";
-import { FixedDataService } from "./application/services/InterestAndFeatures.js";
+import { socketMethod } from "./socket.ts";
+import { JWTAdapter } from "./infrastructure/jwt.ts";
+import { FixedDataService } from "./application/services/InterestAndFeatures.ts";
 import {
   InterestRepo,
   TokenRepository,
-} from "./Infrastructure/repositories/otherRepo.js";
-import { FeaturesRepository } from "./Infrastructure/repositories/otherRepo.js";
-
+} from "./infrastructure/repositories/otherRepo.ts";
+import { FeaturesRepository } from "./infrastructure/repositories/otherRepo.ts";
+import userRoutes, { authService, messageService, partnerServiece, userProfileService } from './interface/routes/userRoutes'
 import cookieParser from "cookie-parser";
 const app = express();
 const server = createServer(app);
-import { job } from "./Infrastructure/chronJob.js";
+import { job } from "./interface/utility/chronJob.ts";
+import { AuthService } from "./application/services/authService.ts";
 export const io = new Server(server, {
   cors: {
     origin: ["http://localhost:5173"],

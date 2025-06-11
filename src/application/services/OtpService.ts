@@ -1,11 +1,11 @@
-import { OtpEntity } from "../../domain/entity/otpEntity.js";
+import { OtpEntity } from "../../domain/entity/otpEntity.ts";
 import {
   UserRepsitories,
-} from "../../Infrastructure/repositories/userRepository.js";
-import { generateOTP } from "../../interface/utility/otpGenerator.js";
-import { EmailService } from "../../Infrastructure/emailService.js";
-import { OtpRepository } from "../../Infrastructure/repositories/otpRepository.js";
-import { OtpRepositoryInterface } from "../../types/serviceLayerInterfaces.js";
+} from "../../infrastructure/repositories/userRepository.ts";
+import { generateOTP } from "../../interface/utility/otpGenerator.ts";
+import { EmailService } from "../../interface/utility/emailService.ts";
+import { OtpRepository } from "../../infrastructure/repositories/otpRepository.ts";
+import { OtpRepositoryInterface } from "../../types/serviceLayerInterfaces.ts";
 export class OtpService implements OtpRepositoryInterface {
   private userRepository: UserRepsitories;
   private otpRepository: OtpRepository;

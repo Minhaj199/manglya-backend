@@ -1,8 +1,8 @@
 import { Types } from "mongoose"
-import { ChatRepository } from "../../domain/interface/chatRoomRepository.js"
-import { ChatRoom, FetchedChat, Member } from "../../types/TypesAndInterfaces.js"
-import { chatModel } from "../db/chatModel.js"
-import BaseRepository from "./baseRepository.js"
+import { ChatRepository } from "../../domain/interface/chatRoomRepository.ts"
+import { ChatRoom, FetchedChat, Member } from "../../types/TypesAndInterfaces.ts"
+import { chatModel } from "../db/chatModel.ts"
+import BaseRepository from "./baseRepository.ts"
 
 export class ChatRoomRepository extends BaseRepository<ChatRoom> implements ChatRepository{
     constructor(){

@@ -1,6 +1,6 @@
 import mongoose, { Schema,Document } from "mongoose";
 
-import { subscriptionPlanModel } from "../../types/TypesAndInterfaces.js";
+import { subscriptionPlanModel } from "../../types/TypesAndInterfaces.ts";
 
 
 const planSchema=new Schema<subscriptionPlanModel>({

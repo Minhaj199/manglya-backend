@@ -1,5 +1,5 @@
-import { Cloudinary } from '../../interface/utility/cloudinary.js'; 
-import { ImageServiceInterface } from '../../types/TypesAndInterfaces.js';
+import { Cloudinary } from '../../interface/utility/cloudinary.ts'; 
+import { ImageServiceInterface } from '../../types/TypesAndInterfaces.ts';
 
 
 export class ImageService implements ImageServiceInterface{

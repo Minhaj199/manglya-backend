@@ -1,11 +1,11 @@
 import { Types } from "mongoose";
-import { UserRepository } from "../../domain/interface/userRepositoryInterface.js";
-import { ChatRoomRepository } from "../../Infrastructure/repositories/chatRepository.js";
-import { MessageService } from "./messageServie.js";
-import { ChatRoom, IMessageWithoutId } from "../../types/TypesAndInterfaces.js";
-import { objectIdToString } from "../../interface/utility/objectIdToString.js";
-import { ChatServiceInterface } from "../../types/serviceLayerInterfaces.js";
-import { JWTAdapter } from "../../Infrastructure/jwt.js";
+import { UserRepository } from "../../domain/interface/userRepository.ts";
+import { ChatRoomRepository } from "../../infrastructure/repositories/chatRepository.ts";
+import { MessageService } from "./messageServie.ts";
+import { ChatRoom, IMessageWithoutId } from "../../types/TypesAndInterfaces.ts";
+import { objectIdToString } from "../../interface/utility/objectIdToString.ts";
+import { ChatServiceInterface } from "../../types/serviceLayerInterfaces.ts";
+import { JWTAdapter } from "../../infrastructure/jwt.js";
 
 export class ChatService implements ChatServiceInterface {
   private userRepo: UserRepository;

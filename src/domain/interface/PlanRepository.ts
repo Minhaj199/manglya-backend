@@ -1,5 +1,5 @@
-import { SubscriptionPlan } from "../entity/PlanEntity.js";
-import { SubscriptionPlanDocument } from "../../types/TypesAndInterfaces.js";
+import { SubscriptionPlan } from "../entity/PlanEntity.ts";
+import { SubscriptionPlanDocument } from "../../types/TypesAndInterfaces.ts";
 
 export interface SubscriptionPlanRepo{
     create(plan:SubscriptionPlan):Promise<SubscriptionPlanDocument>

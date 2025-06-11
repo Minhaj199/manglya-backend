@@ -1,8 +1,8 @@
-import { OtpEntity } from "../../domain/entity/otpEntity.js";
-import { OTPrespository } from "../../domain/interface/OtpRepsitory.js";
-import { OTPWithID } from "../../types/TypesAndInterfaces.js";
-import { OtpModel } from "../db/otpModel.js";
-import BaseRepository from "./baseRepository.js";
+import { OtpEntity } from "../../domain/entity/otpEntity.ts";
+import { OTPrespository } from "../../domain/interface/OtpRepsitory.ts";
+import { OTPWithID } from "../../types/TypesAndInterfaces.ts";
+import { OtpModel } from "../db/otpModel.ts";
+import BaseRepository from "./baseRepository.ts";
 
 export class OtpRepository extends BaseRepository<OTPWithID> implements OTPrespository {
   constructor (){

@@ -1,7 +1,7 @@
 
 
 import mongoose,{Schema,Document,ObjectId, Types} from "mongoose";
-import {User} from "../../domain/entity/userEntity.js";
+import {User} from "../../domain/entity/userEntity.ts";
 export interface IUserModel extends User,Document{}
 
 const userSchema=new Schema<IUserModel>({

@@ -1,8 +1,8 @@
 import jwt from 'jsonwebtoken'
-import { jwtInterface } from '../interface/middlewares/jwtUser.js'
-import { TokenRepository } from './repositories/otherRepo.js'
+import { jwtInterface } from '../interface/middlewares/jwtUser.ts'
+import { TokenRepository } from './repositories/otherRepo.ts'
 import { Types } from 'mongoose'
-import { JwtServiceInterface } from '../types/serviceLayerInterfaces.js'
+import { JwtServiceInterface } from '../types/serviceLayerInterfaces.ts'
 
 
 

@@ -1,5 +1,5 @@
 import { Document, Model } from "mongoose";
-import { BaseRepositoryInterface } from "../../domain/interface/otherRepositories.js";
+import { BaseRepositoryInterface } from "../../domain/interface/otherRepositories.ts";
 
 
 export default abstract class BaseRepository<T extends Document> implements BaseRepositoryInterface{

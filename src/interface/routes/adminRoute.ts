@@ -12,24 +12,24 @@ import { login,fetechData,
     rejecReport,
     reportToggle,
     deleteMsg
-} from "../controller/adminCtrl.js";
-import { adminJwtAuthenticator } from "../middlewares/jwtAdmin.js";
-import { AdminAuth } from "../../application/services/adminAuthService.js";
-import { JWTAdapter } from "../../Infrastructure/jwt.js";
+} from "../controller/adminCtrl.ts";
+import { adminJwtAuthenticator } from "../middlewares/jwtAdmin.ts";
+import { AdminAuth } from "../../application/services/adminAuthService.ts";
+import { JWTAdapter } from "../../infrastructure/jwt.ts";
 
-import { UserRepsitories } from "../../Infrastructure/repositories/userRepository.js";
+import { UserRepsitories } from "../../infrastructure/repositories/userRepository.ts";
 
-import { UserProfileService } from "../../application/services/userService.js";
-import { Cloudinary } from "../utility/cloudinary.js";
-import { AuthService } from "../../application/services/authService.js";
-import { BcryptAdapter } from "../../Infrastructure/bcryptAdapter.js";
-import { PlanRepository } from "../../Infrastructure/repositories/planRepositories.js";
-import { PlanService } from "../../application/services/planService.js";
-import { FixedDataService } from "../../application/services/InterestAndFeatures.js";
-import { FeaturesRepository, InterestRepo, TokenRepository } from "../../Infrastructure/repositories/otherRepo.js";
-import { DashService } from "../../application/services/adminDashService.js";
-import { PurchasedPlan } from "../../Infrastructure/repositories/orderRepository.js";
-import { resportAbuserService } from "./userRoutes.js";
+import { UserProfileService } from "../../application/services/userService.ts";
+import { Cloudinary } from "../utility/cloudinary.ts";
+import { AuthService } from "../../application/services/authService.ts";
+import { BcryptAdapter } from "../../infrastructure/bcryptAdapter.ts";
+import { PlanRepository } from "../../infrastructure/repositories/planRepositories.ts";
+import { PlanService } from "../../application/services/planService.ts";
+import { FixedDataService } from "../../application/services/InterestAndFeatures.ts";
+import { FeaturesRepository, InterestRepo, TokenRepository } from "../../infrastructure/repositories/otherRepo.ts";
+import { DashService } from "../../application/services/adminDashService.ts";
+import { PurchasedPlan } from "../../infrastructure/repositories/orderRepository.ts";
+import { resportAbuserService } from "./userRoutes.ts";
 const router=Router()
 const adminAuth=new AdminAuth(new JWTAdapter(new TokenRepository))
 const authService=new AuthService(new UserRepsitories,new BcryptAdapter,new JWTAdapter(new TokenRepository))

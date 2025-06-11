@@ -1,5 +1,5 @@
 import bcrypt from 'bcryptjs'
-import { BcryptAdapterInterface } from '../types/serviceLayerInterfaces.js' 
+import { BcryptAdapterInterface } from '../types/serviceLayerInterfaces.ts' 
 
 
 export class BcryptAdapter implements BcryptAdapterInterface{

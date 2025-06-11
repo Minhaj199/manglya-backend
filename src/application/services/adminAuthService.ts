@@ -1,5 +1,5 @@
-import { JWTAdapter } from "../../Infrastructure/jwt.js"; 
-import { AdminAuthCase } from "../../types/serviceLayerInterfaces.js"; 
+import { JWTAdapter } from "../../infrastructure/jwt.ts"; 
+import { AdminAuthCase } from "../../types/serviceLayerInterfaces.ts"; 
 export class AdminAuth implements AdminAuthCase {
   private jwtGenerator: JWTAdapter;
 

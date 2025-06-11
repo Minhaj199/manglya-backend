@@ -1,10 +1,10 @@
-import { UserRepository } from "../../domain/interface/userRepositoryInterface.js";
-import { PlanRepository } from "../../Infrastructure/repositories/planRepositories.js";
-import { getAge } from "../../interface/utility/ageCalculator.js";
-import { Cloudinary } from "../../interface/utility/cloudinary.js";
-import { UserProfileSeriviceInterface } from "../../types/serviceLayerInterfaces.js";
-import { adminPlanType, updateData, userProfileReturnType, UserWithID } from "../../types/TypesAndInterfaces.js";
-import { AuthService } from "./authService.js";
+import { UserRepository } from "../../domain/interface/userRepository.ts";
+import { PlanRepository } from "../../infrastructure/repositories/planRepositories.ts";
+import { getAge } from "../../interface/utility/ageCalculator.ts";
+import { Cloudinary } from "../../interface/utility/cloudinary.ts";
+import { UserProfileSeriviceInterface } from "../../types/serviceLayerInterfaces.ts";
+import { adminPlanType, updateData, userProfileReturnType, UserWithID } from "../../types/TypesAndInterfaces.ts";
+import { AuthService } from "./authService.ts";
 
 
 export class UserProfileService implements UserProfileSeriviceInterface {

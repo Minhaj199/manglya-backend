@@ -1,9 +1,9 @@
 
 import { Document, Types, UpdateWriteOpResult } from "mongoose";
-import { SubscriptionPlan } from "../../domain/entity/PlanEntity.js";
-import { SubscriptionPlanRepo } from "../../domain/interface/PlanRepo.js";
-import { planModel } from "../db/planModel.js";
-import BaseRepository from "./baseRepository.js";
+import { SubscriptionPlan } from "../../domain/entity/PlanEntity.ts";
+import { SubscriptionPlanRepo } from "../../domain/interface/PlanRepository.ts";
+import { planModel } from "../db/planModel.ts";
+import BaseRepository from "./baseRepository.ts";
 
  interface SubscriptionPlanDocument extends SubscriptionPlan,Document{
     delete:boolean

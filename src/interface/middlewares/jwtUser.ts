@@ -1,6 +1,6 @@
 import { Request, Response, NextFunction } from "express";
-import { JWTAdapter } from "../../Infrastructure/jwt.js";
-import { TokenRepository } from "../../Infrastructure/repositories/otherRepo.js";
+import { JWTAdapter } from "../../infrastructure/jwt"; 
+import { TokenRepository } from "../../infrastructure/repositories/otherRepo";
 export interface jwtInterface {
   id: string;
   preferedGender: string;

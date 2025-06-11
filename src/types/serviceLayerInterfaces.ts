@@ -1,9 +1,9 @@
-import { adminPlanType, ChatMessage, ExtentedMatchProfile, fetechProfileDataType, FirstBatch, IMessage, IMessageWithoutId,  MatchedProfile, PlanOrder, RefreshWithPopulatedData, RequestInterface, SubscriptionPlanDocument, suggestionType, updateData, UserCurrentPlan, userMgtUserfetchUserDatasForAdmin, userProfileReturnType, UserWithID } from "./TypesAndInterfaces.js" 
-import { User } from "../domain/entity/userEntity.js"
+import { adminPlanType, ChatMessage, ExtentedMatchProfile, fetechProfileDataType, FirstBatch, IMessage, IMessageWithoutId,  MatchedProfile, PlanOrder, RefreshWithPopulatedData, RequestInterface, SubscriptionPlanDocument, suggestionType, updateData, UserCurrentPlan, userMgtUserfetchUserDatasForAdmin, userProfileReturnType, UserWithID } from "./TypesAndInterfaces.ts" 
+import { User } from "../domain/entity/userEntity.ts"
 import { Token } from '@stripe/stripe-js';
-import { AbuserReport } from "../domain/entity/abuse.js";
-import { SubscriptionPlan } from "../domain/entity/PlanEntity.js";
-import { Features } from "../Infrastructure/db/featureModel.js";
+import { AbuserReport } from "../domain/entity/abuseEntiy.ts";
+import { SubscriptionPlan } from "../domain/entity/PlanEntity.ts";
+import { Features } from "../infrastructure/db/featureModel.ts";
 import jwt from 'jsonwebtoken'
 
 

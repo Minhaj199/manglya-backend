@@ -1,6 +1,6 @@
-import { InterestRepo } from "../../Infrastructure/repositories/otherRepo.js"; 
-import { FeaturesRepository } from "../../Infrastructure/repositories/otherRepo.js";
-import { FixedDataServiceInterface } from "../../types/serviceLayerInterfaces.js";
+import { InterestRepo } from "../../infrastructure/repositories/otherRepo.ts"; 
+import { FeaturesRepository } from "../../infrastructure/repositories/otherRepo.ts";
+import { FixedDataServiceInterface } from "../../types/serviceLayerInterfaces.ts";
 
 export class FixedDataService implements FixedDataServiceInterface{
     private interestRepo:InterestRepo

@@ -36,33 +36,33 @@ import {
   getNewToken,
   planHistoryAndRequest,
  
-} from "../controller/userCtrl.js";
+} from "../controller/userCtrl.ts";
 
 
-import { userJwtAuthenticator } from "../middlewares/jwtUser.js";
-import { upload } from "../utility/multer.js";
-import { UserRepsitories } from "../../Infrastructure/repositories/userRepository.js"; 
-import { PurchasedPlan } from "../../Infrastructure/repositories/orderRepository.js";
-import { OtpRepository } from "../../Infrastructure/repositories/otpRepository.js";
-import { FeaturesRepository, InterestRepo, TokenRepository } from "../../Infrastructure/repositories/otherRepo.js";
-import { ReportUser } from "../../Infrastructure/repositories/reportUser.js";
-import { ChatRoomRepository } from "../../Infrastructure/repositories/chatRepository.js";
-import { MessageRepository } from "../../Infrastructure/repositories/messageRepository.js";
-import { PlanRepository } from "../../Infrastructure/repositories/planRepositories.js"; 
-import { AuthService } from "../../application/services/authService.js";
-import { Cloudinary } from "../utility/cloudinary.js"; 
-import { BcryptAdapter } from "../../Infrastructure/bcryptAdapter.js";
-import { JWTAdapter } from "../../Infrastructure/jwt.js";
-import { EmailService } from "../../Infrastructure/emailService.js";
-import { PartnerProfileService } from "../../application/services/partnersProfileService.js";
-import { UserProfileService } from "../../application/services/userService.js";
-import { PaymentSerivice } from "../../application/services/paymentService.js";
-import { ReportAbuseService } from "../../application/services/reportAbuseService.js";
-import { ChatService } from "../../application/services/chatService.js";
-import { MessageService } from "../../application/services/messageServie.js";
-import { OtpService } from "../../application/services/OtpService.js";
-import { PlanService } from "../../application/services/planService.js";
-import { FixedDataService } from "../../application/services/InterestAndFeatures.js";
+import { userJwtAuthenticator } from "../middlewares/jwtUser.ts";
+import { upload } from "../utility/multer.ts";
+import { UserRepsitories } from "../../infrastructure/repositories/userRepository.ts"; 
+import { PurchasedPlan } from "../../infrastructure/repositories/orderRepository.ts";
+import { OtpRepository } from "../../infrastructure/repositories/otpRepository.ts";
+import { FeaturesRepository, InterestRepo, TokenRepository } from "../../infrastructure/repositories/otherRepo.ts";
+import { ReportUser } from "../../infrastructure/repositories/reportUser.ts";
+import { ChatRoomRepository } from "../../infrastructure/repositories/chatRepository.ts";
+import { MessageRepository } from "../../infrastructure/repositories/messageRepository.ts";
+import { PlanRepository } from "../../infrastructure/repositories/planRepositories.ts"; 
+import { AuthService } from "../../application/services/authService.ts";
+import { Cloudinary } from "../utility/cloudinary.ts"; 
+import { BcryptAdapter } from "../../infrastructure/bcryptAdapter.ts";
+import { JWTAdapter } from "../../infrastructure/jwt.ts";
+import { EmailService } from "../utility/emailService.ts";
+import { PartnerProfileService } from "../../application/services/partnersProfileService.ts";
+import { UserProfileService } from "../../application/services/userService.ts";
+import { PaymentSerivice } from "../../application/services/paymentService.ts";
+import { ReportAbuseService } from "../../application/services/reportAbuseService.ts";
+import { ChatService } from "../../application/services/chatService.ts";
+import { MessageService } from "../../application/services/messageServie.ts";
+import { OtpService } from "../../application/services/OtpService.ts";
+import { PlanService } from "../../application/services/planService.ts";
+import { FixedDataService } from "../../application/services/InterestAndFeatures.ts";
 const router = Router();
 
 

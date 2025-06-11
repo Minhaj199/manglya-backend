@@ -1,9 +1,9 @@
-import { ChatRepository } from "../../domain/interface/chatRoomRepository.js";
-import { UserRepository } from "../../domain/interface/userRepositoryInterface.js";
-import { MessageRepository } from "../../Infrastructure/repositories/messageRepository.js";
-import { Cloudinary } from "../../interface/utility/cloudinary.js";
-import { MessageServiceInterface } from "../../types/serviceLayerInterfaces.js";
-import { ChatMessage, IMessageWithoutId } from "../../types/TypesAndInterfaces.js";
+import { ChatRepository } from "../../domain/interface/chatRoomRepository.ts";
+import { UserRepository } from "../../domain/interface/userRepository.ts";
+import { MessageRepository } from "../../infrastructure/repositories/messageRepository.ts";
+import { Cloudinary } from "../../interface/utility/cloudinary.ts";
+import { MessageServiceInterface } from "../../types/serviceLayerInterfaces.ts";
+import { ChatMessage, IMessageWithoutId } from "../../types/TypesAndInterfaces.ts";
 
 export class MessageService implements MessageServiceInterface {
   private messageRepo: MessageRepository;

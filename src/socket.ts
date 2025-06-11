@@ -1,11 +1,11 @@
 import { Socket } from "socket.io"
-import { io } from "./server.js"
-import { socketIdMap } from "./server.js"
-import { PartnerProfileService } from "./application/services/partnersProfileService.js"
-import { UserProfileService } from "./application/services/userService.js"
-import { MessageService } from "./application/services/messageServie.js"
-import { JWTAdapter } from "./Infrastructure/jwt.js"
-import { AuthService } from "./application/services/authService.js"
+import { io } from "./server.ts"
+import { socketIdMap } from "./server.ts"
+import { PartnerProfileService } from "./application/services/partnersProfileService.ts"
+import { UserProfileService } from "./application/services/userService.ts"
+import { MessageService } from "./application/services/messageServie.ts"
+import { JWTAdapter } from "./infrastructure/jwt.ts"
+import { AuthService } from "./application/services/authService.ts"
 
 
 

@@ -1,5 +1,5 @@
 import mongoose,{Schema} from "mongoose";
-import { AbuserMongoDoc } from "../../types/TypesAndInterfaces.js"; 
+import { AbuserMongoDoc } from "../../types/TypesAndInterfaces.ts"; 
 
 
 const reportSchama=new Schema<AbuserMongoDoc>({

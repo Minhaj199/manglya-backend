@@ -1,11 +1,11 @@
 
-import { UserRepository } from "../../domain/interface/userRepositoryInterface.js";
-import { IUserModel } from "../../Infrastructure/db/userModel.js";
-import { InterestRepo } from "../../Infrastructure/repositories/otherRepo.js";
-import { getAge } from "../../interface/utility/ageCalculator.js";
-import { socketIdMap } from "../../server.js";
-import { ParnterServiceInterface } from "../../types/serviceLayerInterfaces.js";
-import { ExtentedMatchProfile, LandingShowUesrsInterface, MatchedProfile,  profileTypeFetch, suggestionType, UserWithID } from "../../types/TypesAndInterfaces.js";
+import { UserRepository } from "../../domain/interface/userRepository.ts";
+import { IUserModel } from "../../infrastructure/db/userModel.ts";
+import { InterestRepo } from "../../infrastructure/repositories/otherRepo.ts";
+import { getAge } from "../../interface/utility/ageCalculator.ts";
+import { socketIdMap } from "../../server.ts";
+import { ParnterServiceInterface } from "../../types/serviceLayerInterfaces.ts";
+import { ExtentedMatchProfile, LandingShowUesrsInterface, MatchedProfile,  profileTypeFetch, suggestionType, UserWithID } from "../../types/TypesAndInterfaces.ts";
 
 
 

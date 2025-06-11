@@ -1,5 +1,5 @@
-import { AbuserMongoDoc } from "../../types/TypesAndInterfaces.js"
-import { AbuserReport } from "../entity/abuse.js"
+import { AbuserMongoDoc } from "../../types/TypesAndInterfaces.ts"
+import { AbuserReport } from "../entity/abuseEntiy.ts" 
 
 
 

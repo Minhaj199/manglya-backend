@@ -1,8 +1,8 @@
-import { SubscriptionPlan } from "../../domain/entity/PlanEntity.js";
-import { PurchasedPlan } from "../../Infrastructure/repositories/orderRepository.js";
-import { PlanRepository } from "../../Infrastructure/repositories/planRepositories.js"; 
-import { PlanServiceInterface } from "../../types/serviceLayerInterfaces.js";
-import { SubscriptionPlanDocument } from "../../types/TypesAndInterfaces.js";
+import { SubscriptionPlan } from "../../domain/entity/PlanEntity.ts";
+import { PurchasedPlan } from "../../infrastructure/repositories/orderRepository.ts";
+import { PlanRepository } from "../../infrastructure/repositories/planRepositories.ts"; 
+import { PlanServiceInterface } from "../../types/serviceLayerInterfaces.ts";
+import { SubscriptionPlanDocument } from "../../types/TypesAndInterfaces.ts";
 
 
 export class PlanService implements PlanServiceInterface{

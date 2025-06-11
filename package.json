@@ -2,11 +2,10 @@
   "name": "mangalya",
   "version": "1.0.0",
   "main": "index.js",
-  "type": "module",
   "scripts": {
     "start": "ts-node src/server.ts",
     "build": "tsc&& nodemon ./dist/server.js",
-    "dev": "npx nodemon /dist/server.js"
+    "dev": "ts-node /dist/server.js"
   },
   "author": "",
   "license": "ISC",

@@ -1,6 +1,6 @@
 
-import { Features } from "../../Infrastructure/db/featureModel.js"
-import { InterestInterface, PlanOrder, PlanOrderMongo, RefeshToken, RefreshWithPopulatedData } from "../../types/TypesAndInterfaces.js"
+import { Features } from "../../infrastructure/db/featureModel.ts"
+import { InterestInterface, PlanOrder, PlanOrderMongo, RefeshToken, RefreshWithPopulatedData } from "../../types/TypesAndInterfaces.ts"
 
 export interface BaseRepositoryInterface{
     create(data: Partial<unknown>): Promise<unknown>

@@ -1,11 +1,12 @@
 {
   "compilerOptions": {
-
+    "allowImportingTsExtensions":true,
+    "noEmit": true,
     "target": "ES2016", 
                                                  /* Control what method is used to detect module-format JS files. */
 
     /* Modules */
-    "module": "NodeNext",                                /* Specify what module code is generated. */
+    "module": "commonjs",                                /* Specify what module code is generated. */
                                           /* Specify a set of entries that re-map imports to additional lookup locations. */
     "rootDir": "./src",
     "outDir": "./dist",
