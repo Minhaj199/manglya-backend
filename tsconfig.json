@@ -23,6 +23,6 @@
     
     "skipLibCheck": true                                 /* Skip type checking all .d.ts files. */
   },
-  "include": ["src", "**/*.ts",".env"],
+  "include": ["src", "**/*.ts","src/**/*.d.ts",".env"],
   "exclude": ["node_modules", "dist"] , 
 }

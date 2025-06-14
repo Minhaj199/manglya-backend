@@ -1,11 +1,11 @@
 import { Socket } from "socket.io"
 import { io } from "./server.ts"
 import { socketIdMap } from "./server.ts"
-import { PartnerProfileService } from "./application/services/partnersProfileService.ts"
-import { UserProfileService } from "./application/services/userService.ts"
-import { MessageService } from "./application/services/messageServie.ts"
-import { JWTAdapter } from "./infrastructure/jwt.ts"
-import { AuthService } from "./application/services/authService.ts"
+import { PartnerProfileService } from "./services/implimentaion/partnersProfileService.ts"
+import { UserProfileService } from "./services/implimentaion/userProfileService.ts"
+import { MessageService } from "./services/implimentaion/messageService.ts"
+import { JWTAdapter } from "./utils/jwtAdapter.ts"
+import { AuthService } from "./services/implimentaion/userAuthenticationService.ts"
 
 
 
@@ -28,8 +28,12 @@ export const socketMethod=(socket:Socket,partnerService:PartnerProfileService,us
         }
         
        
-      } catch (error:any) {
-        io.to(socket.id).emit('errorFromSocket',{message:error.message||'error on user registration'})
+      } catch (error) {
+        if(error instanceof Error){
+            io.to(socket.id).emit('errorFromSocket',{message:error.message||'error on user registration'})
+        }else{
+            io.to(socket.id).emit('errorFromSocket',{message:'error on user registration'})
+        }
       }  
     
     
@@ -45,9 +49,14 @@ export const socketMethod=(socket:Socket,partnerService:PartnerProfileService,us
             data:await partnerService.createRequeset(senderId),
             note:'you have a request'
         })
-        } catch (error:any) {
-            io.to(socket.id).emit('errorFromSocket',{message:error.message||'error on user registration'})
-            console.log(error)
+        } catch (error) {
+            if(error instanceof Error){
+                io.to(socket.id).emit('errorFromSocket',{message:error.message||'error on user registration'})
+                
+            }else{
+        io.to(socket.id).emit('errorFromSocket',{message:'error on user registration'})
+                console.log(error)
+            }   
         }
         
     })
@@ -62,9 +71,13 @@ export const socketMethod=(socket:Socket,partnerService:PartnerProfileService,us
             await authService.userLoggedOut(id,data.token)
             socketIdMap.delete(id)
             socket.broadcast.emit('user_loggedOut',{id:id}) 
-        } catch (error:any) {
-            io.to(socket.id).emit('errorFromSocket',{message:error.message||'error on user registration'})
-            console.log(error)
+        } catch (error) {
+            if(error instanceof Error){
+                io.to(socket.id).emit('errorFromSocket',{message:error.message||'error on user registration'})
+            }else{
+                io.to(socket.id).emit('errorFromSocket',{message:'error on user registration'})
+            }
+            
         }
     
      
@@ -82,8 +95,14 @@ export const socketMethod=(socket:Socket,partnerService:PartnerProfileService,us
                 name:getName,
                 from:data.from
             })
-        } catch (error:any) {
-            io.to(socket.id).emit('errorFromSocket',{message:error.message||'error on user registration'})
+        } catch (error) {
+            if(error instanceof Error){
+                io.to(socket.id).emit('errorFromSocket',{message:error.message||'error on user registration'})
+
+            }else{
+                io.to(socket.id).emit('errorFromSocket',{message:'error on user registration'})
+                
+            }
            
         }
     })
@@ -109,9 +128,9 @@ export const socketMethod=(socket:Socket,partnerService:PartnerProfileService,us
                 name:recieverName
             })
         }
-       } catch (error:any) {
-        io.to(socket.id).emit('errorFromSocket',{message:error.message||'error on user registration'})
-        console.log(error)
+       } catch  {
+        io.to(socket.id).emit('errorFromSocket',{message:'error on user registration'})
+        
        }
         
     })
@@ -119,9 +138,9 @@ export const socketMethod=(socket:Socket,partnerService:PartnerProfileService,us
         try {
            
             await  messageService.updateReadedMessage(data.chatId)
-        } catch (error:any) {
+        } catch (error) {
             console.log(error)
-            io.to(socket.id).emit('errorFromSocket',{message:error.message||'error on user make readed'})
+            io.to(socket.id).emit('errorFromSocket',{message:'error on user make readed'})
         }
     })
     socket.on('userJoined',(data)=>{
@@ -134,9 +153,13 @@ export const socketMethod=(socket:Socket,partnerService:PartnerProfileService,us
                 }
               
             }  
-        } catch (error:any) {
-
-            io.to(socket.id).emit('errorFromSocket',{message:error.message||'error on user registration'})
+        } catch (error) {
+            if(error instanceof Error){
+                
+                io.to(socket.id).emit('errorFromSocket',{message:error.message||'error on user registration'})
+            }else{
+                io.to(socket.id).emit('errorFromSocket',{message:'error on user registration'})
+            }
             console.log(error)
         }
         

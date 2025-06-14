@@ -1,3 +1,5 @@
 .env
 node_modules
 dist
+nodemon.json
+eslint.config.mjs
