@@ -38,6 +38,7 @@ export class PlanService implements IPlanService{
     }
     async editPlan(data: SubscriptionPlanDocument): Promise<boolean>{
         try {
+
             return await this.planRepo.editPlan(data)
         } catch (error) {
       if(error instanceof Error){

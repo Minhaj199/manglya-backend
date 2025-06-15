@@ -9,7 +9,7 @@ import {
 } from "../../types/TypesAndInterfaces.ts";
 import { IUserRepository } from "../../repository/interface/IUserRepository.ts";
 import { IOtherRepositories } from "../../repository/interface/IOtherRepositories.ts";
-import { ILandingShowUesrsInterface, IUserWithID} from "../../types/UserRelatedTypes.ts";
+import {ILandingShowUesrsInterface, IUserWithID} from "../../types/UserRelatedTypes.ts";
 
 
 export class PartnerProfileService implements IParnterService {
@@ -319,4 +319,5 @@ export class PartnerProfileService implements IParnterService {
       }
     }
   }
+ 
 }

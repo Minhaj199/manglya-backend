@@ -114,7 +114,10 @@ export interface IUserCurrentPlan extends ISubscriptionPlanModel {
 export interface SubscriptionPlanDocument extends ISubscriptionPlan, Document {
   delete: boolean;
 }
-
+ export type  CurrentPlanType= {
+    request: IFindCurrentPlanAndRequests[]
+    currertPlan: ICurrentPlan[]
+  }
 export interface ICurrentPlan {
  CurrentPlan:{
 
@@ -181,6 +184,13 @@ export interface IInterestInput {
 
 export interface ChatRoomEntity{
     member:string[]
+}
+export type FindNewMessagesReturn={
+  
+    _id: string[];
+    count: number;
+    userId: Types.ObjectId[];
+
 }
 export interface Message {
     chatRoomId: string

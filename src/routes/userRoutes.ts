@@ -31,7 +31,7 @@ import { PurchasedPlanRepository } from "../repository/implimention/orderReposit
 import { UserController } from "../controller/implimentation/userController.ts";
 import { IUserController } from "../controller/interface/IUserController.ts";
 import { dtoValidate } from "../middlewares/dtoValidatorMiddleware.ts";
-import { firstBatchDataDto } from "../dtos/userDTOs.ts";
+import { firstBatchDataDto } from "../dtos/validator/userDTOs.ts";
 
 
 const router = Router();
@@ -40,15 +40,15 @@ const router = Router();
 const otpService=new OtpService(new UserRepsitories,new OtpRepository,new EmailService)
 export const authService=new AuthService(new UserRepsitories,new BcryptAdapter,new JWTAdapter(new TokenRepository))
 export const partnerServiece=new PartnerProfileService(new UserRepsitories,new InterestRepo)
-export const userProfileService=new UserProfileService(new PlanRepository,new Cloudinary,new UserRepsitories,authService)
+
 const chatRoom=new ChatService(new UserRepsitories,new ChatRoomRepository,new MessageService(new MessageRepository, new ChatRoomRepository,new Cloudinary,new UserRepsitories),new JWTAdapter(new TokenRepository))
 export const messageService=new MessageService(new MessageRepository, new ChatRoomRepository,new Cloudinary,new UserRepsitories)
 export const resportAbuserService=new ReportAbuseService(new ReportUserRepository,new EmailService,new UserRepsitories)
 const planService=new PlanService(new PlanRepository,new PurchasedPlanRepository)
 const paymentService=new PaymentSerivice(new PurchasedPlanRepository,new UserRepsitories)
 const interestService=new FixedDataService(new InterestRepo,new FeaturesRepository)
+export const userProfileService=new UserProfileService(new PlanRepository,new Cloudinary,new UserRepsitories,authService,planService)
 const userController:IUserController=new UserController(otpService,authService,resportAbuserService,partnerServiece,userProfileService,chatRoom,paymentService,messageService,planService,interestService)
-
 router.post("/login", userController.login)
 router.post("/firstBatchData",dtoValidate(firstBatchDataDto),userController.signup);
 router.get("/fetchforLanding",userController.fetchDataForProfile);

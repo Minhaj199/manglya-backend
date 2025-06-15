@@ -10,7 +10,7 @@ import BaseRepository from "./baseRepository.ts";
 import { objectIdToString } from "../../utils/objectIdToString.ts";
 import {  UserModel } from "../../models/userModel.ts";
 import { ILandingShowUesrsInterface, IUserWithID, UpdatedData } from "../../types/UserRelatedTypes.ts";
-import { IAdminPlanType, ICurrentPlan, IFindCurrentPlanAndRequests, IMatchedProfileType, IPlanOrder, IProfileTypeFetch, IRequestInterface, ISuggestion, IUserCurrentPlan } from "../../types/TypesAndInterfaces.ts";
+import { CurrentPlanType, IAdminPlanType, IMatchedProfileType, IPlanOrder, IProfileTypeFetch, IRequestInterface, ISuggestion, IUserCurrentPlan } from "../../types/TypesAndInterfaces.ts";
 
 
 
@@ -652,6 +652,7 @@ export class UserRepsitories extends BaseRepository<IUserWithID>implements IUser
  async fetchUserDataForAdmin(){
   try {
     return await this.model.aggregate([{$sort:{_id:-1}},{$project:{username:'$PersonalInfo.firstName',email:1,match:1,subscriber:1,CreatedAt:1,block:1}}])
+
   }  catch (error) {
       if (error instanceof Error) {
         throw new Error(error.message);
@@ -730,147 +731,6 @@ export class UserRepsitories extends BaseRepository<IUserWithID>implements IUser
 
  }
 }
-
-
-
-
-
-
-
-//  type  CurrentPlanType= {
-//     request: IFindCurrentPlanAndRequests[]
-//     CurrentPlan: {
-//       amount: number,
-//       connect: number,
-//       avialbleConnect:number,
-//       duration: number,
-//       features:string[],
-//       name: string,
-//       Expiry: Date
-//     }
-//   }
- export type  CurrentPlanType= {
-    request: IFindCurrentPlanAndRequests[]
-    currertPlan: ICurrentPlan[]
-  }
-//   {
-//   request: IFindCurrentPlanAndRequests,
-//   plan: {
-//     amount: 120,
-//     connect: 12,
-//     avialbleConnect: 12,
-//     duration: 13,
-//     features: [ 'Video call', 'Unlimited message' ],
-//     name: 'Dabi',
-//     Expiry: 2026-07-14T09:25:12.072Z
-//   }
-// }
-
-
-
-
-
-// [
-//   {
-//     request: [
-//       [Object], [Object],
-//       [Object], [Object],
-//       [Object], [Object],
-//       [Object], [Object],
-//       [Object], [Object],
-//       [Object], [Object]
-//     ],
-//     currertPlan: [ [Object] ]
-//   }
-// ]
-// {
-//   request: [
-//     {
-//       _id: new ObjectId('672269dd2bbcbf2bfc6476d4'),
-//       status: 'pending',
-//       typeOfRequest: 'send',
-//       name: 'jihan'
-//     },
-//     {
-//       _id: new ObjectId('6731b60ceab94549ab6dc020'),
-//       status: 'pending',
-//       typeOfRequest: 'send',
-//       name: 'kisan'
-//     },
-//     {
-//       _id: new ObjectId('6730e05ce586ebe77fa5130c'),
-//       status: 'pending',
-//       typeOfRequest: 'send',
-//       name: 'jasmin'
-//     },
-//     {
-//       _id: new ObjectId('6730302445fc41ef5103ac48'),
-//       status: 'pending',
-//       typeOfRequest: 'send',
-//       name: 'mubeen'
-//     },
-//     {
-//       _id: new ObjectId('6730255545fc41ef5103ac14'),
-//       status: 'pending',
-//       typeOfRequest: 'send',
-//       name: 'khabeel'
-//     },
-//     {
-//       _id: new ObjectId('6729b1c99dfd45ce69278d93'),
-//       status: 'pending',
-//       typeOfRequest: 'send',
-//       name: 'ramesh'
-//     },
-//     {
-//       _id: new ObjectId('672997aa9dfd45ce69278d7e'),
-//       status: 'pending',
-//       typeOfRequest: 'send',
-//       name: 'Delin'
-//     },
-//     {
-//       _id: new ObjectId('672993769dfd45ce69278d32'),
-//       status: 'rejected',
-//       typeOfRequest: 'send',
-//       name: 'manoj '
-//     },
-//     {
-//       _id: new ObjectId('67297b00ad080a09a2905b32'),
-//       status: 'pending',
-//       typeOfRequest: 'send',
-//       name: 'sainaba'
-//     },
-//     {
-//       _id: new ObjectId('67297a2ead080a09a2905b28'),
-//       status: 'pending',
-//       typeOfRequest: 'send',
-//       name: 'sheeja'
-//     },
-//     {
-//       _id: new ObjectId('672979a2ad080a09a2905b1b'),
-//       status: 'pending',
-//       typeOfRequest: 'send',
-//       name: 'Ziyan'
-//     },
-//     {
-//       _id: new ObjectId('675f010c1d914ded32667ce3'),
-//       status: 'pending',
-//       typeOfRequest: 'send',
-//       name: 'Labeer'
-//     }
-//   ],
-//   plan: {
-//     amount: 1000,
-//     connect: 60,
-//     avialbleConnect: 60,
-//     duration: 9,
-//     features: [ 'Unlimited message', 'Suggestion' ],
-//     name: 'New plan',
-//     Expiry: 2026-03-14T09:39:18.812Z
-//   }
-// }
-
-
-
 
 
 

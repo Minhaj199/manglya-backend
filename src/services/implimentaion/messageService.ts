@@ -3,6 +3,7 @@ import { IUserRepository } from "../../repository/interface/IUserRepository.ts";
 import { IMessageService } from "../interfaces/IMessageSerivice.ts";
 import { IChatMessage, ICloudinaryAdapter, IMessageWithoutId } from "../../types/TypesAndInterfaces.ts";
 import { IMessageRepository } from "../../repository/interface/IMessageRepository.ts";
+import { ResponseMessage } from "../../contrain/ResponseMessageContrain.ts";
 
 export class MessageService implements IMessageService {
   private messageRepo: IMessageRepository;
@@ -153,4 +154,22 @@ export class MessageService implements IMessageService {
       }
     }
   }
+  async messageCount(userID:unknown,from:unknown){
+    try {
+      if(!userID||!from||typeof userID!=='string'||typeof from !=='string'){
+        throw new Error(ResponseMessage.ID_NOT_FOUND)
+      }
+      const newMessagesForNav = await this.fetchMessageCount(
+        from,
+        userID
+      );
+      const newMessagesNotifiation = await this.findNewMessages(
+        userID
+      );
+      return({ newMessagesForNav, newMessagesNotifiation });
+    } catch  {
+     throw new Error(ResponseMessage.SERVER_ERROR)
+    }
+  }
 }
+// return({ count: 0 });

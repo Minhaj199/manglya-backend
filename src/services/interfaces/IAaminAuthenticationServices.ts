@@ -4,6 +4,7 @@ export interface IAdminAuthService {
     password: string
   ): {
     message: string;
+    key?:string
     token: string;
   };
 }

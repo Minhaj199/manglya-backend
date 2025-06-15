@@ -2,6 +2,7 @@ import { ErrorRequestHandler, NextFunction, Request, Response } from "express";
 import { AppError } from "../types/customErrorClass"; 
 import mongoose from "mongoose";
 import { HttpStatus } from "../contrain/statusCodeContrain";
+import logger from "../config/winstonConfig";
 
 export const globalErrorHandler:ErrorRequestHandler = (
   err: unknown,
@@ -9,8 +10,17 @@ export const globalErrorHandler:ErrorRequestHandler = (
   res: Response,
   next:NextFunction
 ) => {
+  const parsedError=err as Error
+  logger.error({
+    message:parsedError.message,
+    stack: parsedError.stack,
+    url: req.originalUrl,
+    method: req.method,
+    body: req.body,
+    time: new Date().toISOString(),
+  });
   if (err instanceof AppError) {
-    console.log(err)
+
      res.status(HttpStatus.INTERNAL_SERVER_ERROR).json({ message: err.message });
      return
   }

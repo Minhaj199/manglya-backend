@@ -18,16 +18,16 @@ import { IUserController } from "../interface/IUserController.ts";
 export class UserController implements IUserController {
 
   constructor(
-     private otpService: IOtpService,
-    private authService: IAuthSevice,
-    private reportAbuseService: IReportAbuseService,
-    private partnerServiece: IParnterService,
-    private userProfileService: IUserProfileService,
-    private chatRoomService: IChatService,
-    private paymentService: IPaymentSerivice,
-    private messageService: IMessageService,
-     private  planService: IPlanService,
-    private interestService: IFixedDataService
+    private readonly otpService: IOtpService,
+    private readonly authService: IAuthSevice,
+    private readonly reportAbuseService: IReportAbuseService,
+    private readonly partnerServiece: IParnterService,
+    private readonly userProfileService: IUserProfileService,
+    private readonly chatRoomService: IChatService,
+    private readonly paymentService: IPaymentSerivice,
+    private readonly messageService: IMessageService,
+    private readonly  planService: IPlanService,
+    private readonly interestService: IFixedDataService
   ) {}
   signup = async (req: Request, res: Response,next:NextFunction) => {
     try {
@@ -133,9 +133,7 @@ export class UserController implements IUserController {
   ): Promise<void> => {
     try {
       const { email } = req.body;
-
       const isValid = await this.otpService.ForgetValidateEmail(email);
-
       if (isValid) {
         res.json({ email: isValid.email });
       } else {
@@ -300,35 +298,18 @@ export class UserController implements IUserController {
         res.json({ status: response });
     } catch (error) {
       if(error instanceof Error){
-        const err=new  AppError(500,error.message)
+        const err=new  AppError(error.message)
         next(err)
       }
 
     }
   };
   editProfile = async (req: Request, res: Response,next:NextFunction) => {
+    
     try {
-      if (req.file) {
-        const email = await this.userProfileService.fetchUserByID(req.userID);
-        await this.userProfileService.uploadPhoto(req.file.path, email);
-        const updateDetail = await this.userProfileService.updateEditedData(
-          JSON.parse(req.body.data),
-          req.userID
-        );
-        res.json({ status: true, newData: updateDetail });
-      } else {
-        const updateDetail = await this.userProfileService.updateEditedData(
-          JSON.parse(req.body.data),
-          req.userID
-        );
-        if (typeof updateDetail === "string") {
-          res.json({ newData: updateDetail });
-        } else {
-          res.json({ newData: updateDetail });
-        }
-      }
+      const response=await this.userProfileService.updateProfile(req.file,req.userID,req.body)
+      res.json(response)
     } catch (error) {
-      
       next(error)
     }
   };
@@ -350,7 +331,6 @@ export class UserController implements IUserController {
   deleteMatched = async (req: Request, res: Response,next:NextFunction) => {
     try {
       const { id } = req.body;
-
       const response = await this.partnerServiece.deleteMatchedUser(
         req.userID,
         id
@@ -438,15 +418,9 @@ export class UserController implements IUserController {
   };
   MsgCount = async (req: Request, res: Response) => {
     try {
-      const newMessagesForNav = await this.messageService.fetchMessageCount(
-        req.query?.from,
-        req.userID
-      );
-      const newMessagesNotifiation = await this.messageService.findNewMessages(
-        req.userID
-      );
+     const response=await this.messageService.messageCount(req.userID,req.query.from)
 
-      res.json({ newMessagesForNav, newMessagesNotifiation });
+      res.json(response);
     } catch  {
      
         res.json({ count: 0 });
@@ -472,42 +446,28 @@ export class UserController implements IUserController {
         );
         res.json({ image: getImgUrl });
       } else {
-        throw new Error("internal server error on photo send");
+        throw new Error(ResponseMessage.SERVER_ERROR);
       }
     } catch  {
       res.json({ status: false });
     }
   };
-
-  getNewToken = async (req: Request, res: Response) => {
+  getNewToken = async (req: Request, res: Response,next:NextFunction) => {
     try {
-      console.log('here')
       const response = await this.authService.getNewToken(req.body.refresh);
       if (response) {
-        console.log(response)
-        res.status(200).json({ token: response });
+        res.status(HttpStatus.OK).json({ token: response });
       } else {
         throw new Error("refresh token not found");
       }
     } catch(err) {
-      console.log(err)
-      res.status(400).json("error on validating token please login again");
+      next(err)
     }
   };
   planHistoryAndRequest = async (req: Request, res: Response) => {
-    const id = req.userID;
-
     try {
-      if (typeof id !== "string") {
-        throw new Error("id not found");
-      }
-      const response = await this.userProfileService.findCurrentPlanAndRequests(
-        id
-      );
-      const history = await this.planService.fetchHistory(id);
-      console.log(response)
-      res.json({ ...response, history });
-    
+      const response=await this.userProfileService.planHistoryAndRequest(req.userID)
+      res.json(response)
     } catch  {
       res.json("error on validating token please login again");
     }

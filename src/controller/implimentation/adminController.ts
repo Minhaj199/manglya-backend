@@ -1,4 +1,4 @@
-import { Request, Response } from "express";
+import { NextFunction, Request, Response } from "express";
 import { ISubscriptionPlan } from "../../types/TypesAndInterfaces.ts"; 
 import { IAdminAuthService } from "../../services/interfaces/IAaminAuthenticationServices.ts";
 import { IUserProfileService } from "../../services/interfaces/IUserProfileService.ts";
@@ -8,6 +8,7 @@ import { IFixedDataService } from "../../services/interfaces/IInterstAndFeatureS
 import { IAdminDashService } from "../../services/interfaces/IAdminDashboardService.ts";
 import { IReportAbuseService } from "../../services/interfaces/IReportAbuseService.ts"; 
 import { IAdminController } from "../interface/IAdminController.ts";
+import { AppError } from "../../types/customErrorClass.ts";
 
 export class AdminController implements IAdminController {
   constructor(
@@ -21,15 +22,12 @@ export class AdminController implements IAdminController {
   login = async (req: Request, res: Response) => {
     try {
       const { email, password } = req.body;
-      const isValid = this.adminAuth.login(email, password);
-
-      if (isValid?.message === "admin verified") {
-        res.json({ adminVerified: true, token: isValid.token });
-      } else if (isValid?.message === "password not matching") {
-        res.json({ password: isValid.message });
-      } else if (isValid?.message === "user name not found") {
-        res.json({ username: "user name not found" });
-      }
+      const {message,key,token} = this.adminAuth.login(email, password);
+      if (message === "admin verified") {
+        res.json({ adminVerified: true, token: token });
+      } else  {  
+        res.json({[key as string]: message });
+      } 
     } catch (error: unknown) {
       if(error instanceof Error){
         if (error.message === "user name not found") {
@@ -39,45 +37,38 @@ export class AdminController implements IAdminController {
           res.json({ password: error.message });
         }
       }else{
-        
-          res.json({ password:'internal server error'  });
+          res.json({ password:ResponseMessage.SERVER_ERROR});
         
       }
     }
   };
-  fetechData = async (req: Request, res: Response) => {
+  fetechData = async (req: Request, res: Response,next:NextFunction) => {
     try {
-      if (req.query.from && req.query.from === "subscriber") {
-        const getSubscriberData =
-          await this.userProfileService.fetchSubscriberDetailforAdmin();
-
-        res.json(getSubscriberData);
-      } else if (req.query.from && req.query.from === "user") {
-        const processedData = await this.userProfileService.fetchUserDatasForAdmin();
-        res.json(processedData);
-      }
+      console.log('47')
+      const response=await this.userProfileService.fetchDatasForAdmin(req.query.from)
+      res.json(response)
     } catch (error) {
-      console.log(error);
+      next(error)
     }
   };
-  userBlockAndUnblock = async (req: Request, res: Response) => {
+  userBlockAndUnblock = async (req: Request, res: Response,next:NextFunction) => {
     try {
       const response = await this.userProfileService.blockAndBlock(
-        req.body.id,
+        req.params.id,
         req.body.updateStatus
       );
-
       if (response) {
         res.json({ message: "updated" });
       } else {
         throw new Error("error on updation");
       }
     } catch (error) {
-      console.log(error);
+     next(error)
     }
   };
-  addPlan = async (req: Request, res: Response) => {
+  addPlan = async (req: Request, res: Response,next:NextFunction) => {
     try {
+      console.log(req.body)
       const plan: ISubscriptionPlan = {
         name: req.body.datas.name,
         features: req.body.handleFeatureState,
@@ -88,82 +79,59 @@ export class AdminController implements IAdminController {
       const response = await this.planService.createPlan(plan);
       res.json({ status: response });
     } catch (error: unknown) {
-      if(error instanceof Error){
-        res.json({ message: error.message });
-      }else{
-        
-        res.json({ message: 'unexpected error' });
-      }
+      next(error)
     }
   };
 
-  fetechPlanData = async (req: Request, res: Response) => {
+  fetechPlanData = async (req: Request, res: Response,next:NextFunction) => {
     try {
       const plans = await this.planService.fetchAll();
 
       res.json({ plans });
     } catch (error: unknown) {
       
-       if(error instanceof Error){
-        res.json({ message: error.message });
-      }else{
-        
-        res.json({ message: 'unexpected error' });
-      }
+      next(error)
     }
   };
-  editPlan = async (req: Request, res: Response) => {
+  editPlan = async (req: Request, res: Response,next:NextFunction) => {
     try {
-      const response = await this.planService.editPlan(req.body);
+      if(!req.params||!req.params.id){
+        throw new AppError(ResponseMessage.ID_NOT_FOUND)
+      }
+      const response = await this.planService.editPlan({...req.body,...req.params});
       res.json({ response });
     } catch (error: unknown) {
-       if(error instanceof Error){
-        res.json({ message: error.message });
-      }else{
-        
-        res.json({ message: 'unexpected error' });
-      }
+       next(error)
      
     }
   };
-  softDlt = async (req: Request, res: Response) => {
+  softDlt = async (req: Request, res: Response,next:NextFunction) => {
     try {
-      if (req.body.id) {
-        const response = await this.planService.softDelete(req.body.id);
+      if (req.params.id) {
+        const response = await this.planService.softDelete(req.params.id);
         res.json({ response: response });
       } else {
-        throw new Error("id not found");
+        throw new AppError(ResponseMessage.ID_NOT_FOUND);
       }
     } catch (error: unknown) {
     
-       if(error instanceof Error){
-        res.json({ message: error.message });
-      }else{
-        
-        res.json({ message: ResponseMessage.SERVER_ERROR });
-      }
+      next(error)
     }
   };
-  fetchFeature = async (req: Request, res: Response) => {
+  fetchFeature = async (req: Request, res: Response,next:NextFunction) => {
     try {
       const response = await this.interestAndFeaturesService.fetchFeature();
-
       if (response) {
         res.json({ features: response.features });
       } else {
         throw new Error("feature not found");
       }
     } catch (error: unknown) {
-      
-       if(error instanceof Error){
-        res.json({ message: error.message });
-      }else{
-        
-        res.json({ message: 'unexpected error' });
-      }
+
+      next(error)
     }
   };
-  fetchDashData = async (req: Request, res: Response) => {
+  fetchDashData = async (req: Request, res: Response,next:NextFunction) => {
     try {
       if (req.query.from === "dashCount") {
         const getDashBoardDatas = await this.dashService.dashCount();
@@ -176,111 +144,73 @@ export class AdminController implements IAdminController {
         res.json(getDashBoardDatas);
       }
     } catch (error: unknown) {
-     
-      
-      if(error instanceof Error){
-        res.status(500).json({ message: error.message });
-      }else{
-        
-        res.json({ message: 'unexpected error' });
-      }
+     next(error)
     }
   };
-  sendWarningMails = async (req: Request, res: Response) => {
+  sendWarningMails = async (req: Request, res: Response,next:NextFunction) => {
     try {
       const sendWarningMale = await this.resportAbuserService.sendWarningMail(
         req.body.reporter,
         req.body.reported,
-        req.body.docId
+        req.params.id
       );
       res.json({ data: sendWarningMale });
-    } catch (error: unknown) {
+    } catch (error) {
     
-       if(error instanceof Error){
-        res.json({ message: error.message });
-      }else{
-        
-        res.json({ message: 'unexpected error' });
-      }
+    next(error)
     }
   };
-  getReports = async (req: Request, res: Response) => {
+  getReports = async (req: Request, res: Response,next:NextFunction) => {
     try {
       const fetchReport = await this.resportAbuserService.getAllMessages();
       res.json({ data: fetchReport });
     } catch (error: unknown) {
-        if(error instanceof Error){
-        res.json({ message: error.message });
-      }else{
-        
-        res.json({ message: 'unexpected error' });
-      }
+      next(error)
     }
   };
-  blockAbuser = async (req: Request, res: Response) => {
+  blockAbuser = async (req: Request, res: Response,next:NextFunction) => {
     try {
       const fetchReport = await this.resportAbuserService.blockReportedUser(
         req.body.reporter,
         req.body.reported,
-        req.body.docId
+        req.params.id
       );
       res.json({ data: fetchReport });
     } catch (error: unknown) {
-       if(error instanceof Error){
-        res.json({ message: error.message });
-      }else{
-        
-        res.json({ message: 'unexpected error' });
-      }
+      next(error)
     }
   };
-  rejecReport = async (req: Request, res: Response) => {
+  rejecReport = async (req: Request, res: Response,next:NextFunction) => {
     try {
       const fetchReport = await this.resportAbuserService.rejectReport(
         req.body.reporter,
         req.body.reported,
-        req.body.docId
+        req.params.id
       );
       res.json({ data: fetchReport });
     } catch (error: unknown) {
-      if(error instanceof Error){
-        res.json({ message: error.message });
-      }else{
-        
-        res.json({ message: 'unexpected error' });
-      }
+      next(error)
     }
   };
-  reportToggle = async (req: Request, res: Response) => {
+  reportToggle = async (req: Request, res: Response,next:NextFunction) => {
     try {
       const fetchReport = await this.resportAbuserService.toggleReportRead(
-        req.body.id,
+        req.params.id,
         req.body.status
       );
       res.json({ data: fetchReport });
-    } catch (error: unknown) {
-      if(error instanceof Error){
-        res.json({ message: error.message });
-      }else{
-        
-        res.json({ message: 'unexpected error' });
-      }
+    } catch (error) {
+        next(error)
     }
   };
-  deleteMsg = async (req: Request, res: Response) => {
+  deleteMsg = async (req: Request, res: Response,next:NextFunction) => {
     try {
       const response = await this.resportAbuserService.deleteMessage(
-        req.body.id
+        req.params.id
       );
       res.json({ data: response });
-    } catch (error: unknown) {
-      if(error instanceof Error){
-        res.json({ message: error.message });
-      }else{
-        
-        res.json({ message: 'unexpected error' });
-      }
-
+    } catch (error) {
+      next(error)
     }
   };
 }

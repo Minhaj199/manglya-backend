@@ -1,6 +1,6 @@
 import { Request, Response, NextFunction } from "express";
 
-/////////////// on method should be handled ///////////////////
+
 
 
 export interface IUserController {
@@ -25,7 +25,7 @@ export interface IUserController {
   fetchPlanData(req: Request, res: Response, next: NextFunction): Promise<void>;
   purchasePlan(req: Request, res: Response, next: NextFunction): Promise<void>;
   forgotCheckValidateSigunp(req: Request, res: Response, next: NextFunction): Promise<void>;
-//   fetechProfileData(req: Request, res: Response, next: NextFunction): Promise<void>;
+
   fetchDataForProfile(
     req: Request,
     res: Response,

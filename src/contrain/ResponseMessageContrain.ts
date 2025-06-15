@@ -6,6 +6,7 @@ export const ResponseMessage={
     VALIDATOR_RESPONSE:'In sufficient Data',
     EMAIL_SUCCESSFULLY_SEND:"Email send successfull",
     OTP_NOT_VALID:'OTP not valid',
-    OTP_VALID:'OTP valid'
+    OTP_VALID:'OTP valid',
+    ID_NOT_FOUND:'Id not found',
 
 }

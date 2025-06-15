@@ -7,22 +7,19 @@ import { IUserProfileService } from "../interfaces/IUserProfileService.ts";
 import { IAuthSevice } from "../interfaces/IAuthSerivce.ts";
 import { DataToBeUpdatedType, IuserProfileReturnType, IUserWithID, signupSecondBatchResType } from "../../types/UserRelatedTypes.ts"; 
 import { ResponseMessage } from "../../contrain/ResponseMessageContrain.ts";
+import { IPlanService } from "../interfaces/IPlanService.ts";
+import { AppError } from "../../types/customErrorClass.ts";
 
 export class UserProfileService implements IUserProfileService {
-  private imageSevice: ICloudinaryAdapter;
-  private userRepository: IUserRepository;
-  private authService: IAuthSevice;
-  private planRepo: IPlanRepository;
+ 
   constructor(
-    planRepo: IPlanRepository,
-    imageService: ICloudinaryAdapter,
-    userRepository: IUserRepository,
-    authService: IAuthSevice
+  private readonly planRepo: IPlanRepository,
+  private readonly imageSevice: ICloudinaryAdapter,
+  private readonly userRepository: IUserRepository,
+  private readonly authService: IAuthSevice,
+  private readonly planService: IPlanService,
   ) {
-    this.imageSevice = imageService;
-    this.userRepository = userRepository;
-    this.authService = authService;
-    this.planRepo = planRepo;
+
   }
   async uploadPhoto(path: string, email: string) {
     try {
@@ -269,7 +266,7 @@ export class UserProfileService implements IUserProfileService {
   async signupSecondBatch(file:{path:string}|undefined,body:{email:string,interest:string}){
        const obj:signupSecondBatchResType= { responseFromAddinInterest: false, url: false };
     try {
-      console.log('272')
+      
       if (file && file.path) {
         const image = file?.path || "";
         
@@ -279,7 +276,7 @@ export class UserProfileService implements IUserProfileService {
         
         obj.url = response;
       }
-      console.log('282')
+      
       const interest: string[] = JSON.parse(body.interest);
       if (interest.length > 0) {
         const responseFromAddinInterest =
@@ -298,6 +295,76 @@ export class UserProfileService implements IUserProfileService {
         throw new Error(ResponseMessage.SERVER_ERROR);
 
       }
+    }
+  }
+   async updateProfile(file:unknown,userID:unknown,data:string){
+    try {
+      if(!userID||typeof userID !=='string'){
+        throw new Error(ResponseMessage.ID_NOT_FOUND)
+      }
+      if (file&& typeof file==='object'&&'path' in file&&typeof file.path==='string') {
+        const email = await this.fetchUserByID(userID);
+        await this.uploadPhoto(file.path, email);
+        const updateDetail = await this.updateEditedData(
+          JSON.parse(data),
+          userID
+        );
+        return({ status: true, newData: updateDetail });
+      } else {
+        const updateDetail = await this.updateEditedData(
+          JSON.parse(data),
+          userID
+        );
+        if (typeof updateDetail === "string") {
+          return({status: false,  newData: updateDetail });
+        } else {
+          return({status: false,  newData: updateDetail });
+        }
+      }
+    } catch (error) {
+      
+      if(error instanceof Error){
+        throw new Error(error.message)
+      }else{
+        throw new Error(ResponseMessage.SERVER_ERROR);
+
+      }
+    }
+  }
+  async planHistoryAndRequest(id:unknown){
+
+    try {
+      if (typeof id !== "string") {
+        throw new Error("id not found");
+      }
+      const response = await this.findCurrentPlanAndRequests(
+        id
+      );
+      const history = await this.planService.fetchHistory(id);
+      return({ ...response, history });
+    
+    } catch  {
+      throw new Error("error on validating token please login again");
+    }
+  };
+  async  fetchDatasForAdmin(from:unknown,){
+    try {
+      if(from!=='user'&&from!=='subscriber'){
+        throw new Error('information category not found')
+      }
+      if(from==='user'){
+        const processedData = await this.fetchUserDatasForAdmin();
+        return(processedData);
+      }else{
+        const getSubscriberData=await  this.fetchSubscriberDetailforAdmin()
+        
+        
+        return(getSubscriberData)
+      }
+    } catch (error) {
+      console.log(error)
+      if(error instanceof Error)throw new AppError(error.message)
+      else throw new Error(ResponseMessage.SERVER_ERROR)
     }
   }
 }

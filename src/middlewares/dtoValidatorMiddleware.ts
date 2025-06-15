@@ -1,15 +1,21 @@
 import { NextFunction, Request, Response } from "express";
-import { ZodSchema } from "zod";
+import { ZodError, ZodSchema } from "zod";
 import { ResponseMessage } from "../contrain/ResponseMessageContrain";
+import { HttpStatus } from "../contrain/statusCodeContrain";
 export const dtoValidate=(schama:ZodSchema)=>
 (req:Request,res:Response,next:NextFunction)=>{
-    console.log(req.body)
     try {
         const result=schama.safeParse(req.body)
-        console.log(result)
+        console.log(req.body)
         if(!result.success){
-           res.status(400).json({message:ResponseMessage.VALIDATOR_RESPONSE})
-           return
+            if(result.error instanceof ZodError){
+                console.log(result.error.issues)
+                res.status(HttpStatus.BAD_REQUEST).json({message:result.error.issues[0].message})
+                return
+            }else{
+                res.status(HttpStatus.BAD_REQUEST).json({message:ResponseMessage.VALIDATOR_RESPONSE})
+                return
+            }
         }
         req.body=result.data
         next()
