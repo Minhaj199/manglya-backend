@@ -86,18 +86,23 @@ export class OtpService implements IOtpService {
   async otpValidation(email: string, otp: string, from: string) {
     try {
       const response = await this.otpRepository.getOTP(email, from);
+      console.log(response)
       if (Array.isArray(response)) {
+        console.log('91')
         return false;
       } else {
-        const parsedOTP = Number(otp);
 
+        const parsedOTP = Number(otp);
+        console.log(parsedOTP)
         if (response.email === email && response.otp === parsedOTP) {
           return true;
         } else {
+          console.log(100)
           return false;
         }
       }
     }catch (error) {
+      console.log(105)
       if(error instanceof Error){
         throw new Error(error.message);
       }else{

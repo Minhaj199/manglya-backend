@@ -29,6 +29,7 @@ constructor(){
   }
   async editPlan(data: SubscriptionPlanDocument): Promise<boolean> {
     try {
+      console.log(data)
       if (typeof data._id === "string") {
         const response = await planModel.updateOne(
           { _id: data._id },

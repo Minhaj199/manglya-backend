@@ -1,4 +1,5 @@
-import { OtpEntity } from "../../domain/entity/otpEntity.ts";
+import { OtpEntity } from "../../types/TypesAndInterfaces"
+
 
 export interface IOTPrespository{
     create(otpData:OtpEntity):Promise<OtpEntity>,

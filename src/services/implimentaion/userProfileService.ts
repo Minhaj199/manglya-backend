@@ -60,11 +60,9 @@ export class UserProfileService implements IUserProfileService {
     try {
       if (typeof id === "string") {
         const data: IUserWithID = await this.userRepository.getUserProfile(id);
-       
-
-        return new UserFetchData(data)
+        return new UserFetchData(data)  
       } else {
-        throw new Error("id not found-61");
+        throw new Error("id not found-");
       }
     } catch (error) {
       if (error instanceof Error) {
@@ -271,17 +269,18 @@ export class UserProfileService implements IUserProfileService {
       if (file&& typeof file==='object'&&'path' in file&&typeof file.path==='string') {
         const email = await this.fetchUserByID(userID);
         await this.uploadPhoto(file.path, email);
-        console.log(data)
         const updateDetail = await this.updateEditedData(
           JSON.parse(data),
           userID
         );
+        console.log(updateDetail)
         return({ status: true, newData: updateDetail });
       } else {
         const updateDetail = await this.updateEditedData(
           JSON.parse(data),
           userID
         );
+        console.log(updateDetail)
         if (typeof updateDetail === "string") {
           return({status: false,  newData: updateDetail });
         } else {

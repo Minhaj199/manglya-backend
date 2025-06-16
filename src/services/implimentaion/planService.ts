@@ -49,6 +49,7 @@ export class PlanService implements IPlanService{
         try {
             return await this.planRepo.editPlan(data)
         } catch (error) {
+          console.log(error)
       if(error instanceof Error){
         throw new Error(error.message);
       }else{

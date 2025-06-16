@@ -10,6 +10,7 @@ export const globalErrorHandler:ErrorRequestHandler = (
   res: Response,
   next:NextFunction
 ) => {
+  console.log(err)
   const parsedError=err as Error
   logger.error({
     message:parsedError.message,

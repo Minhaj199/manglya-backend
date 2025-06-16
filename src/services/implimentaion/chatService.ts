@@ -7,6 +7,8 @@ import { IMessageService } from "../interfaces/IMessageSerivice.ts";
 import { IJwtService } from "../../types/UserRelatedTypes.ts"; 
 import { IChatRoom, IChatRoomInput, IMessageWithoutId } from "../../types/TypesAndInterfaces.ts";
 import { MessageDTO } from "../../dtos/chattingrRelatedDTO.ts";
+import { AppError } from "../../types/customErrorClass.ts";
+import { ResponseMessage } from "../../constrain/ResponseMessageContrain.ts";
 
 export class ChatService implements IChatService {
   private userRepo: IUserRepository;
@@ -24,17 +26,17 @@ export class ChatService implements IChatService {
     this.messageService = messageService;
     this.jwtService=jwtService
   }
-  async fetchChats(user: unknown, secondUser: unknown) {
-    if (typeof user === "string" && typeof secondUser === "string") {
+  async fetchChats(client1: unknown, client2: unknown) {
+    if (typeof client1 === "string" && typeof client2 === "string") {
       try {
         const chat: IChatRoom | null =
-          await this.chatRoomRepo.findChatRoomWithIDs(user, secondUser);
+          await this.chatRoomRepo.findChatRoomWithIDs(client1, client2);
 
         if (chat && chat._id) {
           return { chatRoomId: objectIdToString(chat._id) };
         }
         const data:IChatRoomInput = {
-          members: [new Types.ObjectId(user), new Types.ObjectId(secondUser)],
+          members: [new Types.ObjectId(client1), new Types.ObjectId(client2)],
         };
         const response = await this.chatRoomRepo.create(data);
 
@@ -89,6 +91,9 @@ export class ChatService implements IChatService {
   }
   async fetchUserForChat(id: string) {
     try {
+      if(!id){
+        throw new AppError(ResponseMessage.ID_NOT_FOUND,404)
+      }
       const userData = await this.userRepo.getUserProfile(id);
       return {
         name: userData.PersonalInfo.firstName

@@ -22,7 +22,7 @@ import { PlanRepository } from "../repository/implimention/planRepositories.ts";
 import { PurchasedPlanRepository } from "../repository/implimention/orderRepository.ts";
 import { UserProfileService } from "../services/implimentaion/userProfileService.ts";
 import { IAdminController } from "../controller/interface/IAdminController.ts";
-import { abuseMessageToggle, addPlanDTO, adminLoginDtos, blockAndUnblockDtos, editPlanDTO, reportAbuseActionDto, reportAbuseReject } from "../dtos/validator/adminDTO.ts";
+import { abuseMessageToggleShema, addPlanDtoSchema, adminLoginDtoSchema, blockAndUnblockDtoSchema, editPlanDtoShema, reportAbuseActionDtoSchema, reportAbuseRejectShema } from "../dtos/validator/adminDTO.ts";
 import { dtoValidate } from "../middlewares/dtoValidatorMiddleware.ts";
 
 
@@ -40,7 +40,7 @@ const dashService=new DashService(new UserRepsitories,new PurchasedPlanRepositor
 
 
 const adminController:IAdminController=new AdminController(adminAuth,planService,interestAndFeaturesService,userProfileService,dashService,resportAbuserService)
-router.post('/login',dtoValidate(adminLoginDtos),adminController.login)
+router.post('/login',dtoValidate(adminLoginDtoSchema),adminController.login)
 
 
 
@@ -48,18 +48,18 @@ router.post('/login',dtoValidate(adminLoginDtos),adminController.login)
 //fetch data to user table
 router.get('/fetchUserData',adminJwtAuthenticator,adminController.fetchData)
 router.get('/fetchPlanData',adminJwtAuthenticator,adminController.fetchPlanData)
-router.post('/insertPlan',adminJwtAuthenticator,dtoValidate(addPlanDTO),adminController.addPlan)
-router.patch('/block&Unblock/:id',dtoValidate(blockAndUnblockDtos),adminController.userBlockAndUnblock)
-router.post('/insertPlan',adminJwtAuthenticator,dtoValidate(addPlanDTO),adminController.addPlan)
-router.put('/editPlan/:id',adminJwtAuthenticator,dtoValidate(editPlanDTO),adminController.editPlan)
+router.post('/insertPlan',adminJwtAuthenticator,dtoValidate(addPlanDtoSchema),adminController.addPlan)
+router.patch('/block&Unblock/:id',dtoValidate(blockAndUnblockDtoSchema),adminController.userBlockAndUnblock)
+router.post('/insertPlan',adminJwtAuthenticator,dtoValidate(addPlanDtoSchema),adminController.addPlan)
+router.put('/editPlan/:id',adminJwtAuthenticator,dtoValidate(editPlanDtoShema),adminController.editPlan)
 router.patch('/removePlan/:id',adminJwtAuthenticator,adminController.softDlt)
 router.get('/fetchFeature',adminJwtAuthenticator,adminController.fetchFeature)
 router.get('/getDataToDash',adminJwtAuthenticator,adminController.fetchDashData)
-router.patch('/sendWarningMail/:id',adminJwtAuthenticator,dtoValidate(reportAbuseActionDto),adminController.sendWarningMails)
-router.patch('/blockAbuser/:id',adminJwtAuthenticator,dtoValidate(reportAbuseActionDto),adminController.blockAbuser)
+router.patch('/sendWarningMail/:id',adminJwtAuthenticator,dtoValidate(reportAbuseActionDtoSchema),adminController.sendWarningMails)
+router.patch('/blockAbuser/:id',adminJwtAuthenticator,dtoValidate(reportAbuseActionDtoSchema),adminController.blockAbuser)
 router.get('/getReports',adminJwtAuthenticator,adminController.getReports)
-router.patch('/rejecReport/:id',adminJwtAuthenticator,dtoValidate(reportAbuseReject),adminController.rejecReport)
-router.patch('/reportToggle/:id',adminJwtAuthenticator,dtoValidate(abuseMessageToggle),adminController.reportToggle)
+router.patch('/rejecReport/:id',adminJwtAuthenticator,dtoValidate(reportAbuseRejectShema),adminController.rejecReport)
+router.patch('/reportToggle/:id',adminJwtAuthenticator,dtoValidate(abuseMessageToggleShema),adminController.reportToggle)
 router.delete('/deleteMsg/:id',adminJwtAuthenticator,adminController.deleteMsg)
 
 

@@ -1,4 +1,4 @@
-import { IParternDataChatList } from "../../types/dtoTypesAndInterfaces";
+import { IParternDataChatListDTO } from "../../types/dtoTypesAndInterfaces";
 import { IFetchProfileDataType, IProfileTypeFetch, IRequestInterface, ISubscriptionPlanModel, ISuggestion} from "../../types/TypesAndInterfaces";
 
 export interface IParnterService {
@@ -18,7 +18,7 @@ export interface IParnterService {
   >;
   matchedProfiles(
     id: unknown
-  ): Promise<IParternDataChatList|[]>;
+  ): Promise<IParternDataChatListDTO|[]>;
   fetchSuggestions(
     id: unknown,
     partnerPreference: string,

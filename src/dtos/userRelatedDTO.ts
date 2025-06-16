@@ -1,4 +1,4 @@
-import { IUserDTO, IUserFetchData, IUserInfoDTO } from "../types/dtoTypesAndInterfaces";
+import { IUserDTO, IUserFetchDataDTO, IUserInfoDTO } from "../types/dtoTypesAndInterfaces";
 import { IUserDatasForAdmin } from "../types/TypesAndInterfaces";
 import { IuserProfileReturnType, IUserWithID,User, UserLinsting } from "../types/UserRelatedTypes";
 import { getAge } from "../utils/ageCalculator";
@@ -43,18 +43,19 @@ export class UserDTO implements IUserDTO{
   }
 
 }
-export class UserFetchData implements IUserFetchData { 
+export class UserFetchData implements IUserFetchDataDTO { 
    withAge:IuserProfileReturnType  
   constructor(private user:IUserWithID){
     this.withAge={
     PersonalInfo:{
-      ...user.PersonalInfo,
-      age:getAge(user.PersonalInfo.dateOfBirth)
+      ...this.user.PersonalInfo,
+      age:getAge(this.user.PersonalInfo.dateOfBirth)
     },
-    Email:user.email,
-    subscriptionStatus:user.subscriber,
-    currentPlan:user.CurrentPlan,
-    PartnerData:user.PersonalInfo
+    Email:this.user.email,
+    subscriptionStatus:this.user.subscriber,
+    currentPlan:this.user.CurrentPlan,
+    PartnerData:this.user.PersonalInfo
     }
     }
 }
+

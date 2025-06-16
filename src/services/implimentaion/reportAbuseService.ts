@@ -5,6 +5,7 @@ import { IUserRepository } from "../../repository/interface/IUserRepository.ts";
 import { IEmailService } from '../../types/TypesAndInterfaces.ts'; 
 import { IReportAbuserRepository } from "../../repository/interface/IAbuseRepository.ts";
 import { AbuseMessageDTO } from "../../dtos/abuseMessageDTO.ts";
+import { userIDValidator } from "../../utils/userIDValidator.ts";
 export class ReportAbuseService implements IReportAbuseService {
   private reportRepo: IReportAbuserRepository;
   private emailService : IEmailService
@@ -47,16 +48,16 @@ export class ReportAbuseService implements IReportAbuseService {
     moreInfo: string
   ) {
     try {
-      if (typeof userId === "string" && typeof reporedId === "string") {
+      if (!userIDValidator(userId) && typeof reporedId === "string") {
         const isDuplicate = await this.checkingDupliacateComplaint(
-          userId,
+          userId as string,
           reason,
           reporedId
         );
 
         if (!isDuplicate) {
           const data: IAbuserReport = {
-            reporter: new Types.ObjectId(userId),
+            reporter: new Types.ObjectId(userId as string),
             reported: new Types.ObjectId(reporedId),
             reason,
             moreInfo,

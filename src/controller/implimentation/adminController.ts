@@ -10,7 +10,7 @@ import { IReportAbuseService } from "../../services/interfaces/IReportAbuseServi
 import { IAdminController } from "../interface/IAdminController.ts";
 import { AppError } from "../../types/customErrorClass.ts";
 
-export class AdminController implements IAdminController {
+export class AdminController implements IAdminController  {
   constructor(
   private adminAuth: IAdminAuthService,
   private planService: IPlanService,
@@ -95,7 +95,7 @@ export class AdminController implements IAdminController {
       if(!req.params||!req.params.id){
         throw new AppError(ResponseMessage.ID_NOT_FOUND)
       }
-      const response = await this.planService.editPlan({...req.body,...req.params});
+      const response = await this.planService.editPlan({...req.body,_id:req.params.id});
       res.json({ response });
     } catch (error: unknown) {
        next(error)

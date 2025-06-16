@@ -1,5 +1,5 @@
 import { SubscriberPlanDTO } from "../../dtos/planRelatedDTO";
-import { IUserFetchData, IUserInfoDTO } from "../../types/dtoTypesAndInterfaces";
+import { IUserFetchDataDTO, IUserInfoDTO } from "../../types/dtoTypesAndInterfaces";
 import { CurrentPlanReturnType, IAdminPlanType, IFindCurrentPlanAndRequests, IPlanOrder, IUserDatasForAdmin} from "../../types/TypesAndInterfaces";
 import { DataToBeUpdatedType, IuserProfileReturnType, signupSecondBatchResType,  } from "../../types/UserRelatedTypes";
 
@@ -7,7 +7,7 @@ import { DataToBeUpdatedType, IuserProfileReturnType, signupSecondBatchResType, 
 export interface IUserProfileService {
   uploadPhoto(path: string, email: string): Promise<string | false>;
   uploadInterest(intersts: string[], email: string): Promise<boolean>;
-  fetchUserProfile(id: unknown): Promise<IUserFetchData>;
+  fetchUserProfile(id: unknown): Promise<IUserFetchDataDTO>;
   updateEditedData(
     data: DataToBeUpdatedType,
     id: unknown

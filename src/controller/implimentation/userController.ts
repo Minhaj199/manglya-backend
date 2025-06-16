@@ -13,6 +13,7 @@ import { IReportAbuseService } from "../../services/interfaces/IReportAbuseServi
 import { ResponseMessage } from "../../constrain/ResponseMessageContrain.ts";
 import { HttpStatus } from "../../constrain/statusCodeContrain.ts";
 import { IUserController } from "../interface/IUserController.ts";
+import { userIDValidator } from "../../utils/userIDValidator.ts";
 
 export class UserController implements IUserController {
 
@@ -71,10 +72,8 @@ export class UserController implements IUserController {
   };
   login = async (req: Request, res: Response,next:NextFunction) => {
     const { email, password } = req.body;
-
     try {
       const response = await this.authService.login(email, password);
-
       const {
         token,
         refresh,
@@ -82,6 +81,7 @@ export class UserController implements IUserController {
         photo,
         partner,gender,subscriptionStatus,} = response;
       res.setHeader("authorizationforuser", refresh);
+
 
       res.status(HttpStatus.OK).json({
         message: "password matched",
@@ -170,7 +170,6 @@ export class UserController implements IUserController {
     }
   };
   secondBatch = async (req: Request, res: Response,next:NextFunction): Promise<void> => {
-
     try {
       const obj=await this.userProfileService.signupSecondBatch(req.file,req.body)
       res.json(obj);
@@ -180,6 +179,9 @@ export class UserController implements IUserController {
   };
   addMatch = async (req: Request, res: Response,next:NextFunction): Promise<void> => {
     try {
+         if(!userIDValidator(req.userID)){
+        throw new AppError(ResponseMessage.ID_NOT_FOUND,404)
+      }
       const response = await this.partnerServiece.addMatch(
         req.userID,
         req.body.matchId
@@ -216,15 +218,15 @@ export class UserController implements IUserController {
   };
   purchasePlan = async (req: Request, res: Response,next:NextFunction): Promise<void> => {
     try {
-      if (!req.userID) {
-        throw new Error("user id not found");
+        if(!userIDValidator(req.userID)){
+        throw new AppError(ResponseMessage.ID_NOT_FOUND,404)
       }
       if (req.body.planData && req.body.token && req.body.token.email) {
         const response = await this.paymentService.purchase(
           req.body.planData,
           req.body.token,
           req.body.token.email,
-          req.userID
+          req.userID as string
         );
         res.json({ status: response });
       } else {
@@ -261,6 +263,9 @@ export class UserController implements IUserController {
   };
   getUserProfile = async (req: Request, res: Response,next:NextFunction) => {
     try {
+         if(!userIDValidator(req.userID)){
+        throw new AppError(ResponseMessage.ID_NOT_FOUND,404)
+      }
       const {withAge} = await this.userProfileService.fetchUserProfile(req.userID);
       res.json({ user:withAge });
     } catch (error) {
@@ -269,6 +274,9 @@ export class UserController implements IUserController {
   };
   otpForResetPassword = async (req: Request, res: Response,next:NextFunction) => {
     try {
+         if(!userIDValidator(req.userID)){
+        throw new AppError(ResponseMessage.ID_NOT_FOUND,404)
+      }
       const sentOtp = await this.otpService.otpDispatchingForEditProfile(
         req.userID
       );
@@ -279,6 +287,9 @@ export class UserController implements IUserController {
   };
   otpForUserResetPassword = async (req: Request, res: Response,next:NextFunction) => {
     try {
+         if(!userIDValidator(req.userID)){
+        throw new AppError(ResponseMessage.ID_NOT_FOUND,404)
+      }
       const validate = await this.otpService.validateOtpForEditProfiel(req.userID,JSON.stringify(req.body.OTP),req.body.from
       );
       res.json({ status: validate });
@@ -288,6 +299,9 @@ export class UserController implements IUserController {
   };
   resetPassword = async (req: Request, res: Response,next:NextFunction) => {
     try {
+        if(!userIDValidator(req.userID)){
+        throw new AppError(ResponseMessage.ID_NOT_FOUND,404)
+      }
       const { password, confirmPassword } = req.body;
         const response = await this.authService.changePasswordEditProfile(
           password,
@@ -304,7 +318,6 @@ export class UserController implements IUserController {
     }
   };
   editProfile = async (req: Request, res: Response,next:NextFunction) => {
-    
     try {
       const response=await this.userProfileService.updateProfile(req.file,req.userID,req.body.data)
       res.json(response)
@@ -314,6 +327,9 @@ export class UserController implements IUserController {
   };
   matchedUser = async (req: Request, res: Response,next:NextFunction) => {
     try {
+      if(!userIDValidator(req.userID)){
+        throw new AppError(ResponseMessage.ID_NOT_FOUND,404)
+      }
       const fetchMatchedUsers = await this.partnerServiece.matchedProfiles(
         req.userID
       );
@@ -348,7 +364,7 @@ export class UserController implements IUserController {
         req.userID,
         req.body.profileId,
         req.body.reason,
-        req.body.moreInfo
+        req.body.moreInfo 
       );
 
       if (typeof response === "boolean") {
@@ -362,10 +378,14 @@ export class UserController implements IUserController {
   };
   fetchSuggestion = async (req: Request, res: Response,next:NextFunction) => {
     try {
+      const {userID,preferedGender,gender}=req
+      if(!userID||!preferedGender||!gender){
+        throw new Error(ResponseMessage.SERVER_ERROR)
+      }
       const result = await this.partnerServiece.fetchSuggestions(
-        req.userID as string,
-        req.preferedGender,
-        req.gender
+        userID as string,
+        preferedGender,
+        gender
       );
       res.json(result);
     } catch (error) {
@@ -374,14 +394,19 @@ export class UserController implements IUserController {
   };
   getChats = async (req: Request, res: Response,next:NextFunction) => {
     try {
-      const response = await this.chatRoomService.fetchChats(req.body.id, req.userID);
+      const { userId } = req.params;
+
+    if (!userId) {
+      throw new Error(ResponseMessage.ID_NOT_FOUND)
+      }
+      const response = await this.chatRoomService.fetchChats(userId, req.userID);
 
       res.json(response);
     } catch (error) {
       next(error)
     }
   };
-  createTexts = async (req: Request, res: Response,next:NextFunction) => {
+   createTexts = async (req: Request, res: Response,next:NextFunction) => {
     try {
       if (req.body.chatId === "") {
         throw new Error(ResponseMessage.ID_NOT_FOUND);
@@ -401,7 +426,12 @@ export class UserController implements IUserController {
   };
   getMessages = async (req: Request, res: Response,next:NextFunction) => {
     try {
-      const response = await this.messageService.findAllMessage(req.params.id);
+  const { userId } = req.params;
+
+    if (!userId) {
+      throw new Error(ResponseMessage.ID_NOT_FOUND)
+      }
+      const response = await this.messageService.findAllMessage(userId);
       res.json(response);
     } catch (error) {
      next(error)
@@ -409,21 +439,23 @@ export class UserController implements IUserController {
   };
   getuserForChat = async (req: Request, res: Response,next:NextFunction) => {
     try {
-      const response = await this.chatRoomService.fetchUserForChat(req.params.id);
+      const { userId } = req.params;
+
+    if (!userId) {
+      throw new Error(ResponseMessage.ID_NOT_FOUND)
+      }
+      const response = await this.chatRoomService.fetchUserForChat(userId);
       res.json(response);
     } catch (error) {
       next(error)
     }
-  };
+  }
   MsgCount = async (req: Request, res: Response) => {
     try {
      const response=await this.messageService.messageCount(req.userID,req.query.from)
-
       res.json(response);
     } catch  {
-     
         res.json({ count: 0 });
-     
     }
   };
   MessageViewed = async (req: Request, res: Response) => {

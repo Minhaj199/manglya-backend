@@ -1,8 +1,8 @@
-import { IMessageDTO, IParternDataChatList } from "../types/dtoTypesAndInterfaces";
+import { IMessageDTO, IParternDataChatListDTO } from "../types/dtoTypesAndInterfaces";
 import { IExtentedMatchProfile, IMessageOuput, IMessageRow } from "../types/TypesAndInterfaces";
 
 /////////////////chatting page listing user/////////////
-export class ParternDataChatList implements IParternDataChatList {
+export class ParternDataChatList implements IParternDataChatListDTO {
     connectedParterns:Omit<IExtentedMatchProfile,'lastName'>[]|[];
     Places:string[]
     onlines:string[]

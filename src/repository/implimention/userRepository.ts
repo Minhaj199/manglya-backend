@@ -489,8 +489,8 @@ export class UserRepsitories extends BaseRepository<IUserWithID>implements IUser
   }
   async changePassword(email: string, hashedPassword: string): Promise<boolean> {
     try {
-      const response=await UserModel.updateOne({email:email},{password:hashedPassword})
-      if(response){
+      const response:UpdateWriteOpResult =await UserModel.updateOne({email:email},{password:hashedPassword})
+      if(response.matchedCount&&response.modifiedCount){
         return true
       }else{
         return false
@@ -711,9 +711,6 @@ export class UserRepsitories extends BaseRepository<IUserWithID>implements IUser
       }
     }
  }
- 
-
-
  async findCurrentPlanAndRequests(id:string){
   try {
     const response:CurrentPlanType[]=await this.model.aggregate([{$facet:{request:[{$match:{_id:new Types.ObjectId(id)}},{$project:{match:1,_id:0}},{$unwind:'$match'},{$match:{'match.typeOfRequest':'send'}},{$replaceRoot:{newRoot:'$match'}},{$lookup:{from:'users',localField:'_id',foreignField:'_id',as:'info'}},{$project:{status:'$status',typeOfRequest:'$typeOfRequest',name:{ $arrayElemAt: ["$info.PersonalInfo.firstName", 0] }}}],currertPlan:[{$match:{_id:new Types.ObjectId(id)}},{$project:{CurrentPlan:1,_id:0}}]}},])

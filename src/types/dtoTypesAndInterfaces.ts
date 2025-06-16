@@ -3,7 +3,7 @@
 import { IAbuserReport, IExtentedMatchProfile, IMessageOuput, IUserDatasForAdmin } from "./TypesAndInterfaces";
 import {  IuserProfileReturnType, User } from "./UserRelatedTypes";
 
-export type planDTODataType={ name: string; duration: number; features: string[]; amount: string; connect: string; }[]
+export type planDTODataType={ name: string; duration: number; features: string[]; amount: string; connect: string }[]
 
 
 
@@ -27,10 +27,10 @@ export interface IUserDTO{
   userData: Omit<User, "password">
  
 }
-export interface IUserFetchData{
+export interface IUserFetchDataDTO{
     withAge: IuserProfileReturnType
 } 
-export interface IParternDataChatList{
+export interface IParternDataChatListDTO{
     connectedParterns: Omit<IExtentedMatchProfile, "lastName">[] | []
     Places: string[]|[]
     onlines: string[]|[]

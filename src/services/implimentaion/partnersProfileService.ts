@@ -11,7 +11,7 @@ import { IUserRepository } from "../../repository/interface/IUserRepository.ts";
 import { IOtherRepositories } from "../../repository/interface/IOtherRepositories.ts";
 import {ILandingShowUesrsInterface, IUserWithID} from "../../types/UserRelatedTypes.ts";
 import { ParternDataChatList } from "../../dtos/chattingrRelatedDTO.ts";
-import { IParternDataChatList } from "../../types/dtoTypesAndInterfaces.ts";
+import { IParternDataChatListDTO } from "../../types/dtoTypesAndInterfaces.ts";
 
 
 export class PartnerProfileService implements IParnterService {
@@ -143,7 +143,7 @@ export class PartnerProfileService implements IParnterService {
       }
     }
   }
-  async matchedProfiles(id: unknown):Promise<IParternDataChatList|[]> {
+  async matchedProfiles(id: unknown):Promise<IParternDataChatListDTO|[]> {
     try {
       if (typeof id !== "string") {
         return []

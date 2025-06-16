@@ -31,7 +31,8 @@ import { PurchasedPlanRepository } from "../repository/implimention/orderReposit
 import { UserController } from "../controller/implimentation/userController.ts";
 import { IUserController } from "../controller/interface/IUserController.ts";
 import { dtoValidate } from "../middlewares/dtoValidatorMiddleware.ts";
-import { firstBatchDataDto } from "../dtos/validator/userDTOs.ts";
+import { acceptAndRejectDTOSchema, acssTknRenualDTOSchema, addMatchDtoSchema, createTextsDTOSchema, deleteMatchedUser, emailDtoSchema, firstBatchDataDtoSchema, fromValidatorDTOSchema, loginDtoSchema, messageViewedDTOSchema, otpCreationDtoSchema, otpDtoSchema, passwordResetDTOSchema, purchasePlanDTOSchema, reportAbuserUserDTOSchema, secondBatchDtoSchema, udapteUserProfileDTOSchema } from "../dtos/validator/userDTOs.ts";
+
 
 
 const router = Router();
@@ -52,26 +53,27 @@ const userController:IUserController=new UserController(otpService,authService,r
 
 
 
-router.post("/login", userController.login)
-router.post("/firstBatchData",dtoValidate(firstBatchDataDto),userController.signup);
+router.post("/login",dtoValidate(loginDtoSchema),userController.login)
+router.post("/firstBatchData",dtoValidate(firstBatchDataDtoSchema),userController.signup);
 router.get("/fetchforLanding",userController.fetchDataForProfile);
-router.post("/otpCreation",userController.otpCreation);
-router.post("/otpValidation", userController.otpValidation);
-router.patch("/changePassword", userController.changePassword);
-router.post("/forgotEmail", userController.forgotCheckValidateSigunp);
-router.post("/uploadProfile", upload.single("file"), userController.secondBatch);
-router.get("/forgotEmail", userController.forgotCheckValidate);
+router.post("/otpCreation",dtoValidate(otpCreationDtoSchema),userController.otpCreation);
+router.post("/otpValidation", dtoValidate(otpDtoSchema),userController.otpValidation);
+router.patch("/changePassword",dtoValidate(passwordResetDTOSchema) ,userController.changePassword);
+router.post("/forgotEmail", dtoValidate(emailDtoSchema),userController.forgotCheckValidateSigunp);
+router.post("/uploadProfile", upload.single("file"),dtoValidate(secondBatchDtoSchema) ,userController.secondBatch);
+router.get("/forgotEmail",dtoValidate(otpCreationDtoSchema), userController.forgotCheckValidate);
 
 
 
 
 
 
-router.post("/addMatch", userJwtAuthenticator, userController.addMatch);
-router.patch("/manageReqRes", userJwtAuthenticator, userController.manageReqRes);
+
+router.post("/addMatch", dtoValidate(addMatchDtoSchema),userJwtAuthenticator, userController.addMatch);
+router.patch("/manageReqRes",dtoValidate(acceptAndRejectDTOSchema) ,userJwtAuthenticator, userController.manageReqRes);
 router.get("/fetchProfile", userJwtAuthenticator,userController.fetchProfileData);
 router.get("/fetchPlanData", userController.fetchPlanData)
-router.post("/purchasePlan", userJwtAuthenticator,userController.purchasePlan);
+router.post("/purchasePlan",dtoValidate(purchasePlanDTOSchema) ,userJwtAuthenticator,userController.purchasePlan);
 
 
 
@@ -81,20 +83,26 @@ router.get("/getInterest", userController.fetchInterest);
 router.get('/getUserProfile',userJwtAuthenticator,userController.getUserProfile)
 router.post('/otpRstPsword',userJwtAuthenticator,userController.otpForResetPassword)
 router.post('/validateUserOTP',userJwtAuthenticator,userController.otpForUserResetPassword)
-router.patch('/resetPassword',userJwtAuthenticator,userController.resetPassword)
-router.delete('/deleteMatched',userJwtAuthenticator,userController.deleteMatched)
-router.put('/editProfile',userJwtAuthenticator,upload.single('file'),userController.editProfile)
+router.patch('/resetPassword',dtoValidate(passwordResetDTOSchema),userJwtAuthenticator,userController.resetPassword)
+
+
+
+router.delete('/deleteMatched',dtoValidate(deleteMatchedUser),userJwtAuthenticator,userController.deleteMatched)
+router.put('/editProfile',dtoValidate(udapteUserProfileDTOSchema),userJwtAuthenticator,upload.single('file'),userController.editProfile)
 router.get('/matchedUsers',userJwtAuthenticator,userController.matchedUser)
-router.post('/reportAbuse',userJwtAuthenticator,userController.reportAbuse)
+router.post('/reportAbuse',dtoValidate(reportAbuserUserDTOSchema),userJwtAuthenticator,userController.reportAbuse)
 router.get('/fetchSuggestion',userJwtAuthenticator,userController.fetchSuggestion)
-router.post('/getChats',userJwtAuthenticator,userController.getChats)
-router.post('/createChats',userJwtAuthenticator,userController.createTexts)
+
+
+router.post('/getChats/:id',userJwtAuthenticator,userController.getChats)
+router.post('/createChats',dtoValidate(createTextsDTOSchema),userJwtAuthenticator,userController.createTexts)
+
 router.get('/getMessages/:id',userJwtAuthenticator,userController.getMessages)
 router.get('/userForChat/:id',userJwtAuthenticator,userController.getuserForChat)
-router.get('/countMessages',userJwtAuthenticator,userController.MsgCount)
-router.patch('/messageReaded',userJwtAuthenticator,userController.MessageViewed)
+router.get('/countMessages',dtoValidate(fromValidatorDTOSchema),userJwtAuthenticator,userController.MsgCount)
+router.patch('/messageReaded',dtoValidate(messageViewedDTOSchema),userJwtAuthenticator,userController.MessageViewed)
 router.post('/saveImage',userJwtAuthenticator,upload.single('file'),userController.saveImage)
-router.post('/getNewToken',userController.getNewToken)
+router.post('/getNewToken',dtoValidate(acssTknRenualDTOSchema),userController.getNewToken)
 router.get('/planHistoryAndRequest',userJwtAuthenticator,userController.planHistoryAndRequest)
 
 

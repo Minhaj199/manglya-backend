@@ -8,5 +8,8 @@ export const ResponseMessage={
     OTP_NOT_VALID:'OTP not valid',
     OTP_VALID:'OTP valid',
     ID_NOT_FOUND:'Id not found',
+    EMAIL_REQUIRED:'email required',
+    VALID_EMAIL:'valid email missing',
+    FROM_ARGUEMENT_MISSING:'from arguement missing',
 
 }
