@@ -1,8 +1,20 @@
 import { SubscriberPlanDTO } from "../../dtos/planRelatedDTO";
-import { IUserFetchDataDTO, IUserInfoDTO } from "../../types/dtoTypesAndInterfaces";
-import { CurrentPlanReturnType, IAdminPlanType, IFindCurrentPlanAndRequests, IPlanOrder, IUserDatasForAdmin} from "../../types/TypesAndInterfaces";
-import { DataToBeUpdatedType, IuserProfileReturnType, signupSecondBatchResType,  } from "../../types/UserRelatedTypes";
-
+import {
+  IUserFetchDataDTO,
+  IUserInfoDTO,
+} from "../../types/dtoTypesAndInterfaces";
+import {
+  CurrentPlanReturnType,
+  IAdminPlanType,
+  IFindCurrentPlanAndRequests,
+  IPlanOrder,
+  IUserDatasForAdmin,
+} from "../../types/TypesAndInterfaces";
+import {
+  DataToBeUpdatedType,
+  IuserProfileReturnType,
+  signupSecondBatchResType,
+} from "../../types/UserRelatedTypes";
 
 export interface IUserProfileService {
   uploadPhoto(path: string, email: string): Promise<string | false>;
@@ -23,22 +35,31 @@ export interface IUserProfileService {
   findCurrentPlanAndRequests(id: string): Promise<{
     request: IFindCurrentPlanAndRequests[];
     plan: CurrentPlanReturnType;
-}>
-signupSecondBatch(file: {path: string}|undefined, body: {
-    email: string;
-    interest: string;
-}): Promise<signupSecondBatchResType>
-updateProfile(file: unknown, userID: unknown, data: string): Promise<{
+  }>;
+  signupSecondBatch(
+    file: { path: string } | undefined,
+    body: {
+      email: string;
+      interest: string;
+    }
+  ): Promise<signupSecondBatchResType>;
+  updateProfile(
+    file: unknown,
+    userID: unknown,
+    data: string
+  ): Promise<{
     status: boolean;
     newData: {
-        data: IuserProfileReturnType;
-        token: string | boolean;
+      data: IuserProfileReturnType;
+      token: string | boolean;
     };
-}>
-planHistoryAndRequest(id: unknown): Promise<{
+  }>;
+  planHistoryAndRequest(id: unknown): Promise<{
     history: IPlanOrder[];
     request: IFindCurrentPlanAndRequests[];
     plan: CurrentPlanReturnType;
-}>
-fetchDatasForAdmin(from:unknown): Promise<IUserDatasForAdmin[] | SubscriberPlanDTO  >
+  }>;
+  fetchDatasForAdmin(
+    from: unknown
+  ): Promise<IUserDatasForAdmin[] | SubscriberPlanDTO>;
 }

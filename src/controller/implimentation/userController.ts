@@ -1,6 +1,6 @@
 import { Response, Request, NextFunction } from "express";
 import { AppError } from "../../types/customErrorClass.ts";
-import { IOtpService } from "../../services/interfaces/IOtpService.ts"; 
+import { IOtpService } from "../../services/interfaces/IOtpService.ts";
 import { IParnterService } from "../../services/interfaces/IPartnerService.ts";
 import { IChatService } from "../../services/interfaces/IChatService.ts";
 import { IPlanService } from "../../services/interfaces/IPlanService.ts";
@@ -16,7 +16,6 @@ import { IUserController } from "../interface/IUserController.ts";
 import { userIDValidator } from "../../utils/userIDValidator.ts";
 
 export class UserController implements IUserController {
-
   constructor(
     private readonly otpService: IOtpService,
     private readonly authService: IAuthSevice,
@@ -26,21 +25,25 @@ export class UserController implements IUserController {
     private readonly chatRoomService: IChatService,
     private readonly paymentService: IPaymentSerivice,
     private readonly messageService: IMessageService,
-    private readonly  planService: IPlanService,
+    private readonly planService: IPlanService,
     private readonly interestService: IFixedDataService
   ) {}
-  signup = async (req: Request, res: Response,next:NextFunction) => {
+  signup = async (req: Request, res: Response, next: NextFunction) => {
     try {
-      const user:{token:string,refreshToken:string} = await this.authService.signupFirstBatch(req.body);     
+      const user: { token: string; refreshToken: string } =
+        await this.authService.signupFirstBatch(req.body);
       res.setHeader("authorizationforuser", user?.refreshToken);
-      res.status(HttpStatus.CREATED).json({ message: ResponseMessage.USER_CREATION_SUCCESS, token: user?.token });
-
-      
+      res
+        .status(HttpStatus.CREATED)
+        .json({
+          message: ResponseMessage.USER_CREATION_SUCCESS,
+          token: user?.token,
+        });
     } catch (error: unknown) {
-     next(error)
+      next(error);
     }
   };
-  otpCreation = async (req: Request, res: Response,next:NextFunction) => {
+  otpCreation = async (req: Request, res: Response, next: NextFunction) => {
     const { email, from } = req.body;
     if (from === "forgot") {
       try {
@@ -50,11 +53,13 @@ export class UserController implements IUserController {
         );
         if (response) {
           if (response) {
-            res.status(HttpStatus.OK).json({ message: ResponseMessage.EMAIL_SUCCESSFULLY_SEND });
+            res
+              .status(HttpStatus.OK)
+              .json({ message: ResponseMessage.EMAIL_SUCCESSFULLY_SEND });
           }
         }
       } catch (error: unknown) {
-         next(error)
+        next(error);
       }
     } else {
       try {
@@ -63,14 +68,16 @@ export class UserController implements IUserController {
           req.body.from
         );
         if (response) {
-          res.status(HttpStatus.OK).json({ message: ResponseMessage.EMAIL_SUCCESSFULLY_SEND });
+          res
+            .status(HttpStatus.OK)
+            .json({ message: ResponseMessage.EMAIL_SUCCESSFULLY_SEND });
         }
       } catch (error: unknown) {
-       next(error)
+        next(error);
       }
     }
   };
-  login = async (req: Request, res: Response,next:NextFunction) => {
+  login = async (req: Request, res: Response, next: NextFunction) => {
     const { email, password } = req.body;
     try {
       const response = await this.authService.login(email, password);
@@ -79,9 +86,11 @@ export class UserController implements IUserController {
         refresh,
         name,
         photo,
-        partner,gender,subscriptionStatus,} = response;
+        partner,
+        gender,
+        subscriptionStatus,
+      } = response;
       res.setHeader("authorizationforuser", refresh);
-
 
       res.status(HttpStatus.OK).json({
         message: "password matched",
@@ -94,33 +103,40 @@ export class UserController implements IUserController {
         subscriptionStatus,
       });
     } catch (error: unknown) {
-      next(error)
+      next(error);
     }
   };
-  fetchProfileData = async (req: Request, res: Response,next:NextFunction) => {
+  fetchProfileData = async (
+    req: Request,
+    res: Response,
+    next: NextFunction
+  ) => {
     try {
-        const response = await this.partnerServiece.fetchProfileData(
-          req.userID as string,
-          req.gender,
-          req.preferedGender
-        );
-        res.json(response);
+      const response = await this.partnerServiece.fetchProfileData(
+        req.userID as string,
+        req.gender,
+        req.preferedGender
+      );
+      res.json(response);
     } catch (error: unknown) {
-      next(error)
+      next(error);
     }
   };
-  forgotCheckValidate = async (req: Request, res: Response,next:NextFunction): Promise<void> => {
+  forgotCheckValidate = async (
+    req: Request,
+    res: Response,
+    next: NextFunction
+  ): Promise<void> => {
     try {
-        const response = await this.otpService.otpVerificationForForgot(
-            req.query.email,
-            "forgot"
-          );
-          if(response){
-             res.json({ email:req.query.email });
-          }else{
-            
-            res.status(HttpStatus.OK).json(response)
-          }
+      const response = await this.otpService.otpVerificationForForgot(
+        req.query.email,
+        "forgot"
+      );
+      if (response) {
+        res.json({ email: req.query.email });
+      } else {
+        res.status(HttpStatus.OK).json(response);
+      }
     } catch (error) {
       next(error);
     }
@@ -128,13 +144,13 @@ export class UserController implements IUserController {
   forgotCheckValidateSigunp = async (
     req: Request,
     res: Response,
-    next:NextFunction
+    next: NextFunction
   ): Promise<void> => {
     try {
       const { email } = req.body;
-      const  isValid= await this.otpService.ForgetValidateEmail(email);
+      const isValid = await this.otpService.ForgetValidateEmail(email);
       if (isValid) {
-        res.json({ email: isValid});
+        res.json({ email: isValid });
       } else {
         res.json(false);
       }
@@ -142,21 +158,29 @@ export class UserController implements IUserController {
       next(error);
     }
   };
-  otpValidation = async (req: Request, res: Response,next:NextFunction): Promise<void> => {
+  otpValidation = async (
+    req: Request,
+    res: Response,
+    next: NextFunction
+  ): Promise<void> => {
     try {
       const { email, otp, from } = req.body;
       const isValid = await this.otpService.otpValidation(email, otp, from);
 
       if (isValid) {
-        res.json({ message:ResponseMessage.OTP_VALID });
+        res.json({ message: ResponseMessage.OTP_VALID });
       } else {
-        res.json({ message:ResponseMessage.OTP_NOT_VALID});
+        res.json({ message: ResponseMessage.OTP_NOT_VALID });
       }
     } catch (error) {
       next(error);
     }
   };
-  changePassword = async (req: Request, res: Response,next:NextFunction): Promise<void> => {
+  changePassword = async (
+    req: Request,
+    res: Response,
+    next: NextFunction
+  ): Promise<void> => {
     try {
       const { password, email } = req.body;
       const isValid = await this.authService.passwordChange(email, password);
@@ -169,18 +193,29 @@ export class UserController implements IUserController {
       next(error);
     }
   };
-  secondBatch = async (req: Request, res: Response,next:NextFunction): Promise<void> => {
+  secondBatch = async (
+    req: Request,
+    res: Response,
+    next: NextFunction
+  ): Promise<void> => {
     try {
-      const obj=await this.userProfileService.signupSecondBatch(req.file,req.body)
+      const obj = await this.userProfileService.signupSecondBatch(
+        req.file,
+        req.body
+      );
       res.json(obj);
     } catch (error: unknown) {
       next(error);
     }
   };
-  addMatch = async (req: Request, res: Response,next:NextFunction): Promise<void> => {
+  addMatch = async (
+    req: Request,
+    res: Response,
+    next: NextFunction
+  ): Promise<void> => {
     try {
-         if(!userIDValidator(req.userID)){
-        throw new AppError(ResponseMessage.ID_NOT_FOUND,404)
+      if (!userIDValidator(req.userID)) {
+        throw new AppError(ResponseMessage.ID_NOT_FOUND, 404);
       }
       const response = await this.partnerServiece.addMatch(
         req.userID,
@@ -192,7 +227,11 @@ export class UserController implements IUserController {
       next(error);
     }
   };
-  manageReqRes = async (req: Request, res: Response,next:NextFunction): Promise<void> => {
+  manageReqRes = async (
+    req: Request,
+    res: Response,
+    next: NextFunction
+  ): Promise<void> => {
     try {
       const response = await this.partnerServiece.manageReqRes(
         req.body.id,
@@ -208,7 +247,11 @@ export class UserController implements IUserController {
       next(error);
     }
   };
-  fetchPlanData = async (req: Request, res: Response,next:NextFunction): Promise<void> => {
+  fetchPlanData = async (
+    req: Request,
+    res: Response,
+    next: NextFunction
+  ): Promise<void> => {
     try {
       const data = await this.planService.fetchAll();
       res.json(data);
@@ -216,10 +259,14 @@ export class UserController implements IUserController {
       next(error);
     }
   };
-  purchasePlan = async (req: Request, res: Response,next:NextFunction): Promise<void> => {
+  purchasePlan = async (
+    req: Request,
+    res: Response,
+    next: NextFunction
+  ): Promise<void> => {
     try {
-        if(!userIDValidator(req.userID)){
-        throw new AppError(ResponseMessage.ID_NOT_FOUND,404)
+      if (!userIDValidator(req.userID)) {
+        throw new AppError(ResponseMessage.ID_NOT_FOUND, 404);
       }
       if (req.body.planData && req.body.token && req.body.token.email) {
         const response = await this.paymentService.purchase(
@@ -236,7 +283,11 @@ export class UserController implements IUserController {
       next(error);
     }
   };
-  fetchDataForProfile = async (req: Request, res: Response,next:NextFunction): Promise<void> => {
+  fetchDataForProfile = async (
+    req: Request,
+    res: Response,
+    next: NextFunction
+  ): Promise<void> => {
     try {
       const response = await this.partnerServiece.fetchUserForLandingShow();
       if (response) {
@@ -245,10 +296,14 @@ export class UserController implements IUserController {
         throw new Error("Error on new user data collection");
       }
     } catch (error) {
-      next(error)
+      next(error);
     }
   };
-  fetchInterest = async (req: Request, res: Response,next:NextFunction): Promise<void> => {
+  fetchInterest = async (
+    req: Request,
+    res: Response,
+    next: NextFunction
+  ): Promise<void> => {
     try {
       const response = await this.interestService.fetchInterestAsCategory();
 
@@ -258,77 +313,93 @@ export class UserController implements IUserController {
         throw new Error("Error on interst getting");
       }
     } catch (error) {
-      next(error)
+      next(error);
     }
   };
-  getUserProfile = async (req: Request, res: Response,next:NextFunction) => {
+  getUserProfile = async (req: Request, res: Response, next: NextFunction) => {
     try {
-         if(!userIDValidator(req.userID)){
-        throw new AppError(ResponseMessage.ID_NOT_FOUND,404)
+      if (!userIDValidator(req.userID)) {
+        throw new AppError(ResponseMessage.ID_NOT_FOUND, 404);
       }
-      const {withAge} = await this.userProfileService.fetchUserProfile(req.userID);
-      res.json({ user:withAge });
+      const { withAge } = await this.userProfileService.fetchUserProfile(
+        req.userID
+      );
+      res.json({ user: withAge });
     } catch (error) {
       next(error);
     }
   };
-  otpForResetPassword = async (req: Request, res: Response,next:NextFunction) => {
+  otpForResetPassword = async (
+    req: Request,
+    res: Response,
+    next: NextFunction
+  ) => {
     try {
-         if(!userIDValidator(req.userID)){
-        throw new AppError(ResponseMessage.ID_NOT_FOUND,404)
+      if (!userIDValidator(req.userID)) {
+        throw new AppError(ResponseMessage.ID_NOT_FOUND, 404);
       }
       const sentOtp = await this.otpService.otpDispatchingForEditProfile(
         req.userID
       );
       res.json(sentOtp);
     } catch (error) {
-      next(error)
+      next(error);
     }
   };
-  otpForUserResetPassword = async (req: Request, res: Response,next:NextFunction) => {
+  otpForUserResetPassword = async (
+    req: Request,
+    res: Response,
+    next: NextFunction
+  ) => {
     try {
-         if(!userIDValidator(req.userID)){
-        throw new AppError(ResponseMessage.ID_NOT_FOUND,404)
+      if (!userIDValidator(req.userID)) {
+        throw new AppError(ResponseMessage.ID_NOT_FOUND, 404);
       }
-      const validate = await this.otpService.validateOtpForEditProfiel(req.userID,JSON.stringify(req.body.OTP),req.body.from
+      const validate = await this.otpService.validateOtpForEditProfiel(
+        req.userID,
+        JSON.stringify(req.body.OTP),
+        req.body.from
       );
       res.json({ status: validate });
     } catch (error) {
-     next(error)
+      next(error);
     }
   };
-  resetPassword = async (req: Request, res: Response,next:NextFunction) => {
+  resetPassword = async (req: Request, res: Response, next: NextFunction) => {
     try {
-        if(!userIDValidator(req.userID)){
-        throw new AppError(ResponseMessage.ID_NOT_FOUND,404)
+      if (!userIDValidator(req.userID)) {
+        throw new AppError(ResponseMessage.ID_NOT_FOUND, 404);
       }
       const { password, confirmPassword } = req.body;
-        const response = await this.authService.changePasswordEditProfile(
-          password,
-          confirmPassword,
-          req.userID
-        );
-        res.json({ status: response });
+      const response = await this.authService.changePasswordEditProfile(
+        password,
+        confirmPassword,
+        req.userID
+      );
+      res.json({ status: response });
     } catch (error) {
-      if(error instanceof Error){
-        const err=new  AppError(error.message)
-        next(err)
+      if (error instanceof Error) {
+        const err = new AppError(error.message);
+        next(err);
       }
-
     }
   };
-  editProfile = async (req: Request, res: Response,next:NextFunction) => {
+  editProfile = async (req: Request, res: Response, next: NextFunction) => {
     try {
-      const response=await this.userProfileService.updateProfile(req.file,req.userID,req.body.data)
-      res.json(response)
+      const response = await this.userProfileService.updateProfile(
+        req.file,
+        req.userID,
+        req.body.data
+      );
+      res.json(response);
     } catch (error) {
-      next(error)
+      next(error);
     }
   };
-  matchedUser = async (req: Request, res: Response,next:NextFunction) => {
+  matchedUser = async (req: Request, res: Response, next: NextFunction) => {
     try {
-      if(!userIDValidator(req.userID)){
-        throw new AppError(ResponseMessage.ID_NOT_FOUND,404)
+      if (!userIDValidator(req.userID)) {
+        throw new AppError(ResponseMessage.ID_NOT_FOUND, 404);
       }
       const fetchMatchedUsers = await this.partnerServiece.matchedProfiles(
         req.userID
@@ -340,10 +411,10 @@ export class UserController implements IUserController {
         res.json(false);
       }
     } catch (error) {
-      next(error)
+      next(error);
     }
   };
-  deleteMatched = async (req: Request, res: Response,next:NextFunction) => {
+  deleteMatched = async (req: Request, res: Response, next: NextFunction) => {
     try {
       const { id } = req.body;
       const response = await this.partnerServiece.deleteMatchedUser(
@@ -352,10 +423,10 @@ export class UserController implements IUserController {
       );
       res.json({ status: response });
     } catch (error) {
-     next(error)
+      next(error);
     }
   };
-  reportAbuse = async (req: Request, res: Response,next:NextFunction) => {
+  reportAbuse = async (req: Request, res: Response, next: NextFunction) => {
     try {
       if (!req.body.reason || !req.body.moreInfo || !req.body.profileId) {
         throw new Error("In suficient data error");
@@ -364,7 +435,7 @@ export class UserController implements IUserController {
         req.userID,
         req.body.profileId,
         req.body.reason,
-        req.body.moreInfo 
+        req.body.moreInfo
       );
 
       if (typeof response === "boolean") {
@@ -373,14 +444,14 @@ export class UserController implements IUserController {
         res.json({ data: false });
       }
     } catch (error) {
-      next(error)
+      next(error);
     }
   };
-  fetchSuggestion = async (req: Request, res: Response,next:NextFunction) => {
+  fetchSuggestion = async (req: Request, res: Response, next: NextFunction) => {
     try {
-      const {userID,preferedGender,gender}=req
-      if(!userID||!preferedGender||!gender){
-        throw new Error(ResponseMessage.SERVER_ERROR)
+      const { userID, preferedGender, gender } = req;
+      if (!userID || !preferedGender || !gender) {
+        throw new Error(ResponseMessage.SERVER_ERROR);
       }
       const result = await this.partnerServiece.fetchSuggestions(
         userID as string,
@@ -389,24 +460,27 @@ export class UserController implements IUserController {
       );
       res.json(result);
     } catch (error) {
-      next(error)
+      next(error);
     }
   };
-  getChats = async (req: Request, res: Response,next:NextFunction) => {
+  getChats = async (req: Request, res: Response, next: NextFunction) => {
     try {
       const { userId } = req.params;
 
-    if (!userId) {
-      throw new Error(ResponseMessage.ID_NOT_FOUND)
+      if (!userId) {
+        throw new Error(ResponseMessage.ID_NOT_FOUND);
       }
-      const response = await this.chatRoomService.fetchChats(userId, req.userID);
+      const response = await this.chatRoomService.fetchChats(
+        userId,
+        req.userID
+      );
 
       res.json(response);
     } catch (error) {
-      next(error)
+      next(error);
     }
   };
-   createTexts = async (req: Request, res: Response,next:NextFunction) => {
+  createTexts = async (req: Request, res: Response, next: NextFunction) => {
     try {
       if (req.body.chatId === "") {
         throw new Error(ResponseMessage.ID_NOT_FOUND);
@@ -421,41 +495,44 @@ export class UserController implements IUserController {
       );
       res.json({ newMessage: response });
     } catch (error) {
-      next(error)
+      next(error);
     }
   };
-  getMessages = async (req: Request, res: Response,next:NextFunction) => {
+  getMessages = async (req: Request, res: Response, next: NextFunction) => {
     try {
-  const { userId } = req.params;
+      const { userId } = req.params;
 
-    if (!userId) {
-      throw new Error(ResponseMessage.ID_NOT_FOUND)
+      if (!userId) {
+        throw new Error(ResponseMessage.ID_NOT_FOUND);
       }
       const response = await this.messageService.findAllMessage(userId);
       res.json(response);
     } catch (error) {
-     next(error)
+      next(error);
     }
   };
-  getuserForChat = async (req: Request, res: Response,next:NextFunction) => {
+  getuserForChat = async (req: Request, res: Response, next: NextFunction) => {
     try {
       const { userId } = req.params;
 
-    if (!userId) {
-      throw new Error(ResponseMessage.ID_NOT_FOUND)
+      if (!userId) {
+        throw new Error(ResponseMessage.ID_NOT_FOUND);
       }
       const response = await this.chatRoomService.fetchUserForChat(userId);
       res.json(response);
     } catch (error) {
-      next(error)
+      next(error);
     }
-  }
+  };
   MsgCount = async (req: Request, res: Response) => {
     try {
-     const response=await this.messageService.messageCount(req.userID,req.query.from)
+      const response = await this.messageService.messageCount(
+        req.userID,
+        req.query.from
+      );
       res.json(response);
-    } catch  {
-        res.json({ count: 0 });
+    } catch {
+      res.json({ count: 0 });
     }
   };
   MessageViewed = async (req: Request, res: Response) => {
@@ -465,7 +542,7 @@ export class UserController implements IUserController {
         req.body.ids
       );
       res.json({ status: response });
-    } catch  {
+    } catch {
       res.json({ status: false });
     }
   };
@@ -479,11 +556,11 @@ export class UserController implements IUserController {
       } else {
         throw new Error(ResponseMessage.SERVER_ERROR);
       }
-    } catch  {
+    } catch {
       res.json({ status: false });
     }
   };
-  getNewToken = async (req: Request, res: Response,next:NextFunction) => {
+  getNewToken = async (req: Request, res: Response, next: NextFunction) => {
     try {
       const response = await this.authService.getNewToken(req.body.refresh);
       if (response) {
@@ -491,15 +568,17 @@ export class UserController implements IUserController {
       } else {
         throw new Error("refresh token not found");
       }
-    } catch(err) {
-      next(err)
+    } catch (err) {
+      next(err);
     }
   };
   planHistoryAndRequest = async (req: Request, res: Response) => {
     try {
-      const response=await this.userProfileService.planHistoryAndRequest(req.userID)
-      res.json(response)
-    } catch  {
+      const response = await this.userProfileService.planHistoryAndRequest(
+        req.userID
+      );
+      res.json(response);
+    } catch {
       res.json("error on validating token please login again");
     }
   };

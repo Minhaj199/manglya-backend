@@ -9,15 +9,20 @@ import {
 } from "../../types/TypesAndInterfaces.ts";
 import { IUserRepository } from "../../repository/interface/IUserRepository.ts";
 import { IOtherRepositories } from "../../repository/interface/IOtherRepositories.ts";
-import {ILandingShowUesrsInterface, IUserWithID} from "../../types/UserRelatedTypes.ts";
+import {
+  ILandingShowUesrsInterface,
+  IUserWithID,
+} from "../../types/UserRelatedTypes.ts";
 import { ParternDataChatList } from "../../dtos/chattingrRelatedDTO.ts";
 import { IParternDataChatListDTO } from "../../types/dtoTypesAndInterfaces.ts";
-
 
 export class PartnerProfileService implements IParnterService {
   private userRepository: IUserRepository;
   private interestRepo: IOtherRepositories;
-  constructor(userRepository: IUserRepository, interestRepo: IOtherRepositories) {
+  constructor(
+    userRepository: IUserRepository,
+    interestRepo: IOtherRepositories
+  ) {
     this.userRepository = userRepository;
     this.interestRepo = interestRepo;
   }
@@ -58,7 +63,6 @@ export class PartnerProfileService implements IParnterService {
   }
   async manageReqRes(requesterId: string, userId: unknown, action: string) {
     try {
-      console.log(requesterId, userId);
       if (typeof userId === "string") {
         return this.userRepository.manageReqRes(requesterId, userId, action);
       } else {
@@ -78,12 +82,14 @@ export class PartnerProfileService implements IParnterService {
     partnerGender: string
   ) {
     try {
-      const datas: { profile: IProfileTypeFetch; request: IProfileTypeFetch }[] =
-        await this.userRepository.fetchPartnerProfils(
-          userId,
-          userGender,
-          partnerGender
-        );
+      const datas: {
+        profile: IProfileTypeFetch;
+        request: IProfileTypeFetch;
+      }[] = await this.userRepository.fetchPartnerProfils(
+        userId,
+        userGender,
+        partnerGender
+      );
       const currntPlan = await this.userRepository.getCurrentPlan(userId);
       const interest: unknown[] = await this.interestRepo.getInterest();
 
@@ -143,36 +149,40 @@ export class PartnerProfileService implements IParnterService {
       }
     }
   }
-  async matchedProfiles(id: unknown):Promise<IParternDataChatListDTO|[]> {
+  async matchedProfiles(id: unknown): Promise<IParternDataChatListDTO | []> {
     try {
       if (typeof id !== "string") {
-        return []
+        return [];
       }
-        const formatedResponse: IExtentedMatchProfile[] = [];
-        const Place: string[] = [];
-        const response: IMatchedProfileType[] | [] =await this.userRepository.getMatchedRequest(id);
-        if (response.length) {
-          const online: string[] = [];
+      const formatedResponse: IExtentedMatchProfile[] = [];
+      const Place: string[] = [];
+      const response: IMatchedProfileType[] | [] =
+        await this.userRepository.getMatchedRequest(id);
+      if (response.length) {
+        const online: string[] = [];
 
-          if (socketIdMap.size >= 1) {
-            for (const value of socketIdMap.keys()) {
-              online.push(value);
-            }
+        if (socketIdMap.size >= 1) {
+          for (const value of socketIdMap.keys()) {
+            online.push(value);
           }
-          response?.forEach((element) => {
-            formatedResponse.push({
-              ...element,
-              age: getAge(element.dateOfBirth),
-            });
-            if (!Place.includes(element.state)) Place.push(element.state);
-          });
-          const {connectedParterns,Places,onlines}=new ParternDataChatList(formatedResponse,Place,online)
-          
-          return {connectedParterns,Places,onlines}
-        } else {
-          return [];
         }
-      
+        response?.forEach((element) => {
+          formatedResponse.push({
+            ...element,
+            age: getAge(element.dateOfBirth),
+          });
+          if (!Place.includes(element.state)) Place.push(element.state);
+        });
+        const { connectedParterns, Places, onlines } = new ParternDataChatList(
+          formatedResponse,
+          Place,
+          online
+        );
+
+        return { connectedParterns, Places, onlines };
+      } else {
+        return [];
+      }
     } catch (error) {
       if (error instanceof Error) {
         throw new Error(error.message);
@@ -209,8 +219,11 @@ export class PartnerProfileService implements IParnterService {
     gender: string
   ) {
     try {
-      if (typeof id === "string") {let fetchedProfiles: {profile: ISuggestion[];
-          request: IProfileTypeFetch}[] = [];
+      if (typeof id === "string") {
+        let fetchedProfiles: {
+          profile: ISuggestion[];
+          request: IProfileTypeFetch;
+        }[] = [];
         const datas: {
           profile: ISuggestion[];
           request: IProfileTypeFetch;
@@ -318,5 +331,4 @@ export class PartnerProfileService implements IParnterService {
       }
     }
   }
- 
 }

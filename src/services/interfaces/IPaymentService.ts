@@ -1,9 +1,9 @@
 import { Token } from "@stripe/stripe-js";
-import { UserCurrentPlan } from "../../types/TypesAndInterfaces";
+import { IUserCurrentPlan } from "../../types/TypesAndInterfaces";
 
 export interface IPaymentSerivice {
   purchase(
-    plan: UserCurrentPlan,
+    plan: IUserCurrentPlan,
     token: Token,
     email: string,
     userId: string

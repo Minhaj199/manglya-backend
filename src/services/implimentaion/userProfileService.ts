@@ -1,28 +1,32 @@
 import { IUserRepository } from "../../repository/interface/IUserRepository.ts";
-import { IPlanRepository } from '../../repository/interface/IPlanRepository.ts'
+import { IPlanRepository } from "../../repository/interface/IPlanRepository.ts";
 import { getAge } from "../../utils/ageCalculator.ts";
-import {  IAdminPlanType, ICloudinaryAdapter,
+import {
+  IAdminPlanType,
+  ICloudinaryAdapter,
 } from "../../types/TypesAndInterfaces.ts";
 import { IUserProfileService } from "../interfaces/IUserProfileService.ts";
 import { IAuthSevice } from "../interfaces/IAuthSerivce.ts";
-import { DataToBeUpdatedType, IuserProfileReturnType, IUserWithID, signupSecondBatchResType } from "../../types/UserRelatedTypes.ts"; 
+import {
+  DataToBeUpdatedType,
+  IuserProfileReturnType,
+  IUserWithID,
+  signupSecondBatchResType,
+} from "../../types/UserRelatedTypes.ts";
 import { ResponseMessage } from "../../constrain/ResponseMessageContrain.ts";
 import { IPlanService } from "../interfaces/IPlanService.ts";
 import { AppError } from "../../types/customErrorClass.ts";
-import {  UserFetchData, UserInfoDTO } from "../../dtos/userRelatedDTO.ts";
+import { UserFetchData, UserInfoDTO } from "../../dtos/userRelatedDTO.ts";
 import { SubscriberPlanDTO } from "../../dtos/planRelatedDTO.ts";
 
 export class UserProfileService implements IUserProfileService {
- 
   constructor(
-  private readonly planRepo: IPlanRepository,
-  private readonly imageSevice: ICloudinaryAdapter,
-  private readonly userRepository: IUserRepository,
-  private readonly authService: IAuthSevice,
-  private readonly planService: IPlanService,
-  ) {
-
-  }
+    private readonly planRepo: IPlanRepository,
+    private readonly imageSevice: ICloudinaryAdapter,
+    private readonly userRepository: IUserRepository,
+    private readonly authService: IAuthSevice,
+    private readonly planService: IPlanService
+  ) {}
   async uploadPhoto(path: string, email: string) {
     try {
       const url = await this.imageSevice.upload(path);
@@ -37,7 +41,6 @@ export class UserProfileService implements IUserProfileService {
         throw new Error("error on image url getting");
       }
     } catch (error) {
-      console.log(error)
       if (error instanceof Error) {
         throw new Error(error.message);
       } else {
@@ -60,7 +63,7 @@ export class UserProfileService implements IUserProfileService {
     try {
       if (typeof id === "string") {
         const data: IUserWithID = await this.userRepository.getUserProfile(id);
-        return new UserFetchData(data)  
+        return new UserFetchData(data);
       } else {
         throw new Error("id not found-");
       }
@@ -79,9 +82,7 @@ export class UserProfileService implements IUserProfileService {
     if (typeof id !== "string") {
       throw new Error("id not found");
     }
-    const updateData: Record<string, string | Date | string[]> = {
-      
-    };
+    const updateData: Record<string, string | Date | string[]> = {};
 
     if (data.PersonalInfo.firstName !== "")
       updateData["PersonalInfo.firstName"] = data.PersonalInfo.firstName;
@@ -128,11 +129,11 @@ export class UserProfileService implements IUserProfileService {
           };
           return { data: useFullData, token };
         }
-        const {withAge}= await this.fetchUserProfile(id);
-        const profile=withAge 
+        const { withAge } = await this.fetchUserProfile(id);
+        const profile = withAge;
         return { data: profile, token };
       } else {
-        const{withAge} = await this.fetchUserProfile(id);
+        const { withAge } = await this.fetchUserProfile(id);
         return { data: withAge, token: false };
       }
     } catch (error) {
@@ -180,8 +181,7 @@ export class UserProfileService implements IUserProfileService {
   async fetchUserDatasForAdmin() {
     try {
       const data = await this.userRepository.fetchUserDataForAdmin();
-        return new UserInfoDTO(data)
-      
+      return new UserInfoDTO(data);
     } catch (error) {
       if (error instanceof Error) {
         throw new Error(error.message);
@@ -193,9 +193,9 @@ export class UserProfileService implements IUserProfileService {
   async fetchSubscriberDetailforAdmin() {
     try {
       const planDataDraft = await this.planRepo.fetchPlanAdmin();
-      const userDataDraft: IAdminPlanType[] | [] =await this.userRepository.fetchSubscriber();
-        return new SubscriberPlanDTO(planDataDraft,userDataDraft)
-      
+      const userDataDraft: IAdminPlanType[] | [] =
+        await this.userRepository.fetchSubscriber();
+      return new SubscriberPlanDTO(planDataDraft, userDataDraft);
     } catch (error) {
       if (error instanceof Error) {
         throw new Error(error.message);
@@ -216,9 +216,9 @@ export class UserProfileService implements IUserProfileService {
     }
   }
   async findCurrentPlanAndRequests(userId: string) {
-    try { 
-      const data=await this.userRepository.findCurrentPlanAndRequests(userId); 
-      return data
+    try {
+      const data = await this.userRepository.findCurrentPlanAndRequests(userId);
+      return data;
     } catch (error) {
       if (error instanceof Error) {
         throw new Error(error.message);
@@ -227,108 +227,105 @@ export class UserProfileService implements IUserProfileService {
       }
     }
   }
-  async signupSecondBatch(file:{path:string}|undefined,body:{email:string,interest:string}){
-       const obj:signupSecondBatchResType= { responseFromAddinInterest: false, url: false };
+  async signupSecondBatch(
+    file: { path: string } | undefined,
+    body: { email: string; interest: string }
+  ) {
+    const obj: signupSecondBatchResType = {
+      responseFromAddinInterest: false,
+      url: false,
+    };
     try {
-      
       if (file && file.path) {
         const image = file?.path || "";
-        
-        const response =
-        (await this.uploadPhoto(image,body.email)) ||
-        "";
-        
+
+        const response = (await this.uploadPhoto(image, body.email)) || "";
+
         obj.url = response;
       }
-      
+
       const interest: string[] = JSON.parse(body.interest);
       if (interest.length > 0) {
-        const responseFromAddinInterest =
-          await this.uploadInterest(
-            interest,
-            body.email
-          );
+        const responseFromAddinInterest = await this.uploadInterest(
+          interest,
+          body.email
+        );
         obj.responseFromAddinInterest = responseFromAddinInterest;
       }
-      console.log(obj)
-      return(obj);
+      return obj;
     } catch (error: unknown) {
-      if(error instanceof Error){
-        throw new Error(error.message)
-      }else{
+      if (error instanceof Error) {
+        throw new Error(error.message);
+      } else {
         throw new Error(ResponseMessage.SERVER_ERROR);
-
       }
     }
   }
-   async updateProfile(file:unknown,userID:unknown,data:string){
+  async updateProfile(file: unknown, userID: unknown, data: string) {
     try {
-      if(!userID||typeof userID !=='string'){
-        throw new Error(ResponseMessage.ID_NOT_FOUND)
+      if (!userID || typeof userID !== "string") {
+        throw new Error(ResponseMessage.ID_NOT_FOUND);
       }
-      if (file&& typeof file==='object'&&'path' in file&&typeof file.path==='string') {
+      if (
+        file &&
+        typeof file === "object" &&
+        "path" in file &&
+        typeof file.path === "string"
+      ) {
         const email = await this.fetchUserByID(userID);
         await this.uploadPhoto(file.path, email);
         const updateDetail = await this.updateEditedData(
           JSON.parse(data),
           userID
         );
-        console.log(updateDetail)
-        return({ status: true, newData: updateDetail });
+        return { status: true, newData: updateDetail };
       } else {
         const updateDetail = await this.updateEditedData(
           JSON.parse(data),
           userID
         );
-        console.log(updateDetail)
+
         if (typeof updateDetail === "string") {
-          return({status: false,  newData: updateDetail });
+          return { status: false, newData: updateDetail };
         } else {
-          return({status: false,  newData: updateDetail });
+          return { status: false, newData: updateDetail };
         }
       }
     } catch (error) {
-
-      if(error instanceof Error){
-        throw new Error(error.message)
-      }else{
+      if (error instanceof Error) {
+        throw new Error(error.message);
+      } else {
         throw new Error(ResponseMessage.SERVER_ERROR);
-
       }
     }
   }
-  async planHistoryAndRequest(id:unknown){
-
+  async planHistoryAndRequest(id: unknown) {
     try {
       if (typeof id !== "string") {
         throw new Error(ResponseMessage.ID_NOT_FOUND);
       }
-      const response = await this.findCurrentPlanAndRequests(
-        id
-      );
+      const response = await this.findCurrentPlanAndRequests(id);
       const history = await this.planService.fetchHistory(id);
-      return({ ...response, history });
-    
-    } catch  {
+      return { ...response, history };
+    } catch {
       throw new Error("error on validating token please login again");
     }
-  };
-  async  fetchDatasForAdmin(from:unknown,){
+  }
+  async fetchDatasForAdmin(from: unknown) {
     try {
-      if(from!=='user'&&from!=='subscriber'){
-        throw new Error('information category not found')
+      if (from !== "user" && from !== "subscriber") {
+        throw new Error("information category not found");
       }
-      if(from==='user'){
-        const {processedData}= await this.fetchUserDatasForAdmin();
-        return(processedData);
-      }else{
-        const getSubscriberData=await  this.fetchSubscriberDetailforAdmin()
-        return(getSubscriberData)
+      if (from === "user") {
+        const { processedData } = await this.fetchUserDatasForAdmin();
+        return processedData;
+      } else {
+        const getSubscriberData = await this.fetchSubscriberDetailforAdmin();
+        return getSubscriberData;
       }
     } catch (error) {
-      console.log(error)
-      if(error instanceof Error)throw new AppError(error.message)
-      else throw new Error(ResponseMessage.SERVER_ERROR)
+      if (error instanceof Error) throw new AppError(error.message);
+      else throw new Error(ResponseMessage.SERVER_ERROR);
     }
   }
 }

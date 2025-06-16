@@ -1,8 +1,5 @@
 import { Request, Response, NextFunction } from "express";
 
-
-
-
 export interface IUserController {
   signup(req: Request, res: Response, next: NextFunction): Promise<void>;
   otpCreation(req: Request, res: Response, next: NextFunction): Promise<void>;
@@ -17,14 +14,22 @@ export interface IUserController {
     res: Response,
     next: NextFunction
   ): Promise<void>;
-  otpValidation(req: Request, res: Response,next: NextFunction): Promise<void>;
-  changePassword(req: Request, res: Response,next: NextFunction): Promise<void>;
+  otpValidation(req: Request, res: Response, next: NextFunction): Promise<void>;
+  changePassword(
+    req: Request,
+    res: Response,
+    next: NextFunction
+  ): Promise<void>;
   secondBatch(req: Request, res: Response, next: NextFunction): Promise<void>;
   addMatch(req: Request, res: Response, next: NextFunction): Promise<void>;
   manageReqRes(req: Request, res: Response, next: NextFunction): Promise<void>;
   fetchPlanData(req: Request, res: Response, next: NextFunction): Promise<void>;
   purchasePlan(req: Request, res: Response, next: NextFunction): Promise<void>;
-  forgotCheckValidateSigunp(req: Request, res: Response, next: NextFunction): Promise<void>;
+  forgotCheckValidateSigunp(
+    req: Request,
+    res: Response,
+    next: NextFunction
+  ): Promise<void>;
 
   fetchDataForProfile(
     req: Request,

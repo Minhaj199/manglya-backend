@@ -1,4 +1,3 @@
-
 import { IPurchasedPlan } from "../../repository/interface/IOtherRepositories.ts";
 import { IUserRepository } from "../../repository/interface/IUserRepository.ts";
 import { IAdminDashService } from "../interfaces/IAdminDashboardService.ts";
@@ -14,16 +13,18 @@ export class DashService implements IAdminDashService {
     try {
       return await this.purchaseRepo.fetchRevenue();
     } catch (error) {
-      if(error instanceof Error){
+      if (error instanceof Error) {
         throw new Error(error.message);
-      }else{
-        throw new Error('unexptected error');
+      } else {
+        throw new Error("unexptected error");
       }
     }
   }
   async dashCount() {
     try {
-      const data: {subscriberGroups: { _id: string; count: number }[];totalCount: number;
+      const data: {
+        subscriberGroups: { _id: string; count: number }[];
+        totalCount: number;
       } = await this.userRepo.getDashCount();
       const ans = { subscriber: 0, notSubscriber: 0 };
       if (data?.subscriberGroups.length) {
@@ -42,10 +43,10 @@ export class DashService implements IAdminDashService {
         UserCount: data.totalCount,
       };
     } catch (error) {
-      if(error instanceof Error){
+      if (error instanceof Error) {
         throw new Error(error.message);
-      }else{
-        throw new Error('unexptected error');
+      } else {
+        throw new Error("unexptected error");
       }
     }
   }
@@ -77,10 +78,10 @@ export class DashService implements IAdminDashService {
 
       return response;
     } catch (error) {
-      if(error instanceof Error){
+      if (error instanceof Error) {
         throw new Error(error.message);
-      }else{
-        throw new Error('unexptected error');
+      } else {
+        throw new Error("unexptected error");
       }
     }
   }
@@ -98,10 +99,10 @@ export class DashService implements IAdminDashService {
 
       return { month: month, revenue: total };
     } catch (error) {
-      if(error instanceof Error){
+      if (error instanceof Error) {
         throw new Error(error.message);
-      }else{
-        throw new Error('unexptected error');
+      } else {
+        throw new Error("unexptected error");
       }
     }
   }

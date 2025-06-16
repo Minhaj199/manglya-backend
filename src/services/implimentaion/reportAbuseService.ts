@@ -1,15 +1,15 @@
 import { Types } from "mongoose";
-import { IAbuserReport } from "../../types/TypesAndInterfaces.ts"; 
-import { IReportAbuseService } from "../interfaces/IReportAbuseService.ts"; 
+import { IAbuserReport } from "../../types/TypesAndInterfaces.ts";
+import { IReportAbuseService } from "../interfaces/IReportAbuseService.ts";
 import { IUserRepository } from "../../repository/interface/IUserRepository.ts";
-import { IEmailService } from '../../types/TypesAndInterfaces.ts'; 
+import { IEmailService } from "../../types/TypesAndInterfaces.ts";
 import { IReportAbuserRepository } from "../../repository/interface/IAbuseRepository.ts";
 import { AbuseMessageDTO } from "../../dtos/abuseMessageDTO.ts";
 import { userIDValidator } from "../../utils/userIDValidator.ts";
 export class ReportAbuseService implements IReportAbuseService {
   private reportRepo: IReportAbuserRepository;
-  private emailService : IEmailService
-  private userRepo :IUserRepository
+  private emailService: IEmailService;
+  private userRepo: IUserRepository;
 
   constructor(
     reportRepo: IReportAbuserRepository,
@@ -162,7 +162,7 @@ export class ReportAbuseService implements IReportAbuseService {
   async getAllMessages() {
     try {
       const response = await this.reportRepo.getMessages();
-      return new AbuseMessageDTO(response)
+      return new AbuseMessageDTO(response);
     } catch (error) {
       if (error instanceof Error) {
         throw new Error(error.message);

@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-namespace */
 import { Request, Response, NextFunction } from "express";
-import { JWTAdapter } from "../utils/jwtAdapter"; 
+import { JWTAdapter } from "../utils/jwtAdapter";
 import { TokenRepository } from "../repository/implimention/otherRepository";
 import { JwtPayload } from "jsonwebtoken";
 
@@ -13,7 +13,6 @@ declare global {
     }
   }
 }
-
 
 const jwtAdmpter = new JWTAdapter(new TokenRepository());
 export const userJwtAuthenticator = async (

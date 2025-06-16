@@ -20,17 +20,16 @@ export class OtpService implements IOtpService {
   async ForgetValidateEmail(email: string) {
     try {
       const isValid = await this.userRepository.findEmail(email);
-      if(isValid){
+      if (isValid) {
         return isValid?.email;
-
-      }else{
-        return null
+      } else {
+        return null;
       }
-    }catch (error) {
-      if(error instanceof Error){
+    } catch (error) {
+      if (error instanceof Error) {
         throw new Error(error.message);
-      }else{
-        throw new Error('unexptected error');
+      } else {
+        throw new Error("unexptected error");
       }
     }
   }
@@ -43,70 +42,69 @@ export class OtpService implements IOtpService {
         "Signup MANGALYA OTP",
         `Welcome to Mangalya. Your Signup OTP for Authentication is <h1>${otp}<h1/>`
       );
-      if(isCreated){
-
+      if (isCreated) {
         return true;
-      }else{
-        return false
+      } else {
+        return false;
       }
     } catch (error) {
-      if(error instanceof Error){
+      if (error instanceof Error) {
         throw new Error(error.message);
-      }else{
-        throw new Error('unexptected error');
+      } else {
+        throw new Error("unexptected error");
       }
     }
   }
   async otpVerificationForForgot(email: unknown, from: string) {
     try {
-      if(!email||typeof email!=='string'){
-        throw new Error('Email not found') 
+      if (!email || typeof email !== "string") {
+        throw new Error("Email not found");
       }
       const isValid = await this.ForgetValidateEmail(email);
-      if(!isValid){
-        return false
+      if (!isValid) {
+        return false;
       }
       const otp = await generateOTP();
-      const otpReponse=await this.otpRepository.create({ otp, email, from: from });
+      const otpReponse = await this.otpRepository.create({
+        otp,
+        email,
+        from: from,
+      });
       const subject = "Password Reseting";
       await this.emailService.sendEmail(
         email,
         subject,
         `Welcome to Mangalya. Your password reset OTP for Authentication is <h1>${otp}<h1/>`
       );
-      return otpReponse?true:false
+      return otpReponse ? true : false;
     } catch (error) {
-      if(error instanceof Error){
+      if (error instanceof Error) {
         throw new Error(error.message);
-      }else{
-        throw new Error('unexptected error');
+      } else {
+        throw new Error("unexptected error");
       }
     }
   }
   async otpValidation(email: string, otp: string, from: string) {
     try {
       const response = await this.otpRepository.getOTP(email, from);
-      console.log(response)
+
       if (Array.isArray(response)) {
-        console.log('91')
         return false;
       } else {
-
         const parsedOTP = Number(otp);
-        console.log(parsedOTP)
+
         if (response.email === email && response.otp === parsedOTP) {
           return true;
         } else {
-          console.log(100)
           return false;
         }
       }
-    }catch (error) {
-      console.log(105)
-      if(error instanceof Error){
+    } catch (error) {
+      if (error instanceof Error) {
         throw new Error(error.message);
-      }else{
-        throw new Error('unexptected error');
+      } else {
+        throw new Error("unexptected error");
       }
     }
   }
@@ -115,22 +113,25 @@ export class OtpService implements IOtpService {
       if (typeof id !== "string") {
         throw new Error("Invalid ID format");
       }
-  
+
       const getEmail = await this.userRepository.findEmailByID(id);
       if (!getEmail) {
         throw new Error("Email not found");
       }
-  
-      const sentEmail = await this.otpVerificationForForgot(getEmail.email, "forgot");
-  
+
+      const sentEmail = await this.otpVerificationForForgot(
+        getEmail.email,
+        "forgot"
+      );
+
       await Promise.all([getEmail, sentEmail]);
-  
-      return true;  
+
+      return true;
     } catch (error) {
-      if(error instanceof Error){
+      if (error instanceof Error) {
         throw new Error(error.message);
-      }else{
-        throw new Error('unexptected error');
+      } else {
+        throw new Error("unexptected error");
       }
     }
   }
@@ -162,10 +163,10 @@ export class OtpService implements IOtpService {
         throw new Error("internal server error,otp not found");
       }
     } catch (error) {
-      if(error instanceof Error){
+      if (error instanceof Error) {
         throw new Error(error.message);
-      }else{
-        throw new Error('unexptected error');
+      } else {
+        throw new Error("unexptected error");
       }
     }
   }

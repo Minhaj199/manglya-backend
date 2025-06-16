@@ -1,5 +1,11 @@
 import { IParternDataChatListDTO } from "../../types/dtoTypesAndInterfaces";
-import { IFetchProfileDataType, IProfileTypeFetch, IRequestInterface, ISubscriptionPlanModel, ISuggestion} from "../../types/TypesAndInterfaces";
+import {
+  IFetchProfileDataType,
+  IProfileTypeFetch,
+  IRequestInterface,
+  ISubscriptionPlanModel,
+  ISuggestion,
+} from "../../types/TypesAndInterfaces";
 
 export interface IParnterService {
   addMatch(userId: unknown, matchedId: string): Promise<boolean>;
@@ -16,9 +22,7 @@ export interface IParnterService {
   fetchUserForLandingShow(): Promise<
     { name: string; age: number; image: string }[] | []
   >;
-  matchedProfiles(
-    id: unknown
-  ): Promise<IParternDataChatListDTO|[]>;
+  matchedProfiles(id: unknown): Promise<IParternDataChatListDTO | []>;
   fetchSuggestions(
     id: unknown,
     partnerPreference: string,
@@ -40,7 +44,4 @@ export interface IParnterService {
   >;
   deleteMatchedUser(userId: unknown, partnerId: string): Promise<boolean>;
   createRequeset(id: string): Promise<IRequestInterface[]>;
-
-
-
 }

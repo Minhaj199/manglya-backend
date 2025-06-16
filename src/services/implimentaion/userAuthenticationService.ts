@@ -1,11 +1,11 @@
-import {  IBcryptAdapter} from '../../types/TypesAndInterfaces.ts' 
-import { User } from '../../types/UserRelatedTypes.ts'; 
-import dotEnv from "dotenv"; 
+import { IBcryptAdapter } from "../../types/TypesAndInterfaces.ts";
+import { User } from "../../types/UserRelatedTypes.ts";
+import dotEnv from "dotenv";
 import { IAuthSevice } from "../interfaces/IAuthSerivce.ts";
-import { IJwtService, IUserWithID } from '../../types/UserRelatedTypes.ts'; 
+import { IJwtService, IUserWithID } from "../../types/UserRelatedTypes.ts";
 import { IUserRepository } from "../../repository/interface/IUserRepository.ts";
-import { IFirstBatch } from '../../types/UserRelatedTypes.ts';
-import { ResponseMessage } from '../../constrain/ResponseMessageContrain.ts';
+import { IFirstBatch } from "../../types/UserRelatedTypes.ts";
+import { ResponseMessage } from "../../constrain/ResponseMessageContrain.ts";
 
 dotEnv.config();
 
@@ -26,7 +26,9 @@ export class AuthService implements IAuthSevice {
     this.userRepository = userRepository;
   }
   async signupFirstBatch(firstBatchData: IFirstBatch) {
-    const hashedPassoword = await this.bcryptAdapter.hash(firstBatchData.PASSWORD);
+    const hashedPassoword = await this.bcryptAdapter.hash(
+      firstBatchData.PASSWORD
+    );
     const user: User = {
       PersonalInfo: {
         firstName: firstBatchData["FIRST NAME"],
@@ -54,13 +56,13 @@ export class AuthService implements IAuthSevice {
         const preferedGender = response.partnerData.gender;
         const gender = response.PersonalInfo.gender;
         const accessToken = this.jwtGenerator.createAccessToken(
-          { id: id, role: 'user', preferedGender, gender },
+          { id: id, role: "user", preferedGender, gender },
           key,
           { expiresIn: "15m" }
         );
 
         const refreshToken = await this.jwtGenerator.createRefreshToken(
-          { id, role: 'user' },
+          { id, role: "user" },
           process.env.JWT__REFRESH_SECRET_USER || "",
           { expiresIn: "1d" }
         );
@@ -69,7 +71,6 @@ export class AuthService implements IAuthSevice {
         throw new Error(ResponseMessage.USER_CREATION_FAILED);
       }
     } catch (error) {
-
       if (error instanceof Error) {
         throw new Error(error.message);
       } else {
@@ -170,14 +171,18 @@ export class AuthService implements IAuthSevice {
     }
   }
 
-  async changePasswordEditProfile(password: unknown,confirmPassword:unknown, id: unknown) {
+  async changePasswordEditProfile(
+    password: unknown,
+    confirmPassword: unknown,
+    id: unknown
+  ) {
     if (typeof password !== "string" || typeof id !== "string") {
       throw new Error("error on password changing");
     }
-     if (typeof confirmPassword !== "string" ) {
+    if (typeof confirmPassword !== "string") {
       throw new Error("error on confirm password changing");
     }
-    if(password!==confirmPassword){
+    if (password !== confirmPassword) {
       throw new Error("Password not match");
     }
     try {

@@ -1,56 +1,61 @@
 import { NextFunction, Request, Response } from "express";
-import { ISubscriptionPlan } from "../../types/TypesAndInterfaces.ts"; 
+import { ISubscriptionPlan } from "../../types/TypesAndInterfaces.ts";
 import { IAdminAuthService } from "../../services/interfaces/IAaminAuthenticationServices.ts";
 import { IUserProfileService } from "../../services/interfaces/IUserProfileService.ts";
 import { IPlanService } from "../../services/interfaces/IPlanService.ts";
 import { ResponseMessage } from "../../constrain/ResponseMessageContrain.ts";
 import { IFixedDataService } from "../../services/interfaces/IInterstAndFeatureSerivice.ts";
 import { IAdminDashService } from "../../services/interfaces/IAdminDashboardService.ts";
-import { IReportAbuseService } from "../../services/interfaces/IReportAbuseService.ts"; 
+import { IReportAbuseService } from "../../services/interfaces/IReportAbuseService.ts";
 import { IAdminController } from "../interface/IAdminController.ts";
 import { AppError } from "../../types/customErrorClass.ts";
 
-export class AdminController implements IAdminController  {
+export class AdminController implements IAdminController {
   constructor(
-  private adminAuth: IAdminAuthService,
-  private planService: IPlanService,
-  private interestAndFeaturesService: IFixedDataService,
-  private userProfileService: IUserProfileService,
-  private dashService: IAdminDashService,
-  private resportAbuserService: IReportAbuseService,
+    private adminAuth: IAdminAuthService,
+    private planService: IPlanService,
+    private interestAndFeaturesService: IFixedDataService,
+    private userProfileService: IUserProfileService,
+    private dashService: IAdminDashService,
+    private resportAbuserService: IReportAbuseService
   ) {}
   login = async (req: Request, res: Response) => {
     try {
       const { email, password } = req.body;
-      const {message,key,token} = this.adminAuth.login(email, password);
+      const { message, key, token } = this.adminAuth.login(email, password);
       if (message === "admin verified") {
         res.json({ adminVerified: true, token: token });
-      } else  {  
-        res.json({[key as string]: message });
-      } 
+      } else {
+        res.json({ [key as string]: message });
+      }
     } catch (error: unknown) {
-      if(error instanceof Error){
+      if (error instanceof Error) {
         if (error.message === "user name not found") {
           res.json({ username: error.message });
         }
         if (error.message === "password not matching") {
           res.json({ password: error.message });
         }
-      }else{
-          res.json({ password:ResponseMessage.SERVER_ERROR});
-        
+      } else {
+        res.json({ password: ResponseMessage.SERVER_ERROR });
       }
     }
   };
-  fetchData = async (req: Request, res: Response,next:NextFunction) => {
+  fetchData = async (req: Request, res: Response, next: NextFunction) => {
     try {
-      const response=await this.userProfileService.fetchDatasForAdmin(req.query.from)
-      res.json(response)
+      const response = await this.userProfileService.fetchDatasForAdmin(
+        req.query.from
+      );
+      res.json(response);
     } catch (error) {
-      next(error)
+      next(error);
     }
   };
-  userBlockAndUnblock = async (req: Request, res: Response,next:NextFunction) => {
+  userBlockAndUnblock = async (
+    req: Request,
+    res: Response,
+    next: NextFunction
+  ) => {
     try {
       const response = await this.userProfileService.blockAndBlock(
         req.params.id,
@@ -62,10 +67,10 @@ export class AdminController implements IAdminController  {
         throw new Error("error on updation");
       }
     } catch (error) {
-     next(error)
+      next(error);
     }
   };
-  addPlan = async (req: Request, res: Response,next:NextFunction) => {
+  addPlan = async (req: Request, res: Response, next: NextFunction) => {
     try {
       const plan: ISubscriptionPlan = {
         name: req.body.datas.name,
@@ -77,32 +82,33 @@ export class AdminController implements IAdminController  {
       const response = await this.planService.createPlan(plan);
       res.json({ result: response });
     } catch (error: unknown) {
-      next(error)
+      next(error);
     }
   };
 
-  fetchPlanData = async (req: Request, res: Response,next:NextFunction) => {
+  fetchPlanData = async (req: Request, res: Response, next: NextFunction) => {
     try {
-      const {plans} = await this.planService.fetchAll();
+      const { plans } = await this.planService.fetchAll();
       res.json({ plans });
     } catch (error: unknown) {
-      
-      next(error)
+      next(error);
     }
   };
-  editPlan = async (req: Request, res: Response,next:NextFunction) => {
+  editPlan = async (req: Request, res: Response, next: NextFunction) => {
     try {
-      if(!req.params||!req.params.id){
-        throw new AppError(ResponseMessage.ID_NOT_FOUND)
+      if (!req.params || !req.params.id) {
+        throw new AppError(ResponseMessage.ID_NOT_FOUND);
       }
-      const response = await this.planService.editPlan({...req.body,_id:req.params.id});
+      const response = await this.planService.editPlan({
+        ...req.body,
+        _id: req.params.id,
+      });
       res.json({ response });
     } catch (error: unknown) {
-       next(error)
-     
+      next(error);
     }
   };
-  softDlt = async (req: Request, res: Response,next:NextFunction) => {
+  softDlt = async (req: Request, res: Response, next: NextFunction) => {
     try {
       if (req.params.id) {
         const response = await this.planService.softDelete(req.params.id);
@@ -111,11 +117,10 @@ export class AdminController implements IAdminController  {
         throw new AppError(ResponseMessage.ID_NOT_FOUND);
       }
     } catch (error: unknown) {
-    
-      next(error)
+      next(error);
     }
   };
-  fetchFeature = async (req: Request, res: Response,next:NextFunction) => {
+  fetchFeature = async (req: Request, res: Response, next: NextFunction) => {
     try {
       const response = await this.interestAndFeaturesService.fetchFeature();
       if (response) {
@@ -124,11 +129,10 @@ export class AdminController implements IAdminController  {
         throw new Error("feature not found");
       }
     } catch (error: unknown) {
-
-      next(error)
+      next(error);
     }
   };
-  fetchDashData = async (req: Request, res: Response,next:NextFunction) => {
+  fetchDashData = async (req: Request, res: Response, next: NextFunction) => {
     try {
       if (req.query.from === "dashCount") {
         const getDashBoardDatas = await this.dashService.dashCount();
@@ -141,10 +145,14 @@ export class AdminController implements IAdminController  {
         res.json(getDashBoardDatas);
       }
     } catch (error: unknown) {
-     next(error)
+      next(error);
     }
   };
-  sendWarningMails = async (req: Request, res: Response,next:NextFunction) => {
+  sendWarningMails = async (
+    req: Request,
+    res: Response,
+    next: NextFunction
+  ) => {
     try {
       const sendWarningMale = await this.resportAbuserService.sendWarningMail(
         req.body.reporter,
@@ -153,20 +161,19 @@ export class AdminController implements IAdminController  {
       );
       res.json({ data: sendWarningMale });
     } catch (error) {
-    
-    next(error)
+      next(error);
     }
   };
-  getReports = async (req: Request, res: Response,next:NextFunction) => {
+  getReports = async (req: Request, res: Response, next: NextFunction) => {
     try {
-      const {messagesDatas} = await this.resportAbuserService.getAllMessages();
-      console.log(messagesDatas)
+      const { messagesDatas } =
+        await this.resportAbuserService.getAllMessages();
       res.json({ data: messagesDatas });
     } catch (error: unknown) {
-      next(error)
+      next(error);
     }
   };
-  blockAbuser = async (req: Request, res: Response,next:NextFunction) => {
+  blockAbuser = async (req: Request, res: Response, next: NextFunction) => {
     try {
       const fetchReport = await this.resportAbuserService.blockReportedUser(
         req.body.reporter,
@@ -175,10 +182,10 @@ export class AdminController implements IAdminController  {
       );
       res.json({ data: fetchReport });
     } catch (error: unknown) {
-      next(error)
+      next(error);
     }
   };
-  rejecReport = async (req: Request, res: Response,next:NextFunction) => {
+  rejecReport = async (req: Request, res: Response, next: NextFunction) => {
     try {
       const fetchReport = await this.resportAbuserService.rejectReport(
         req.body.reporter,
@@ -187,10 +194,10 @@ export class AdminController implements IAdminController  {
       );
       res.json({ data: fetchReport });
     } catch (error: unknown) {
-      next(error)
+      next(error);
     }
   };
-  reportToggle = async (req: Request, res: Response,next:NextFunction) => {
+  reportToggle = async (req: Request, res: Response, next: NextFunction) => {
     try {
       const fetchReport = await this.resportAbuserService.toggleReportRead(
         req.params.id,
@@ -198,17 +205,17 @@ export class AdminController implements IAdminController  {
       );
       res.json({ data: fetchReport });
     } catch (error) {
-        next(error)
+      next(error);
     }
   };
-  deleteMsg = async (req: Request, res: Response,next:NextFunction) => {
+  deleteMsg = async (req: Request, res: Response, next: NextFunction) => {
     try {
       const response = await this.resportAbuserService.deleteMessage(
         req.params.id
       );
       res.json({ data: response });
     } catch (error) {
-      next(error)
+      next(error);
     }
   };
 }

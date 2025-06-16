@@ -1,7 +1,11 @@
 import { IChatRepository } from "../../repository/interface/IChatRoomRepository.ts";
 import { IUserRepository } from "../../repository/interface/IUserRepository.ts";
 import { IMessageService } from "../interfaces/IMessageSerivice.ts";
-import { IChatMessage, ICloudinaryAdapter, IMessageWithoutId } from "../../types/TypesAndInterfaces.ts";
+import {
+  IChatMessage,
+  ICloudinaryAdapter,
+  IMessageWithoutId,
+} from "../../types/TypesAndInterfaces.ts";
 import { IMessageRepository } from "../../repository/interface/IMessageRepository.ts";
 import { ResponseMessage } from "../../constrain/ResponseMessageContrain.ts";
 
@@ -25,10 +29,10 @@ export class MessageService implements IMessageService {
     try {
       return this.messageRepo.create(data);
     } catch (error) {
-      if(error instanceof Error){
+      if (error instanceof Error) {
         throw new Error(error.message);
-      }else{
-        throw new Error('unexptected error');
+      } else {
+        throw new Error("unexptected error");
       }
     }
   }
@@ -50,22 +54,21 @@ export class MessageService implements IMessageService {
       await this.updateReadedMessage(id);
       return get_All_Messages;
     } catch (error) {
-      if(error instanceof Error){
+      if (error instanceof Error) {
         throw new Error(error.message);
-      }else{
-        throw new Error('unexptected error');
+      } else {
+        throw new Error("unexptected error");
       }
     }
   }
   async updateReadedMessage(id: string) {
-   
     try {
       await this.messageRepo.updateReadedMessage(id);
     } catch (error) {
-      if(error instanceof Error){
+      if (error instanceof Error) {
         throw new Error(error.message);
-      }else{
-        throw new Error('unexptected error');
+      } else {
+        throw new Error("unexptected error");
       }
     }
   }
@@ -73,7 +76,7 @@ export class MessageService implements IMessageService {
     try {
       if (typeof from === "string" && typeof id === "string") {
         const response = await this.chatRepositroy.fetchDatasForCount(id);
-      
+
         if (response.length >= 1) {
           const ids: string[] = [];
           response.forEach((el) => {
@@ -91,10 +94,10 @@ export class MessageService implements IMessageService {
         throw new Error("error id type missmatch");
       }
     } catch (error) {
-      if(error instanceof Error){
+      if (error instanceof Error) {
         throw new Error(error.message);
-      }else{
-        throw new Error('unexptected error');
+      } else {
+        throw new Error("unexptected error");
       }
     }
   }
@@ -112,10 +115,10 @@ export class MessageService implements IMessageService {
         return false;
       }
     } catch (error) {
-      if(error instanceof Error){
+      if (error instanceof Error) {
         throw new Error(error.message);
-      }else{
-        throw new Error('unexptected error');
+      } else {
+        throw new Error("unexptected error");
       }
     }
   }
@@ -128,10 +131,10 @@ export class MessageService implements IMessageService {
         return "";
       }
     } catch (error) {
-      if(error instanceof Error){
+      if (error instanceof Error) {
         throw new Error(error.message);
-      }else{
-        throw new Error('unexptected error');
+      } else {
+        throw new Error("unexptected error");
       }
     }
   }
@@ -145,28 +148,28 @@ export class MessageService implements IMessageService {
       const response = await this.messageRepo.findNewMessages(id, ids);
       return response;
     } catch (error) {
-      if(error instanceof Error){
+      if (error instanceof Error) {
         throw new Error(error.message);
-      }else{
-        throw new Error('unexptected error');
+      } else {
+        throw new Error("unexptected error");
       }
     }
   }
-  async messageCount(userID:unknown,from:unknown){
+  async messageCount(userID: unknown, from: unknown) {
     try {
-      if(!userID||!from||typeof userID!=='string'||typeof from !=='string'){
-        throw new Error(ResponseMessage.ID_NOT_FOUND)
+      if (
+        !userID ||
+        !from ||
+        typeof userID !== "string" ||
+        typeof from !== "string"
+      ) {
+        throw new Error(ResponseMessage.ID_NOT_FOUND);
       }
-      const newMessagesForNav = await this.fetchMessageCount(
-        from,
-        userID
-      );
-      const newMessagesNotifiation = await this.findNewMessages(
-        userID
-      );
-      return({ newMessagesForNav, newMessagesNotifiation });
-    } catch  {
-     throw new Error(ResponseMessage.SERVER_ERROR)
+      const newMessagesForNav = await this.fetchMessageCount(from, userID);
+      const newMessagesNotifiation = await this.findNewMessages(userID);
+      return { newMessagesForNav, newMessagesNotifiation };
+    } catch {
+      throw new Error(ResponseMessage.SERVER_ERROR);
     }
   }
 }

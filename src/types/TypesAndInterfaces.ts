@@ -1,6 +1,6 @@
 import { Document, Types } from "mongoose";
 import { IUserRepository } from "../repository/interface/IUserRepository.ts";
-import { IUserWithID} from "./UserRelatedTypes.ts";
+import { IUserWithID } from "./UserRelatedTypes.ts";
 
 //////////////////////// Report Abuser///////////////////////////
 export interface IAbuserReport {
@@ -40,13 +40,17 @@ export interface ISuggestion {
   planFeatures: string[];
   matchStatics?: string;
 }
-export type IProfileTypeFetch = {name:string,
-    lookingFor:string,secondName:string,
-    state:string,gender:string,
-    dateOfBirth:Date,interest:string[],
-    photo:string,
-    _id?:string
-}[]
+export type IProfileTypeFetch = {
+  name: string;
+  lookingFor: string;
+  secondName: string;
+  state: string;
+  gender: string;
+  dateOfBirth: Date;
+  interest: string[];
+  photo: string;
+  _id?: string;
+}[];
 
 export interface IRequestInterface extends Document {
   photo: string;
@@ -92,20 +96,28 @@ export interface IPlanOrder extends IPlanOrders<Types.ObjectId> {
   userID: Types.ObjectId;
 }
 
-export type CurrentPlanReturnType= never[] | {
-        amount: number;
-        connect: number;
-        avialbleConnect: number;
-        duration: number;
-        features: string[];
-        name: string;
-        Expiry: Date;
+export type CurrentPlanReturnType =
+  | never[]
+  | {
+      amount: number;
+      connect: number;
+      avialbleConnect: number;
+      duration: number;
+      features: string[];
+      name: string;
+      Expiry: Date;
     };
+export interface ISubscriptionPlanModel extends ISubscriptionPlan, Document {
+  delete: boolean;
+}
 export interface IPlanOrdersEntity extends IPlanOrders<string> {
   userID: string;
 }
-export interface jwtInterface{
-    id: string, role: string, iat?: number, exp?: number 
+export interface jwtInterface {
+  id: string;
+  role: string;
+  iat?: number;
+  exp?: number;
 }
 export interface PlanOrderMongo extends Document, IPlanOrder {}
 export interface IUserCurrentPlan extends ISubscriptionPlanModel {
@@ -114,37 +126,32 @@ export interface IUserCurrentPlan extends ISubscriptionPlanModel {
 export interface SubscriptionPlanDocument extends ISubscriptionPlan, Document {
   delete: boolean;
 }
- export type  CurrentPlanType= {
-    request: IFindCurrentPlanAndRequests[]
-    currertPlan: ICurrentPlan[]
-  }
+export type CurrentPlanType = {
+  request: IFindCurrentPlanAndRequests[];
+  currertPlan: ICurrentPlan[];
+};
 export interface ICurrentPlan {
- CurrentPlan:{
-
-     amount: number;
-     connect: number;
-     avialbleConnect: number;
-     duration: number;
-     features: string[];
-     name: string;
-     Expiry: Date;
- }
+  CurrentPlan: {
+    amount: number;
+    connect: number;
+    avialbleConnect: number;
+    duration: number;
+    features: string[];
+    name: string;
+    Expiry: Date;
+  };
 }
 export interface IFindCurrentPlanAndRequests {
   request: { _id: string; status: string; typeOfRequest: string }[];
   currertPlan: { CurrentPlan: IPlanOrdersEntity }[];
 }
 
-
-export interface ISubscriptionPlanModel extends ISubscriptionPlan, Document {
-  delete: boolean;
-}
 ///////////////////// otp Related////////////
-export interface OtpEntity{
-    otp:number;
-    email:string;
-    from:string,
-    createdAt?:Date
+export interface OtpEntity {
+  otp: number;
+  email: string;
+  from: string;
+  createdAt?: Date;
 }
 
 export interface IOTPWithID extends OtpEntity, Document {}
@@ -162,7 +169,7 @@ export interface IBcryptAdapter {
   hash(password: string): Promise<string>;
   compare(password: string, hashed: string): Promise<boolean>;
 }
-export type Role='user'|'admin'
+export type Role = "user" | "admin";
 
 export interface IFeatures extends Document {
   features: string[];
@@ -182,31 +189,29 @@ export interface IInterestInput {
 
 ////////////chat related////////////
 
-export interface ChatRoomEntity{
-    member:string[]
+export interface ChatRoomEntity {
+  member: string[];
 }
-export type FindNewMessagesReturn={
-  
-    _id: string[];
-    count: number;
-    userId: Types.ObjectId[];
-
-}
+export type FindNewMessagesReturn = {
+  _id: string[];
+  count: number;
+  userId: Types.ObjectId[];
+};
 export interface Message {
-    chatRoomId: string
-    senderId: string
-    text: string;
-    viewedOnNav: boolean;
-    viewedList:boolean;
-    image:boolean
-  }
+  chatRoomId: string;
+  senderId: string;
+  text: string;
+  viewedOnNav: boolean;
+  viewedList: boolean;
+  image: boolean;
+}
 export interface IChatRoomInput {
   members: Types.ObjectId[];
 }
 export interface IChatRoom extends Document {
   members: Types.ObjectId[];
 }
-export interface IMessageOuput{
+export interface IMessageOuput {
   chatRoomId: Types.ObjectId;
   senderId: Types.ObjectId;
   receiverId: Types.ObjectId;
@@ -227,7 +232,7 @@ export interface IMessage extends Document {
   createdAt: Date;
 }
 export interface IMessageRow extends IMessage {
-   updatedAt: Date
+  updatedAt: Date;
 }
 export interface IMessageWithoutId {
   chatRoomId: Types.ObjectId;
@@ -297,12 +302,11 @@ export interface IAdminPlanType {
   planAmount: string;
 }
 
-
-  export interface Payment{
-    orderId: string,
-    amount: string
-    status: string
-  }
+export interface Payment {
+  orderId: string;
+  amount: string;
+  status: string;
+}
 export interface IRefeshToken extends Document {
   userId: Types.ObjectId;
   token: string;

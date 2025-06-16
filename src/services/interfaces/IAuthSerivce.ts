@@ -1,10 +1,9 @@
-import { IFirstBatch } from "../../types/UserRelatedTypes"; 
+import { IFirstBatch } from "../../types/UserRelatedTypes";
 
 export interface IAuthSevice {
-
   signupFirstBatch(
     firstBatch: IFirstBatch
-  ): Promise<{token: string; refreshToken: string }>;
+  ): Promise<{ token: string; refreshToken: string }>;
   login(
     email: string,
     password: string
@@ -18,7 +17,11 @@ export interface IAuthSevice {
     subscriptionStatus: string;
   }>;
   passwordChange(email: string, password: string): Promise<boolean>;
-  changePasswordEditProfile(password: unknown,confirmPassword:unknown,id: unknown): Promise<boolean>;
+  changePasswordEditProfile(
+    password: unknown,
+    confirmPassword: unknown,
+    id: unknown
+  ): Promise<boolean>;
   regenerateToken(
     id: unknown,
     role: "user" | "admin",

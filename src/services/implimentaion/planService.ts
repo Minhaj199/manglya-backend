@@ -1,87 +1,83 @@
-import { ISubscriptionPlan } from "../../types/TypesAndInterfaces.ts"; 
-import { IPlanService } from "../interfaces/IPlanService.ts"; 
+import { ISubscriptionPlan } from "../../types/TypesAndInterfaces.ts";
+import { IPlanService } from "../interfaces/IPlanService.ts";
 import { SubscriptionPlanDocument } from "../../types/TypesAndInterfaces.ts";
 import { IPlanRepository } from "../../repository/interface/IPlanRepository.ts";
 import { IPurchasedPlan } from "../../repository/interface/IOtherRepositories.ts";
 import { PlanDTO } from "../../dtos/planRelatedDTO.ts";
 import { AppError } from "../../types/customErrorClass.ts";
 
-
-export class PlanService implements IPlanService{
-    private planRepo:IPlanRepository
-    private purchaseRepo:IPurchasedPlan
-    constructor(planRepo:IPlanRepository,purchaseRepo:IPurchasedPlan){
-        this.planRepo=planRepo
-        this.purchaseRepo=purchaseRepo
-    }
-    async fetchAll(){
-        try { 
-
-        const planData=await this.planRepo.getAllPlans()
-            return new PlanDTO(planData)
-
-        }catch (error) {
-      if(error instanceof Error){
+export class PlanService implements IPlanService {
+  private planRepo: IPlanRepository;
+  private purchaseRepo: IPurchasedPlan;
+  constructor(planRepo: IPlanRepository, purchaseRepo: IPurchasedPlan) {
+    this.planRepo = planRepo;
+    this.purchaseRepo = purchaseRepo;
+  }
+  async fetchAll() {
+    try {
+      const planData = await this.planRepo.getAllPlans();
+      return new PlanDTO(planData);
+    } catch (error) {
+      if (error instanceof Error) {
         throw new Error(error.message);
-      }else{
-        throw new Error('unexptected error');
+      } else {
+        throw new Error("unexptected error");
       }
     }
-    }
-    async createPlan(plan:ISubscriptionPlan):Promise<{created:boolean}|null>{
-        try {
-          const response= await this.planRepo.create(plan)
-            if(response){
-              return {created:true}
-
-            }else{
-              throw new AppError('error on plan creation')
-            }
-        } catch (error) {
-      if(error instanceof Error){
+  }
+  async createPlan(
+    plan: ISubscriptionPlan
+  ): Promise<{ created: boolean } | null> {
+    try {
+      const response = await this.planRepo.create(plan);
+      if (response) {
+        return { created: true };
+      } else {
+        throw new AppError("error on plan creation");
+      }
+    } catch (error) {
+      if (error instanceof Error) {
         throw new Error(error.message);
-      }else{
-        throw new Error('unexptected error');
+      } else {
+        throw new Error("unexptected error");
       }
     }
-    }
-    async editPlan(data: SubscriptionPlanDocument): Promise<boolean>{
-        try {
-            return await this.planRepo.editPlan(data)
-        } catch (error) {
-          console.log(error)
-      if(error instanceof Error){
+  }
+  async editPlan(data: SubscriptionPlanDocument): Promise<boolean> {
+    try {
+      return await this.planRepo.editPlan(data);
+    } catch (error) {
+      if (error instanceof Error) {
         throw new Error(error.message);
-      }else{
-        throw new Error('unexptected error');
+      } else {
+        throw new Error("unexptected error");
       }
     }
-    }
-    async softDelete(id:string){
-        try {
-            if(typeof id!=='string'){
-                throw new Error('erron on id getting')
-            }
-         return   await this.planRepo.softDlt(id)
-        } catch (error) {
-      if(error instanceof Error){
+  }
+  async softDelete(id: string) {
+    try {
+      if (typeof id !== "string") {
+        throw new Error("erron on id getting");
+      }
+      return await this.planRepo.softDlt(id);
+    } catch (error) {
+      if (error instanceof Error) {
         throw new Error(error.message);
-      }else{
-        throw new Error('unexptected error');
+      } else {
+        throw new Error("unexptected error");
       }
     }
-    }
-    async fetchHistory(id:string){
-        try {
-             const response=await this.purchaseRepo.fetchHistory(id)
-             return response
-        } catch (error) {
-      if(error instanceof Error){
+  }
+  async fetchHistory(id: string) {
+    try {
+      const response = await this.purchaseRepo.fetchHistory(id);
+      return response;
+    } catch (error) {
+      if (error instanceof Error) {
         throw new Error(error.message);
-      }else{
-        throw new Error('unexptected error');
+      } else {
+        throw new Error("unexptected error");
       }
     }
-    }
-    
+  }
 }
