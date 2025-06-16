@@ -6,9 +6,11 @@ import {  IAdminPlanType, ICloudinaryAdapter,
 import { IUserProfileService } from "../interfaces/IUserProfileService.ts";
 import { IAuthSevice } from "../interfaces/IAuthSerivce.ts";
 import { DataToBeUpdatedType, IuserProfileReturnType, IUserWithID, signupSecondBatchResType } from "../../types/UserRelatedTypes.ts"; 
-import { ResponseMessage } from "../../contrain/ResponseMessageContrain.ts";
+import { ResponseMessage } from "../../constrain/ResponseMessageContrain.ts";
 import { IPlanService } from "../interfaces/IPlanService.ts";
 import { AppError } from "../../types/customErrorClass.ts";
+import {  UserFetchData, UserInfoDTO } from "../../dtos/userRelatedDTO.ts";
+import { SubscriberPlanDTO } from "../../dtos/planRelatedDTO.ts";
 
 export class UserProfileService implements IUserProfileService {
  
@@ -58,23 +60,13 @@ export class UserProfileService implements IUserProfileService {
     try {
       if (typeof id === "string") {
         const data: IUserWithID = await this.userRepository.getUserProfile(id);
-        const useFullData = {
-          PersonalInfo: {
-            ...data.PersonalInfo,
-            age: getAge(data.PersonalInfo.dateOfBirth),
-          },
-          PartnerData: data.partnerData,
-          Email: data.email,
-          subscriptionStatus: data.subscriber,
-          currentPlan: data.CurrentPlan,
-        };
+       
 
-        return useFullData;
+        return new UserFetchData(data)
       } else {
         throw new Error("id not found-61");
       }
     } catch (error) {
-      console.log(error)
       if (error instanceof Error) {
         throw new Error(error.message);
       } else {
@@ -138,12 +130,12 @@ export class UserProfileService implements IUserProfileService {
           };
           return { data: useFullData, token };
         }
-
-        const profile = await this.fetchUserProfile(id);
+        const {withAge}= await this.fetchUserProfile(id);
+        const profile=withAge 
         return { data: profile, token };
       } else {
-        const response = await this.fetchUserProfile(id);
-        return { data: response, token: false };
+        const{withAge} = await this.fetchUserProfile(id);
+        return { data: withAge, token: false };
       }
     } catch (error) {
       if (error instanceof Error) {
@@ -190,17 +182,8 @@ export class UserProfileService implements IUserProfileService {
   async fetchUserDatasForAdmin() {
     try {
       const data = await this.userRepository.fetchUserDataForAdmin();
-      if (data.length) {
-        const processedData = data.map((el, index) => ({
-          ...el,
-          expiry: el?.CreatedAt ? el.CreatedAt.toDateString() : el?.CreatedAt,
-
-          no: index + 1,
-        }));
-        return processedData;
-      } else {
-        return [];
-      }
+        return new UserInfoDTO(data)
+      
     } catch (error) {
       if (error instanceof Error) {
         throw new Error(error.message);
@@ -212,27 +195,9 @@ export class UserProfileService implements IUserProfileService {
   async fetchSubscriberDetailforAdmin() {
     try {
       const planDataDraft = await this.planRepo.fetchPlanAdmin();
-      const planData: { name: string }[] = planDataDraft?.map((el) => {
-        return { name: el.name };
-      });
-      const userDataDraft: IAdminPlanType[] | [] =
-        await this.userRepository.fetchSubscriber();
-      if (userDataDraft.length > 0) {
-        const userData: IAdminPlanType[] = userDataDraft.map((el, index) => {
-          return {
-            no: index + 1,
-            username: el.username,
-            MatchCountRemaining: el.MatchCountRemaining,
-            expiry: new Date(el.expiry).toDateString(),
-            planAmount: el.planAmount,
-            planName: el.planName,
-          };
-        });
-
-        return { userData, planData };
-      } else {
-        return { userData: [], planData: planData };
-      }
+      const userDataDraft: IAdminPlanType[] | [] =await this.userRepository.fetchSubscriber();
+        return new SubscriberPlanDTO(planDataDraft,userDataDraft)
+      
     } catch (error) {
       if (error instanceof Error) {
         throw new Error(error.message);
@@ -254,7 +219,8 @@ export class UserProfileService implements IUserProfileService {
   }
   async findCurrentPlanAndRequests(userId: string) {
     try { 
-      return await this.userRepository.findCurrentPlanAndRequests(userId);  
+      const data=await this.userRepository.findCurrentPlanAndRequests(userId); 
+      return data
     } catch (error) {
       if (error instanceof Error) {
         throw new Error(error.message);
@@ -305,6 +271,7 @@ export class UserProfileService implements IUserProfileService {
       if (file&& typeof file==='object'&&'path' in file&&typeof file.path==='string') {
         const email = await this.fetchUserByID(userID);
         await this.uploadPhoto(file.path, email);
+        console.log(data)
         const updateDetail = await this.updateEditedData(
           JSON.parse(data),
           userID
@@ -322,7 +289,7 @@ export class UserProfileService implements IUserProfileService {
         }
       }
     } catch (error) {
-      
+
       if(error instanceof Error){
         throw new Error(error.message)
       }else{
@@ -335,7 +302,7 @@ export class UserProfileService implements IUserProfileService {
 
     try {
       if (typeof id !== "string") {
-        throw new Error("id not found");
+        throw new Error(ResponseMessage.ID_NOT_FOUND);
       }
       const response = await this.findCurrentPlanAndRequests(
         id
@@ -353,12 +320,10 @@ export class UserProfileService implements IUserProfileService {
         throw new Error('information category not found')
       }
       if(from==='user'){
-        const processedData = await this.fetchUserDatasForAdmin();
+        const {processedData}= await this.fetchUserDatasForAdmin();
         return(processedData);
       }else{
         const getSubscriberData=await  this.fetchSubscriberDetailforAdmin()
-        
-        
         return(getSubscriberData)
       }
     } catch (error) {

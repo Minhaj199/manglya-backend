@@ -1,8 +1,5 @@
-import { IUserWithID } from "../../types/UserRelatedTypes";
-
-
 export interface IOtpService {
-  ForgetValidateEmail(email: unknown): Promise<IUserWithID | null>;
+  ForgetValidateEmail(email: unknown): Promise<string | null>;
   otpVerification(email: string, from: string): Promise<boolean>;
   otpVerificationForForgot(email: unknown, from: string): Promise<boolean>;
   otpValidation(email: string, otp: string, from: string): Promise<boolean>;

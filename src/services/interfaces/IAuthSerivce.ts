@@ -1,11 +1,10 @@
-import { User } from "../../types/UserRelatedTypes"; 
 import { IFirstBatch } from "../../types/UserRelatedTypes"; 
 
 export interface IAuthSevice {
 
   signupFirstBatch(
     firstBatch: IFirstBatch
-  ): Promise<{ user: User; token: string; refreshToken: string }>;
+  ): Promise<{token: string; refreshToken: string }>;
   login(
     email: string,
     password: string

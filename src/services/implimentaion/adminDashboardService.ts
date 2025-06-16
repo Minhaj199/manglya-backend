@@ -23,9 +23,7 @@ export class DashService implements IAdminDashService {
   }
   async dashCount() {
     try {
-      const data: {
-        subscriberGroups: { _id: string; count: number }[];
-        totalCount: number;
+      const data: {subscriberGroups: { _id: string; count: number }[];totalCount: number;
       } = await this.userRepo.getDashCount();
       const ans = { subscriber: 0, notSubscriber: 0 };
       if (data?.subscriberGroups.length) {
@@ -37,7 +35,6 @@ export class DashService implements IAdminDashService {
           }
         });
       }
-
       const planRevenue = await this.totalRevenue();
       return {
         MonthlyRevenue: planRevenue,
@@ -55,7 +52,6 @@ export class DashService implements IAdminDashService {
   async SubscriberCount() {
     try {
       const data = await this.userRepo.getSubcriberCount();
-
       const ans = { subscriber: 0, notSubscriber: 0 };
       if (data?.length) {
         data.forEach((el: { _id: string; count: number }) => {

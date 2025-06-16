@@ -1,4 +1,4 @@
-import {User} from '../../types/UserRelatedTypes.ts'
+import {User, UserLinsting} from '../../types/UserRelatedTypes.ts'
 import { CurrentPlanReturnType, IAdminPlanType, IFindCurrentPlanAndRequests, IMatchedProfileType, IPlanOrder, IProfileTypeFetch, IRequestInterface, ISuggestion, IUserCurrentPlan } from "../../types/TypesAndInterfaces.ts";
 import { ILandingShowUesrsInterface, IUserWithID,  UpdatedData } from "../../types/UserRelatedTypes.ts";
 
@@ -31,7 +31,7 @@ export interface IUserRepository{
     findEmail(email:string):Promise<IUserWithID|null>
     makePlanExpire():Promise<void>
     fetchName(id:string):Promise<string>
-    fetchUserDataForAdmin(): Promise<{username:string,email:string,match:{_id:string,status:string,typeOfRequest:string}[],subscriber:string,CreatedAt:Date,block:boolean}[]|[]>
+    fetchUserDataForAdmin(): Promise<UserLinsting>
     fetchSubscriber():Promise<IAdminPlanType[]|[]>
     blockAndUnblockUser(id:string,action:boolean):Promise<boolean>
     findPartnerIds(id: string): Promise<string[]>

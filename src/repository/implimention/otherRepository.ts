@@ -9,7 +9,7 @@ import { IFeaturesRepository, IOtherRepositories, IRefreshToken } from "../inter
 import { featureModel } from "../../models/featureModel.ts";
 import { InterestModel } from "../../models/signupInterestModel.ts";
 import { refeshTokenModel } from "../../models/refreshTokenModel.ts";
-import { ResponseMessage } from "../../contrain/ResponseMessageContrain.ts";
+import { ResponseMessage } from "../../constrain/ResponseMessageContrain.ts";
 import { IFeatures, IInterestInterface, IRefeshToken, IRefreshWithPopulatedData } from "../../types/TypesAndInterfaces.ts";
 
 export class InterestRepo extends BaseRepository<IInterestInterface> implements IOtherRepositories{

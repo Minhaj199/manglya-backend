@@ -1,7 +1,7 @@
 import { NextFunction, Request, Response } from "express";
 import { ZodError, ZodSchema } from "zod";
-import { ResponseMessage } from "../contrain/ResponseMessageContrain";
-import { HttpStatus } from "../contrain/statusCodeContrain";
+import { ResponseMessage } from "../constrain/ResponseMessageContrain";
+import { HttpStatus } from "../constrain/statusCodeContrain";
 export const dtoValidate=(schama:ZodSchema)=>
 (req:Request,res:Response,next:NextFunction)=>{
     try {

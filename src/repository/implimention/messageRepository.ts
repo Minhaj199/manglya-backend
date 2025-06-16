@@ -1,10 +1,10 @@
 import { Types } from "mongoose"
 import { IMessageRepository } from "../interface/IMessageRepository.ts"
-import { IMessage } from "../../types/TypesAndInterfaces.ts"
+import { IMessage, IMessageRow } from "../../types/TypesAndInterfaces.ts"
 import { messageModel } from "../../models/messageModel.ts" 
 import BaseRepository from "./baseRepository.ts"
 
-export class MessageRepository extends BaseRepository<IMessage>implements IMessageRepository{
+export class MessageRepository extends BaseRepository<IMessageRow>implements IMessageRepository{
     constructor(){
       super(messageModel)
     }

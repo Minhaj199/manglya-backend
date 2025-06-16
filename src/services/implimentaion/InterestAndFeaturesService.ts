@@ -50,6 +50,7 @@ export class FixedDataService implements IFixedDataService{
     async fetchFeature(){
         try {
             const result=await this.featureRepo.fetchFeature()
+            console.log(result)
             return result
         }catch (error) {
       if(error instanceof Error){

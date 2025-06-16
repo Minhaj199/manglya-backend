@@ -1,18 +1,20 @@
-import { CurrentPlanReturnType, IAdminPlanType, IFindCurrentPlanAndRequests, IPlanOrder, IUserMgtUserfetchUserDatasForAdmin } from "../../types/TypesAndInterfaces";
+import { SubscriberPlanDTO } from "../../dtos/planRelatedDTO";
+import { IUserFetchData, IUserInfoDTO } from "../../types/dtoTypesAndInterfaces";
+import { CurrentPlanReturnType, IAdminPlanType, IFindCurrentPlanAndRequests, IPlanOrder, IUserDatasForAdmin} from "../../types/TypesAndInterfaces";
 import { DataToBeUpdatedType, IuserProfileReturnType, signupSecondBatchResType,  } from "../../types/UserRelatedTypes";
 
 
 export interface IUserProfileService {
   uploadPhoto(path: string, email: string): Promise<string | false>;
   uploadInterest(intersts: string[], email: string): Promise<boolean>;
-  fetchUserProfile(id: unknown): Promise<IuserProfileReturnType>;
+  fetchUserProfile(id: unknown): Promise<IUserFetchData>;
   updateEditedData(
     data: DataToBeUpdatedType,
     id: unknown
   ): Promise<{ data: IuserProfileReturnType; token: string | boolean }>;
   fetchUserByID(id: unknown): Promise<string>;
   fetchName(id: string): Promise<string>;
-  fetchUserDatasForAdmin(): Promise<IUserMgtUserfetchUserDatasForAdmin[]>;
+  fetchUserDatasForAdmin(): Promise<IUserInfoDTO>;
   fetchSubscriberDetailforAdmin(): Promise<{
     userData: IAdminPlanType[] | [];
     planData: { name: string }[];
@@ -38,25 +40,5 @@ planHistoryAndRequest(id: unknown): Promise<{
     request: IFindCurrentPlanAndRequests[];
     plan: CurrentPlanReturnType;
 }>
-fetchDatasForAdmin(from:unknown): Promise<{
-    expiry: string | Date;
-    no: number;
-    username: string;
-    email: string;
-    match: {
-        _id: string;
-        status: string;
-        typeOfRequest: string;
-    }[];
-    subscriber: string;
-    CreatedAt: Date;
-    block: boolean;
-}[]|{
-  
-    userData: IAdminPlanType[];
-    planData: {
-        name: string;
-    }[];
-
-}>
+fetchDatasForAdmin(from:unknown): Promise<IUserDatasForAdmin[] | SubscriberPlanDTO  >
 }

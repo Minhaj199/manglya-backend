@@ -49,6 +49,9 @@ const paymentService=new PaymentSerivice(new PurchasedPlanRepository,new UserRep
 const interestService=new FixedDataService(new InterestRepo,new FeaturesRepository)
 export const userProfileService=new UserProfileService(new PlanRepository,new Cloudinary,new UserRepsitories,authService,planService)
 const userController:IUserController=new UserController(otpService,authService,resportAbuserService,partnerServiece,userProfileService,chatRoom,paymentService,messageService,planService,interestService)
+
+
+
 router.post("/login", userController.login)
 router.post("/firstBatchData",dtoValidate(firstBatchDataDto),userController.signup);
 router.get("/fetchforLanding",userController.fetchDataForProfile);

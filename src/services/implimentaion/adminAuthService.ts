@@ -1,4 +1,4 @@
-import { ResponseMessage } from "../../contrain/ResponseMessageContrain.ts";
+import { ResponseMessage } from "../../constrain/ResponseMessageContrain.ts";
 import { IJwtService } from "../../types/UserRelatedTypes.ts"; 
 import { IAdminAuthService } from "../interfaces/IAaminAuthenticationServices.ts"; 
 import dotenv from 'dotenv'
@@ -15,6 +15,7 @@ export class AdminAuth implements IAdminAuthService {
       const adminPassword = process.env.ADMIN_PASSWORD;
       const jwt_key = process.env.JWT_ACCESS_SECRET_ADMIN;
     
+
       if (adminEmail === email) {
         if (adminPassword === password) {
           if (!jwt_key) {
@@ -28,7 +29,7 @@ export class AdminAuth implements IAdminAuthService {
             const token = this.jwtGenerator.createAccessToken(
               { id: adminID, role: "admin" },
               JWT_SECRET,
-              { expiresIn: "1h" }
+              { expiresIn: "1d" }
             );
             if (!token) {
               throw new Error("token not generated");

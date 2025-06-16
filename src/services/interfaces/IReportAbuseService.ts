@@ -1,3 +1,4 @@
+import { IAbuseMessageDTO } from "../../types/dtoTypesAndInterfaces";
 import { IAbuserReport } from "../../types/TypesAndInterfaces"; 
 
 export interface IReportAbuseService {
@@ -22,7 +23,7 @@ export interface IReportAbuseService {
     reported: string,
     docId: string
   ): Promise<boolean>;
-  getAllMessages(): Promise<[] | IAbuserReport[]>;
+  getAllMessages(): Promise<IAbuseMessageDTO>;
   rejectReport(
     reporter: string,
     reported: string,

@@ -1,4 +1,5 @@
-import { IExtentedMatchProfile, IFetchProfileDataType, IMatchedProfileType, IProfileTypeFetch, IRequestInterface, ISubscriptionPlanModel, ISuggestion} from "../../types/TypesAndInterfaces";
+import { IParternDataChatList } from "../../types/dtoTypesAndInterfaces";
+import { IFetchProfileDataType, IProfileTypeFetch, IRequestInterface, ISubscriptionPlanModel, ISuggestion} from "../../types/TypesAndInterfaces";
 
 export interface IParnterService {
   addMatch(userId: unknown, matchedId: string): Promise<boolean>;
@@ -17,14 +18,7 @@ export interface IParnterService {
   >;
   matchedProfiles(
     id: unknown
-  ): Promise<
-    | IMatchedProfileType[]
-    | {
-        formatedResponse: IExtentedMatchProfile[];
-        Places: string[];
-        onlines: string[];
-      }
-  >;
+  ): Promise<IParternDataChatList|[]>;
   fetchSuggestions(
     id: unknown,
     partnerPreference: string,

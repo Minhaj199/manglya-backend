@@ -18,7 +18,6 @@ constructor(){
       const response: SubscriptionPlanDocument[] | [] = await planModel.find({
         delete: false,
       });
-     
       return response;
     } catch (error) {
       if (error instanceof Error) {
@@ -76,6 +75,7 @@ constructor(){
   async fetchPlanAdmin(){
     try {
       return await this.model.find({},{_id:0,name:1})
+      
     }catch (error) {
       if (error instanceof Error) {
         throw new Error(error.message);

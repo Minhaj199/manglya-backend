@@ -3,6 +3,8 @@ import { IPlanService } from "../interfaces/IPlanService.ts";
 import { SubscriptionPlanDocument } from "../../types/TypesAndInterfaces.ts";
 import { IPlanRepository } from "../../repository/interface/IPlanRepository.ts";
 import { IPurchasedPlan } from "../../repository/interface/IOtherRepositories.ts";
+import { PlanDTO } from "../../dtos/planRelatedDTO.ts";
+import { AppError } from "../../types/customErrorClass.ts";
 
 
 export class PlanService implements IPlanService{
@@ -14,7 +16,10 @@ export class PlanService implements IPlanService{
     }
     async fetchAll(){
         try { 
-            return this.planRepo.getAllPlans()
+
+        const planData=await this.planRepo.getAllPlans()
+            return new PlanDTO(planData)
+
         }catch (error) {
       if(error instanceof Error){
         throw new Error(error.message);
@@ -23,11 +28,15 @@ export class PlanService implements IPlanService{
       }
     }
     }
-    async createPlan(plan:ISubscriptionPlan):Promise<SubscriptionPlanDocument|null>{
+    async createPlan(plan:ISubscriptionPlan):Promise<{created:boolean}|null>{
         try {
-        
-            const response= await this.planRepo.create(plan)
-            return response
+          const response= await this.planRepo.create(plan)
+            if(response){
+              return {created:true}
+
+            }else{
+              throw new AppError('error on plan creation')
+            }
         } catch (error) {
       if(error instanceof Error){
         throw new Error(error.message);
@@ -38,7 +47,6 @@ export class PlanService implements IPlanService{
     }
     async editPlan(data: SubscriptionPlanDocument): Promise<boolean>{
         try {
-
             return await this.planRepo.editPlan(data)
         } catch (error) {
       if(error instanceof Error){

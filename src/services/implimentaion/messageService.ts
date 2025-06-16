@@ -3,7 +3,7 @@ import { IUserRepository } from "../../repository/interface/IUserRepository.ts";
 import { IMessageService } from "../interfaces/IMessageSerivice.ts";
 import { IChatMessage, ICloudinaryAdapter, IMessageWithoutId } from "../../types/TypesAndInterfaces.ts";
 import { IMessageRepository } from "../../repository/interface/IMessageRepository.ts";
-import { ResponseMessage } from "../../contrain/ResponseMessageContrain.ts";
+import { ResponseMessage } from "../../constrain/ResponseMessageContrain.ts";
 
 export class MessageService implements IMessageService {
   private messageRepo: IMessageRepository;
@@ -45,10 +45,8 @@ export class MessageService implements IMessageService {
           };
         });
         await this.updateReadedMessage(id);
-     
         return final;
       }
-
       await this.updateReadedMessage(id);
       return get_All_Messages;
     } catch (error) {

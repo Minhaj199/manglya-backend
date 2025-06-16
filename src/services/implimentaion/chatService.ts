@@ -6,6 +6,7 @@ import { IChatService } from "../interfaces/IChatService.ts";
 import { IMessageService } from "../interfaces/IMessageSerivice.ts";
 import { IJwtService } from "../../types/UserRelatedTypes.ts"; 
 import { IChatRoom, IChatRoomInput, IMessageWithoutId } from "../../types/TypesAndInterfaces.ts";
+import { MessageDTO } from "../../dtos/chattingrRelatedDTO.ts";
 
 export class ChatService implements IChatService {
   private userRepo: IUserRepository;
@@ -66,7 +67,7 @@ export class ChatService implements IChatService {
       if(!decodeSenderId||typeof decodeSenderId!=='string'){
         throw new Error('sender id not found')
       }
-      const data: IMessageWithoutId = {
+      const rowdata: IMessageWithoutId = {
         chatRoomId: new Types.ObjectId(chatRoomId),
         senderId: new Types.ObjectId(decodeSenderId),
         receiverId:new Types.ObjectId(receiverId),
@@ -75,7 +76,9 @@ export class ChatService implements IChatService {
         text: text,
         image: image,
       };
-      return this.messageService.createMessage(data);
+      const createdMessage=await this.messageService.createMessage(rowdata);
+      const {message}=new MessageDTO(createdMessage)
+      return {...message}
     } catch (error) {
       if(error instanceof Error){
         throw new Error(error.message);

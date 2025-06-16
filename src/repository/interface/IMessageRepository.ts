@@ -1,9 +1,9 @@
 import { Types } from "mongoose";
-import {  IMessage, IMessageWithoutId } from "../../types/TypesAndInterfaces.ts";
+import {  IMessage, IMessageRow, IMessageWithoutId } from "../../types/TypesAndInterfaces.ts";
 
 
 export interface IMessageRepository{
-    create(data:IMessageWithoutId):Promise<IMessage>
+    create(data:IMessageWithoutId):Promise<IMessageRow>
     findMessages(chatRoomId:string):Promise<IMessage[]|[]>
     updateReadedMessage(id:string):Promise<void>
     updatAllMessagesReaded(ids:string[]):Promise<boolean>

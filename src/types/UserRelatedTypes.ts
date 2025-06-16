@@ -28,7 +28,9 @@ export type IUserForLanding={
     Email: string;
     subscriptionStatus: string;
     currentPlan: IPlanOrdersEntity | undefined;
+    
 }
+
 export type FetchDateForUserSelection={
     id:Types.ObjectId,
     name:string,
@@ -59,6 +61,19 @@ export  interface User{
     subscriber:string
     CreatedAt:Date
 }
+export type PersonalInfoWithAge=Omit<User,'PersonalInfo'|'password'>&{
+  PersonalInfo:{
+        firstName:string,
+        secondName:string,
+        state:string,
+        gender:string,
+        dateOfBirth:Date
+        image?:string
+        interest?:string[]
+        age:number
+    }
+}
+
 export type DataToBeUpdatedType={
 PersonalInfo: {
     _id:string   
@@ -133,3 +148,8 @@ export interface IJwtService {
   ): Promise<IRefreshWithPopulatedData | null>;
   deleteRefreshToken(id: string, token: string): Promise<void>;
 }
+
+
+
+export type UserLinsting={username:string,email:string,match:{_id:string,status:string,typeOfRequest:string}[],subscriber:string,CreatedAt:Date,block:boolean}[]|[]
+

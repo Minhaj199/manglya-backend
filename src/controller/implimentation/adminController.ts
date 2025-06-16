@@ -3,7 +3,7 @@ import { ISubscriptionPlan } from "../../types/TypesAndInterfaces.ts";
 import { IAdminAuthService } from "../../services/interfaces/IAaminAuthenticationServices.ts";
 import { IUserProfileService } from "../../services/interfaces/IUserProfileService.ts";
 import { IPlanService } from "../../services/interfaces/IPlanService.ts";
-import { ResponseMessage } from "../../contrain/ResponseMessageContrain.ts";
+import { ResponseMessage } from "../../constrain/ResponseMessageContrain.ts";
 import { IFixedDataService } from "../../services/interfaces/IInterstAndFeatureSerivice.ts";
 import { IAdminDashService } from "../../services/interfaces/IAdminDashboardService.ts";
 import { IReportAbuseService } from "../../services/interfaces/IReportAbuseService.ts"; 
@@ -42,9 +42,8 @@ export class AdminController implements IAdminController {
       }
     }
   };
-  fetechData = async (req: Request, res: Response,next:NextFunction) => {
+  fetchData = async (req: Request, res: Response,next:NextFunction) => {
     try {
-      console.log('47')
       const response=await this.userProfileService.fetchDatasForAdmin(req.query.from)
       res.json(response)
     } catch (error) {
@@ -68,7 +67,6 @@ export class AdminController implements IAdminController {
   };
   addPlan = async (req: Request, res: Response,next:NextFunction) => {
     try {
-      console.log(req.body)
       const plan: ISubscriptionPlan = {
         name: req.body.datas.name,
         features: req.body.handleFeatureState,
@@ -77,16 +75,15 @@ export class AdminController implements IAdminController {
         duration: parseInt(req.body.datas.duration),
       };
       const response = await this.planService.createPlan(plan);
-      res.json({ status: response });
+      res.json({ result: response });
     } catch (error: unknown) {
       next(error)
     }
   };
 
-  fetechPlanData = async (req: Request, res: Response,next:NextFunction) => {
+  fetchPlanData = async (req: Request, res: Response,next:NextFunction) => {
     try {
-      const plans = await this.planService.fetchAll();
-
+      const {plans} = await this.planService.fetchAll();
       res.json({ plans });
     } catch (error: unknown) {
       
@@ -162,8 +159,9 @@ export class AdminController implements IAdminController {
   };
   getReports = async (req: Request, res: Response,next:NextFunction) => {
     try {
-      const fetchReport = await this.resportAbuserService.getAllMessages();
-      res.json({ data: fetchReport });
+      const {messagesDatas} = await this.resportAbuserService.getAllMessages();
+      console.log(messagesDatas)
+      res.json({ data: messagesDatas });
     } catch (error: unknown) {
       next(error)
     }

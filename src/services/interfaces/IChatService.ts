@@ -1,4 +1,4 @@
-import { IMessage } from "../../types/TypesAndInterfaces";
+import {IMessageOuput } from "../../types/TypesAndInterfaces";
 
 export interface IChatService {
   fetchChats(
@@ -11,6 +11,6 @@ export interface IChatService {
     receiverId: string,
     text: string,
     image: boolean
-  ): Promise<IMessage>;
+  ): Promise<IMessageOuput>;
   fetchUserForChat(id: string): Promise<{ name: string; photo: string }>;
 }

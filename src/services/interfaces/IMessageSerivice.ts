@@ -1,9 +1,9 @@
 
 import { Types } from "mongoose";
-import { FindNewMessagesReturn, IChatMessage, IMessage, IMessageWithoutId } from "../../types/TypesAndInterfaces";
+import { FindNewMessagesReturn, IChatMessage,IMessageRow, IMessageWithoutId } from "../../types/TypesAndInterfaces";
 
 export interface IMessageService {
-  createMessage(data: IMessageWithoutId): Promise<IMessage>;
+  createMessage(data: IMessageWithoutId): Promise<IMessageRow>;
   findAllMessage(id: string): Promise<IChatMessage[]>;
   updateReadedMessage(id: string): Promise<void>;
   fetchMessageCount(

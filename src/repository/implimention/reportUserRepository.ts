@@ -1,6 +1,6 @@
 import { Types } from "mongoose"
 import { IReportAbuserRepository } from "../interface/IAbuseRepository.ts"
-import { IAbuserMongoDoc, IAbuserReport } from "../../types/TypesAndInterfaces.ts" 
+import { IAbuserMongoDoc } from "../../types/TypesAndInterfaces.ts" 
 import { reportUser } from "../../models/reportedUserModel.ts"
 import BaseRepository from "./baseRepository.ts"
 
@@ -20,7 +20,7 @@ export class ReportUserRepository extends BaseRepository<IAbuserMongoDoc> implem
     }
     
   }
-  async getMessages(): Promise<IAbuserReport[]|[]> {
+  async getMessages(): Promise<IAbuserMongoDoc[]|[]> {
     try {
       const response=await this.model.find().sort({_id:-1}).populate('reporter','PersonalInfo.firstName').populate('reported','PersonalInfo.firstName')  
       return response

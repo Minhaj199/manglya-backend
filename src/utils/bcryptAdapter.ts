@@ -1,6 +1,6 @@
 import bcrypt from 'bcryptjs'
 import { IBcryptAdapter} from '../types/TypesAndInterfaces';
-import { ResponseMessage } from '../contrain/ResponseMessageContrain';
+import { ResponseMessage } from '../constrain/ResponseMessageContrain';
 
 
 

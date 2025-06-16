@@ -5,7 +5,7 @@ import { IAuthSevice } from "../interfaces/IAuthSerivce.ts";
 import { IJwtService, IUserWithID } from '../../types/UserRelatedTypes.ts'; 
 import { IUserRepository } from "../../repository/interface/IUserRepository.ts";
 import { IFirstBatch } from '../../types/UserRelatedTypes.ts';
-import { ResponseMessage } from '../../contrain/ResponseMessageContrain.ts';
+import { ResponseMessage } from '../../constrain/ResponseMessageContrain.ts';
 
 dotEnv.config();
 
@@ -64,7 +64,7 @@ export class AuthService implements IAuthSevice {
           process.env.JWT__REFRESH_SECRET_USER || "",
           { expiresIn: "1d" }
         );
-        return { user, token: accessToken, refreshToken };
+        return { token: accessToken, refreshToken };
       } else {
         throw new Error(ResponseMessage.USER_CREATION_FAILED);
       }
@@ -235,12 +235,10 @@ export class AuthService implements IAuthSevice {
       if (typeof refreshToken !== "string") {
         throw new Error("token not found");
       }
-
       const extractId = this.jwtGenerator.verifyRefreshToken(
         refreshToken,
         "user"
       );
-
       if (!extractId) {
         throw new Error("refresh token is not valid");
       }

@@ -460,7 +460,6 @@ export class UserRepsitories extends BaseRepository<IUserWithID>implements IUser
        {$project:{_id:'$datas._id',photo:'$datas.PersonalInfo.image',firstName:'$datas.PersonalInfo.firstName',secondName:'$datas.PersonalInfo.secondName',state:'$datas.PersonalInfo.state',dateOfBirth:'$datas.PersonalInfo.dateOfBirth'}}
      
       ])
-      
       return profiles
     } catch (error) {
       if (error instanceof Error) {

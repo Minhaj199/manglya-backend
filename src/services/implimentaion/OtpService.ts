@@ -20,7 +20,12 @@ export class OtpService implements IOtpService {
   async ForgetValidateEmail(email: string) {
     try {
       const isValid = await this.userRepository.findEmail(email);
-      return isValid;
+      if(isValid){
+        return isValid?.email;
+
+      }else{
+        return null
+      }
     }catch (error) {
       if(error instanceof Error){
         throw new Error(error.message);
@@ -53,7 +58,6 @@ export class OtpService implements IOtpService {
     }
   }
   async otpVerificationForForgot(email: unknown, from: string) {
-    console.log('56')
     try {
       if(!email||typeof email!=='string'){
         throw new Error('Email not found') 
@@ -62,7 +66,6 @@ export class OtpService implements IOtpService {
       if(!isValid){
         return false
       }
-      console.log('64')
       const otp = await generateOTP();
       const otpReponse=await this.otpRepository.create({ otp, email, from: from });
       const subject = "Password Reseting";
@@ -71,12 +74,7 @@ export class OtpService implements IOtpService {
         subject,
         `Welcome to Mangalya. Your password reset OTP for Authentication is <h1>${otp}<h1/>`
       );
-      if(otpReponse){
-
-        return true;
-      }else{
-        return false
-      }
+      return otpReponse?true:false
     } catch (error) {
       if(error instanceof Error){
         throw new Error(error.message);

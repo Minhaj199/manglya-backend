@@ -1,6 +1,5 @@
 import { Response, Request, NextFunction } from "express";
 import { AppError } from "../../types/customErrorClass.ts";
-import { User } from "../../types/UserRelatedTypes.ts"; 
 import { IOtpService } from "../../services/interfaces/IOtpService.ts"; 
 import { IParnterService } from "../../services/interfaces/IPartnerService.ts";
 import { IChatService } from "../../services/interfaces/IChatService.ts";
@@ -11,8 +10,8 @@ import { IAuthSevice } from "../../services/interfaces/IAuthSerivce.ts";
 import { IUserProfileService } from "../../services/interfaces/IUserProfileService.ts";
 import { IMessageService } from "../../services/interfaces/IMessageSerivice.ts";
 import { IReportAbuseService } from "../../services/interfaces/IReportAbuseService.ts";
-import { ResponseMessage } from "../../contrain/ResponseMessageContrain.ts";
-import { HttpStatus } from "../../contrain/statusCodeContrain.ts";
+import { ResponseMessage } from "../../constrain/ResponseMessageContrain.ts";
+import { HttpStatus } from "../../constrain/statusCodeContrain.ts";
 import { IUserController } from "../interface/IUserController.ts";
 
 export class UserController implements IUserController {
@@ -31,7 +30,7 @@ export class UserController implements IUserController {
   ) {}
   signup = async (req: Request, res: Response,next:NextFunction) => {
     try {
-      const user:{user:User,token:string,refreshToken:string} = await this.authService.signupFirstBatch(req.body);     
+      const user:{token:string,refreshToken:string} = await this.authService.signupFirstBatch(req.body);     
       res.setHeader("authorizationforuser", user?.refreshToken);
       res.status(HttpStatus.CREATED).json({ message: ResponseMessage.USER_CREATION_SUCCESS, token: user?.token });
 
@@ -133,9 +132,9 @@ export class UserController implements IUserController {
   ): Promise<void> => {
     try {
       const { email } = req.body;
-      const isValid = await this.otpService.ForgetValidateEmail(email);
+      const  isValid= await this.otpService.ForgetValidateEmail(email);
       if (isValid) {
-        res.json({ email: isValid.email });
+        res.json({ email: isValid});
       } else {
         res.json(false);
       }
@@ -262,8 +261,8 @@ export class UserController implements IUserController {
   };
   getUserProfile = async (req: Request, res: Response,next:NextFunction) => {
     try {
-      const user = await this.userProfileService.fetchUserProfile(req.userID);
-      res.json({ user });
+      const {withAge} = await this.userProfileService.fetchUserProfile(req.userID);
+      res.json({ user:withAge });
     } catch (error) {
       next(error);
     }
@@ -307,7 +306,7 @@ export class UserController implements IUserController {
   editProfile = async (req: Request, res: Response,next:NextFunction) => {
     
     try {
-      const response=await this.userProfileService.updateProfile(req.file,req.userID,req.body)
+      const response=await this.userProfileService.updateProfile(req.file,req.userID,req.body.data)
       res.json(response)
     } catch (error) {
       next(error)
@@ -385,7 +384,7 @@ export class UserController implements IUserController {
   createTexts = async (req: Request, res: Response,next:NextFunction) => {
     try {
       if (req.body.chatId === "") {
-        throw new Error("chat id not found");
+        throw new Error(ResponseMessage.ID_NOT_FOUND);
       }
 
       const response = await this.chatRoomService.createMessage(

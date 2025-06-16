@@ -1,7 +1,7 @@
 import mongoose from "mongoose";
-import { IMessage } from "../types/TypesAndInterfaces.ts";
+import {  IMessageRow } from "../types/TypesAndInterfaces.ts";
 
-const messageSchema=new mongoose.Schema<IMessage>({
+const messageSchema=new mongoose.Schema<IMessageRow>({
     chatRoomId:mongoose.Schema.ObjectId,
     senderId:{type:mongoose.Schema.ObjectId,ref:'User'},
     text:String,
@@ -14,4 +14,4 @@ const messageSchema=new mongoose.Schema<IMessage>({
     timestamps:true
 })
 
-export const messageModel=mongoose.model<IMessage>('messages',messageSchema)
+export const messageModel=mongoose.model<IMessageRow>('messages',messageSchema)

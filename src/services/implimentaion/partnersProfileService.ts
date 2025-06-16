@@ -10,6 +10,8 @@ import {
 import { IUserRepository } from "../../repository/interface/IUserRepository.ts";
 import { IOtherRepositories } from "../../repository/interface/IOtherRepositories.ts";
 import {ILandingShowUesrsInterface, IUserWithID} from "../../types/UserRelatedTypes.ts";
+import { ParternDataChatList } from "../../dtos/chattingrRelatedDTO.ts";
+import { IParternDataChatList } from "../../types/dtoTypesAndInterfaces.ts";
 
 
 export class PartnerProfileService implements IParnterService {
@@ -141,13 +143,14 @@ export class PartnerProfileService implements IParnterService {
       }
     }
   }
-  async matchedProfiles(id: unknown) {
+  async matchedProfiles(id: unknown):Promise<IParternDataChatList|[]> {
     try {
-      if (typeof id === "string") {
+      if (typeof id !== "string") {
+        return []
+      }
         const formatedResponse: IExtentedMatchProfile[] = [];
-        const Places: string[] = [];
-        const response: IMatchedProfileType[] | [] =
-          await this.userRepository.getMatchedRequest(id);
+        const Place: string[] = [];
+        const response: IMatchedProfileType[] | [] =await this.userRepository.getMatchedRequest(id);
         if (response.length) {
           const online: string[] = [];
 
@@ -161,15 +164,15 @@ export class PartnerProfileService implements IParnterService {
               ...element,
               age: getAge(element.dateOfBirth),
             });
-            if (!Places.includes(element.state)) Places.push(element.state);
+            if (!Place.includes(element.state)) Place.push(element.state);
           });
-          return { formatedResponse, Places, onlines: online };
+          const {connectedParterns,Places,onlines}=new ParternDataChatList(formatedResponse,Place,online)
+          
+          return {connectedParterns,Places,onlines}
         } else {
-          return response;
+          return [];
         }
-      } else {
-        throw new Error("id not found");
-      }
+      
     } catch (error) {
       if (error instanceof Error) {
         throw new Error(error.message);
@@ -206,11 +209,8 @@ export class PartnerProfileService implements IParnterService {
     gender: string
   ) {
     try {
-      if (typeof id === "string") {
-        let fetchedProfiles: {
-          profile: ISuggestion[];
-          request: IProfileTypeFetch;
-        }[] = [];
+      if (typeof id === "string") {let fetchedProfiles: {profile: ISuggestion[];
+          request: IProfileTypeFetch}[] = [];
         const datas: {
           profile: ISuggestion[];
           request: IProfileTypeFetch;
@@ -289,7 +289,6 @@ export class PartnerProfileService implements IParnterService {
           ];
           fetchedProfiles = [{ profile: array, request: datas[0].request }];
         }
-
         return {
           datas: fetchedProfiles,
           currntPlan: currntPlan[0]?.CurrentPlan,

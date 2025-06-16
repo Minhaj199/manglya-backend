@@ -206,6 +206,16 @@ export interface IChatRoomInput {
 export interface IChatRoom extends Document {
   members: Types.ObjectId[];
 }
+export interface IMessageOuput{
+  chatRoomId: Types.ObjectId;
+  senderId: Types.ObjectId;
+  receiverId: Types.ObjectId;
+  text: string;
+  viewedOnNav: boolean;
+  viewedList: boolean;
+  image: boolean;
+  createdAt: Date;
+}
 export interface IMessage extends Document {
   chatRoomId: Types.ObjectId;
   senderId: Types.ObjectId;
@@ -215,6 +225,9 @@ export interface IMessage extends Document {
   viewedList: boolean;
   image: boolean;
   createdAt: Date;
+}
+export interface IMessageRow extends IMessage {
+   updatedAt: Date
 }
 export interface IMessageWithoutId {
   chatRoomId: Types.ObjectId;
@@ -261,7 +274,7 @@ export interface IChatMessage {
   createdAt: Date;
 }
 
-export interface IUserMgtUserfetchUserDatasForAdmin {
+export interface IUserDatasForAdmin {
   expiry: string | Date;
   no: number;
   username: string;

@@ -1,7 +1,7 @@
 import { ErrorRequestHandler, NextFunction, Request, Response } from "express";
 import { AppError } from "../types/customErrorClass"; 
 import mongoose from "mongoose";
-import { HttpStatus } from "../contrain/statusCodeContrain";
+import { HttpStatus } from "../constrain/statusCodeContrain";
 import logger from "../config/winstonConfig";
 
 export const globalErrorHandler:ErrorRequestHandler = (

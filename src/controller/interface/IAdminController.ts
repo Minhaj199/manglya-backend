@@ -2,10 +2,10 @@ import { NextFunction, Request, Response } from "express";
 
 export interface IAdminController{
     login (req: Request, res: Response,next:NextFunction):Promise<void> ,
-      fetechData (req: Request, res: Response,next:NextFunction):Promise<void>, 
+      fetchData (req: Request, res: Response,next:NextFunction):Promise<void>, 
       userBlockAndUnblock (req: Request, res: Response,next:NextFunction):Promise<void>,
       addPlan (req: Request, res: Response,next:NextFunction):Promise<void>,
-      fetechPlanData (req: Request, res: Response,next:NextFunction):Promise<void>,
+      fetchPlanData (req: Request, res: Response,next:NextFunction):Promise<void>,
       editPlan (req: Request, res: Response,next:NextFunction):Promise<void>,
       softDlt (req: Request, res: Response,next:NextFunction):Promise<void>,
       fetchFeature (req: Request, res: Response,next:NextFunction):Promise<void>,
