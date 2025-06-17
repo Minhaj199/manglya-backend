@@ -23,14 +23,15 @@ import { EmailService } from "../../utils/emailAdapter.ts";
 import { JWTAdapter } from "../../utils/jwtAdapter.ts";
 import {
   abuseMessageToggleShema,
-  addPlanDtoSchema,
-  blockAndUnblockDtoSchema,
+  addPlanValidator,
+  blockAndUnblockValidator,
   editPlanDtoShema,
-  reportAbuseActionDtoSchema,
+  reportAbuseActionValidator,
   reportAbuseRejectShema,
-} from "../../dtos/validator/adminDTO.ts";
+} from "../../dtos/validator/adminValidator.ts";
 import { Router } from "express";
 import { dtoValidate } from "../../middlewares/dtoValidatorMiddleware.ts";
+import { UserProfileRepository } from "../../repository/implimention/userProfileRepository.ts";
 
 const adminAuth = new AdminAuth(new JWTAdapter(new TokenRepository()));
 const authService = new AuthService(
@@ -51,7 +52,8 @@ export const userProfileService = new UserProfileService(
   new Cloudinary(),
   new UserRepsitories(),
   authService,
-  planService
+  planService,
+  new UserProfileRepository
 );
 const dashService = new DashService(
   new UserRepsitories(),
@@ -77,10 +79,10 @@ export {
   adminController,
   reportAbuseController,
   abuseMessageToggleShema,
-  addPlanDtoSchema,
-  blockAndUnblockDtoSchema,
+  addPlanValidator,
+  blockAndUnblockValidator,
   editPlanDtoShema,
-  reportAbuseActionDtoSchema,
+  reportAbuseActionValidator,
   reportAbuseRejectShema,
   dtoValidate,
   Router

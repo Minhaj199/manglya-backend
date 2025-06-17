@@ -12,7 +12,7 @@ export class MessageController implements IMessageController{
        ){
 
     }
-getChats = async (req: Request, res: Response, next: NextFunction) => {
+fetchChats = async (req: Request, res: Response, next: NextFunction) => {
     try {
       const { id } = req.params;
 
@@ -29,7 +29,7 @@ getChats = async (req: Request, res: Response, next: NextFunction) => {
       next(error);
     }
   }
-  getMessages = async (req: Request, res: Response, next: NextFunction) => {
+  fetchMessages = async (req: Request, res: Response, next: NextFunction) => {
       try {
         const { id } = req.params;
   
@@ -42,7 +42,7 @@ getChats = async (req: Request, res: Response, next: NextFunction) => {
         next(error);
       }
     };
-    getUserForChat = async (req: Request, res: Response, next: NextFunction) => {
+    fetchUserForChat = async (req: Request, res: Response, next: NextFunction) => {
       try {
         const { id } = req.params;
         if (!id) {

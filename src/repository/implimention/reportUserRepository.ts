@@ -12,7 +12,7 @@ export class ReportUserRepository
   constructor() {
     super(reportUser);
   }
-  async findComplain(
+  async fetchComplain(
     id: string,
     reason: string,
     partnerId: string
@@ -29,7 +29,7 @@ export class ReportUserRepository
       }
     }
   }
-  async getMessages(): Promise<IAbuserMongoDoc[] | []> {
+  async fetchMessages(): Promise<IAbuserMongoDoc[] | []> {
     try {
       const response = await this.model
         .find()

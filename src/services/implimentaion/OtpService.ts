@@ -19,7 +19,7 @@ export class OtpService implements IOtpService {
   }
   async ForgetValidateEmail(email: string) {
     try {
-      const isValid = await this.userRepository.findEmail(email);
+      const isValid = await this.userRepository.fetchEmail(email);
       if (isValid) {
         return isValid?.email;
       } else {
@@ -87,7 +87,7 @@ export class OtpService implements IOtpService {
   }
   async otpValidation(email: string, otp: string, from: string) {
     try {
-      const response = await this.otpRepository.getOTP(email, from);
+      const response = await this.otpRepository.fetchOTP(email, from);
 
       if (Array.isArray(response)) {
         return false;
@@ -114,7 +114,7 @@ export class OtpService implements IOtpService {
         throw new Error("Invalid ID format");
       }
 
-      const getEmail = await this.userRepository.findEmailByID(id);
+      const getEmail = await this.userRepository.fetchEmailByID(id);
       if (!getEmail) {
         throw new Error("Email not found");
       }
@@ -140,11 +140,11 @@ export class OtpService implements IOtpService {
       throw new Error("error on validation");
     }
     try {
-      const email: { email: string } = await this.userRepository.findEmailByID(
+      const email: { email: string } = await this.userRepository.fetchEmailByID(
         id
       );
       if (email?.email) {
-        const isValid: OtpEntity | [] = await this.otpRepository.getOTP(
+        const isValid: OtpEntity | [] = await this.otpRepository.fetchOTP(
           email.email,
           from
         );

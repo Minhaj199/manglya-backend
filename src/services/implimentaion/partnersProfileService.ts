@@ -7,7 +7,7 @@ import {
   IProfileTypeFetch,
   ISuggestion,
 } from "../../types/TypesAndInterfaces.ts";
-import { IUserRepository } from "../../repository/interface/IUserRepository.ts";
+import { IMatchRepository, ISuggestionRepository, IUserProfileRepository, IUserRepository } from "../../repository/interface/IUserRepository.ts";
 import { IOtherRepositories } from "../../repository/interface/IOtherRepositories.ts";
 import {
   ILandingShowUesrsInterface,
@@ -17,25 +17,25 @@ import { ParternDataChatList } from "../../dtos/chattingrRelatedDTO.ts";
 import { IParternDataChatListDTO } from "../../types/dtoTypesAndInterfaces.ts";
 
 export class PartnerProfileService implements IParnterService {
-  private userRepository: IUserRepository;
-  private interestRepo: IOtherRepositories;
+
   constructor(
-    userRepository: IUserRepository,
-    interestRepo: IOtherRepositories
+      private userRepository: IUserRepository,
+  private interestRepo: IOtherRepositories,
+  private userProfileRepo:IUserProfileRepository,
+  private suggetionRepo:ISuggestionRepository,
+  private matchRepo:IMatchRepository
   ) {
-    this.userRepository = userRepository;
-    this.interestRepo = interestRepo;
-  }
+      }
   async addMatch(userId: unknown, matchedId: string): Promise<boolean> {
     try {
       if (typeof userId === "string") {
         const user: IUserWithID | null =
-          await this.userRepository.getUserProfile(userId);
+          await this.userProfileRepo.fetchUserProfile(userId);
         if (user) {
           if (user.subscriber === "subscribed") {
             if (user.CurrentPlan) {
               if (user.CurrentPlan.Expiry > new Date()) {
-                return this.userRepository.addMatch(userId, matchedId, user);
+                return this.matchRepo.addMatch(userId, matchedId, user);
               } else {
                 throw new Error("You plan is Expired");
               }
@@ -64,7 +64,7 @@ export class PartnerProfileService implements IParnterService {
   async manageReqRes(requesterId: string, userId: unknown, action: string) {
     try {
       if (typeof userId === "string") {
-        return this.userRepository.manageReqRes(requesterId, userId, action);
+        return this.matchRepo.manageReqRes(requesterId, userId, action);
       } else {
         return false;
       }
@@ -85,13 +85,13 @@ export class PartnerProfileService implements IParnterService {
       const datas: {
         profile: IProfileTypeFetch;
         request: IProfileTypeFetch;
-      }[] = await this.userRepository.fetchPartnerProfils(
+      }[] = await this.suggetionRepo.fetchPartnerProfils(
         userId,
         userGender,
         partnerGender
       );
-      const currntPlan = await this.userRepository.getCurrentPlan(userId);
-      const interest: unknown[] = await this.interestRepo.getInterest();
+      const currntPlan = await this.userRepository.fetchCurrentPlan(userId);
+      const interest: unknown[] = await this.interestRepo.fetchInterest();
 
       let interestArray: { allInterests: string[] }[] = [];
       if (interest?.length) {
@@ -128,7 +128,7 @@ export class PartnerProfileService implements IParnterService {
   async fetchUserForLandingShow() {
     try {
       const data: ILandingShowUesrsInterface[] | [] =
-        await this.userRepository.getUsers();
+        await this.userRepository.fetchUsers();
       if (data.length > 0) {
         const response: { name: string; age: number; image: string }[] = [];
         data.forEach((el) => {
@@ -158,7 +158,7 @@ export class PartnerProfileService implements IParnterService {
       const changedResponse: IExtentedMatchProfile[] = [];
       const Place: string[] = [];
       const response: IMatchedProfileType[] | [] =
-        await this.userRepository.getMatchedRequest(id);
+        await this.matchRepo.fetchMatchedRequest(id);
       if (response.length) {
         const online: string[] = [];
 
@@ -200,7 +200,7 @@ export class PartnerProfileService implements IParnterService {
     }
     try {
       if (typeof userId === "string" && typeof partnerId === "string") {
-        const response = await this.userRepository.deleteMatched(
+        const response = await this.matchRepo.deleteMatched(
           userId,
           partnerId
         );
@@ -231,12 +231,12 @@ export class PartnerProfileService implements IParnterService {
           profile: ISuggestion[];
           request: IProfileTypeFetch;
           userProfile: IUserWithID[];
-        }[] = await this.userRepository.fetchSuggetions(
+        }[] = await this.suggetionRepo.fetchSuggetions(
           id,
           gender,
           partnerPreference
         );
-        const currntPlan = await this.userRepository.getCurrentPlan(id);
+        const currntPlan = await this.userRepository.fetchCurrentPlan(id);
         if (datas[0].profile) {
           datas[0].profile = datas[0].profile?.map((el, index) => {
             return {
@@ -325,7 +325,7 @@ export class PartnerProfileService implements IParnterService {
       throw new Error("internal server error ");
     }
     try {
-      return await this.userRepository.createRequest(id);
+      return await this.matchRepo.createRequest(id);
     } catch (error) {
       if (error instanceof Error) {
         throw new Error(error.message);

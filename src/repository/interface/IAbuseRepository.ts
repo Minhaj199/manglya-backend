@@ -4,12 +4,12 @@ import {
 } from "../../types/TypesAndInterfaces.ts";
 
 export interface IReportAbuserRepository {
-  findComplain(
+  fetchComplain(
     id: string,
     reason: string,
     profileId: string
   ): Promise<IAbuserMongoDoc | null>;
-  getMessages(): Promise<IAbuserMongoDoc[] | []>;
+  fetchMessages(): Promise<IAbuserMongoDoc[] | []>;
   create(data: IAbuserReport): Promise<IAbuserMongoDoc>;
   update(id: string, field: string, change: string | boolean): Promise<boolean>;
   delete(id: string): Promise<boolean>;

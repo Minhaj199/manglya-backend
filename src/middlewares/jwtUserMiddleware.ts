@@ -3,6 +3,7 @@ import { Request, Response, NextFunction } from "express";
 import { JWTAdapter } from "../utils/jwtAdapter";
 import { TokenRepository } from "../repository/implimention/otherRepository";
 import { JwtPayload } from "jsonwebtoken";
+import { HttpStatus } from "../constrain/statusCodeContrain";
 
 declare global {
   namespace Express {
@@ -27,8 +28,8 @@ export const userJwtAuthenticator = async (
       const decode = jwtAdmpter.verifyAccessToken(token, "user");
       if (typeof decode === "string") {
         res
-          .status(400)
-          .json({ message: "token is not valid,please log out", status: 400 });
+          .status(HttpStatus.FORBIDDEN)
+          .json({ message: "token is not valid,please log out", status: HttpStatus.BAD_REQUEST });
       }
       const isValid = decode as JwtPayload;
       const currentTime = Math.floor(Date.now() / 1000);
@@ -39,12 +40,12 @@ export const userJwtAuthenticator = async (
           req.preferedGender = isValid.preferedGender;
           next();
         } else {
-          res.status(400).json({ message: "Token expired", status: 400 });
+          res.status(HttpStatus.FORBIDDEN).json({ message: "Token expired", status: HttpStatus.BAD_REQUEST });
         }
       } else {
         res
-          .json(400)
-          .json({ message: "validation Faild,please log out ", status: 400 });
+          .json(HttpStatus.FORBIDDEN)
+          .json({ message: "validation Faild,please log out ", status: HttpStatus.FORBIDDEN });
       }
     } catch (error) {
       if (
@@ -53,25 +54,24 @@ export const userJwtAuthenticator = async (
         typeof refresh === "string" &&
         error.message === "jwt expired"
       ) {
-        console.log('55')
+      
 
-        res.status(402).json("access token expired");
+        res.status(HttpStatus.FORBIDDEN).json("access token expired");
         return;
       }
       if (error instanceof Error && "TokenExpiredError" in error) {
-        console.log('60')
         
-        res.status(400).json({
+        
+        res.status(HttpStatus.FORBIDDEN).json({
           message:
             error?.TokenExpiredError || "validation Faild,please log out",
-          status: 400,
+          status: HttpStatus.BAD_REQUEST,
         });
         return;
       } else {
-        console.log('67')
         res
-          .status(400)
-          .json({ message: "validation Faild,please log out", status: 400 });
+          .status(HttpStatus.FORBIDDEN)
+          .json({ message: "validation Faild,please log out", status: HttpStatus.BAD_REQUEST });
         return;
       }
     }

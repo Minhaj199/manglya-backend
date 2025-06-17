@@ -24,7 +24,7 @@ export class InterestRepo
   constructor() {
     super(InterestModel);
   }
-  async getInterest() {
+  async fetchInterest() {
     try {
       const response: string[] = await this.model.aggregate([
         {
@@ -59,7 +59,7 @@ export class InterestRepo
       }
     }
   }
-  async getInterestAsCategory() {
+  async fetchInterestAsCategory() {
     try {
       return await this.model.findOne(
         {},

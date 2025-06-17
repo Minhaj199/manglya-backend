@@ -64,7 +64,7 @@ export class FixedDataService implements IFixedDataService {
   }
   async fetchInterestAsCategory() {
     try {
-      const data = await this.interestRepo.getInterestAsCategory();
+      const data = await this.interestRepo.fetchInterestAsCategory();
       if (data) {
         return data;
       } else {

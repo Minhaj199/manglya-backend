@@ -1,8 +1,8 @@
 import {
-  addPlanDtoSchema,
-  blockAndUnblockDtoSchema,
+  addPlanValidator,
+  blockAndUnblockValidator,
   editPlanDtoShema,
-  reportAbuseActionDtoSchema,
+  reportAbuseActionValidator,
   reportAbuseRejectShema,
   adminController,
   reportAbuseController,
@@ -24,19 +24,19 @@ router.get(
 router.post(
   "/insertPlan",
   adminJwtAuthenticator,
-  dtoValidate(addPlanDtoSchema),
-  adminController.addPlan
+  dtoValidate(addPlanValidator),
+  adminController.createPlan
 );
 router.patch(
   "/block&Unblock/:id",
-  dtoValidate(blockAndUnblockDtoSchema),
+  dtoValidate(blockAndUnblockValidator),
   adminController.userBlockAndUnblock
 );
 router.post(
   "/insertPlan",
   adminJwtAuthenticator,
-  dtoValidate(addPlanDtoSchema),
-  adminController.addPlan
+  dtoValidate(addPlanValidator),
+  adminController.createPlan
 );
 router.put(
   "/editPlan/:id",
@@ -58,19 +58,19 @@ router.get(
 router.patch(
   "/sendWarningMail/:id",
   adminJwtAuthenticator,
-  dtoValidate(reportAbuseActionDtoSchema),
+  dtoValidate(reportAbuseActionValidator),
   reportAbuseController.sendWarningMails
 );
 router.patch(
   "/blockAbuser/:id",
   adminJwtAuthenticator,
-  dtoValidate(reportAbuseActionDtoSchema),
+  dtoValidate(reportAbuseActionValidator),
   reportAbuseController.blockAbuser
 );
 router.get(
   "/getReports",
   adminJwtAuthenticator,
-  reportAbuseController.getReports
+  reportAbuseController.fetchReports
 );
 router.patch(
   "/rejecReport/:id",

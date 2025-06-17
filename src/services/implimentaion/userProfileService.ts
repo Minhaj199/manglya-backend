@@ -1,4 +1,4 @@
-import { IUserRepository } from "../../repository/interface/IUserRepository.ts";
+import { IUserProfileRepository, IUserRepository } from "../../repository/interface/IUserRepository.ts";
 import { IPlanRepository } from "../../repository/interface/IPlanRepository.ts";
 import { getAge } from "../../utils/ageCalculator.ts";
 import {
@@ -19,7 +19,7 @@ import { AppError } from "../../types/customErrorClass.ts";
 import { UserFetchData, UserInfoDTO } from "../../dtos/userRelatedDTO.ts";
 import { SubscriberPlanDTO } from "../../dtos/planRelatedDTO.ts";
 import { zodDataValidator } from "../../utils/zodDataValidator.ts";
-import { ProfileUpdateSchema} from "../../dtos/validator/userDTOs.ts";
+import { ProfileUpdateSchema} from "../../dtos/validator/userValidator.ts";
 
 export class UserProfileService implements IUserProfileService {
   constructor(
@@ -27,13 +27,14 @@ export class UserProfileService implements IUserProfileService {
     private readonly imageSevice: ICloudinaryAdapter,
     private readonly userRepository: IUserRepository,
     private readonly authService: IAuthSevice,
-    private readonly planService: IPlanService
+    private readonly planService: IPlanService,
+    private readonly userProfileRepo:IUserProfileRepository
   ) {}
   async uploadPhoto(path: string, email: string) {
     try {
       const url = await this.imageSevice.upload(path);
       if (url && typeof url === "string") {
-        const urlInserted = await this.userRepository.addPhoto(url, email);
+        const urlInserted = await this.userProfileRepo.updatePhoto(url, email);
         if (urlInserted) {
           return url;
         } else {
@@ -52,7 +53,7 @@ export class UserProfileService implements IUserProfileService {
   }
   async uploadInterest(intersts: string[], email: string) {
     try {
-      return this.userRepository.addInterest(intersts, email);
+      return this.userProfileRepo.updateInterest(intersts, email);
     } catch (error) {
       if (error instanceof Error) {
         throw new Error(error.message);
@@ -64,7 +65,7 @@ export class UserProfileService implements IUserProfileService {
   async fetchUserProfile(id: unknown) {
     try {
       if (typeof id === "string") {
-        const data: IUserWithID = await this.userRepository.getUserProfile(id);
+        const data: IUserWithID = await this.userProfileRepo.fetchUserProfile(id);
         console.log(data)
         return new UserFetchData(data);
       } else {
@@ -107,7 +108,7 @@ export class UserProfileService implements IUserProfileService {
   console.log(data)
     try {
       if (Object.keys(updateData).length) {
-        const data: IUserWithID = await this.userRepository.update(
+        const data: IUserWithID = await this.userProfileRepo.update(
           updateData,
           id
         );
@@ -150,7 +151,7 @@ export class UserProfileService implements IUserProfileService {
   async fetchUserByID(id: unknown) {
     try {
       if (typeof id === "string") {
-        const email = await this.userRepository.findEmailByID(id);
+        const email = await this.userRepository.fetchEmailByID(id);
         if (email.email) {
           return email.email;
         } else {
@@ -172,7 +173,7 @@ export class UserProfileService implements IUserProfileService {
       if (!id) {
         throw new Error("id not found");
       }
-      return this.userRepository.fetchName(id);
+      return this.userProfileRepo.fetchName(id);
     } catch (error) {
       if (error instanceof Error) {
         throw new Error(error.message);
@@ -220,7 +221,7 @@ export class UserProfileService implements IUserProfileService {
   }
   async findCurrentPlanAndRequests(userId: string) {
     try {
-      const data = await this.userRepository.findCurrentPlanAndRequests(userId);
+      const data = await this.userRepository.fetchCurrentPlanAndRequests(userId);
       return data;
     } catch (error) {
       if (error instanceof Error) {

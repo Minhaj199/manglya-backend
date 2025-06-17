@@ -28,29 +28,30 @@ import { userJwtAuthenticator } from "../../middlewares/jwtUserMiddleware.ts";
 import { upload } from "../../config/multerConfig.ts";
 import { Router } from "express";
 import {
-  acceptAndRejectDTOSchema,
-  acssTknRenualDTOSchema,
-  addMatchDtoSchema,
-  createTextsDTOSchema,
+  acceptAndRejectValidator,
+  acssTknRenualValidator,
+  addMatchValidator,
+  createTextsValidator,
   deleteMatchedUser,
-  emailDtoSchema,
-  firstBatchDataDtoSchema,
-  fromValidatorDTOSchema,
-  loginDtoSchema,
-  messageViewedDTOSchema,
-  otpCreationDtoSchema,
-  otpDtoSchema,
-  passResetProfileDTOSchema,
-  passwordResetDTOSchema,
-  purchasePlanDTOSchema,
-  reportAbuserUserDTOSchema,
-  secondBatchDtoSchema,
-} from "../../dtos/validator/userDTOs.ts";
+  emailValidator,
+  firstBatchDataValidator,
+  fromValidatorValidator,
+  loginValidator,
+  messageViewedValidator,
+  otpCreationValidator,
+  otpValidator,
+  passResetProfileValidator,
+  passwordResetValidator,
+  purchasePlanValidator,
+  reportAbuserUserValidator,
+  secondBatchValidator,
+} from "../../dtos/validator/userValidator.ts";
+import { UserProfileRepository } from "../../repository/implimention/userProfileRepository.ts";
+import { SuggestionRepository } from "../../repository/implimention/suggestionRepository.ts";
+import { MatchRepository } from "../../repository/implimention/matchRepository.ts";
 
 const otpService = new OtpService(
-  new UserRepsitories(),
-  new OtpRepository(),
-  new EmailService()
+  new UserRepsitories(),new OtpRepository(),new EmailService()
 );
 export const authService = new AuthService(
   new UserRepsitories(),
@@ -59,17 +60,19 @@ export const authService = new AuthService(
 );
 export const partnerServiece = new PartnerProfileService(
   new UserRepsitories(),
-  new InterestRepo()
+  new InterestRepo(),
+  new UserProfileRepository,
+  new SuggestionRepository(),
+  new MatchRepository()
 );
 
 const chatRoom = new ChatService(
-  new UserRepsitories(),
-  new ChatRoomRepository(),
+  new UserProfileRepository(),new ChatRoomRepository(),
   new MessageService(
     new MessageRepository(),
     new ChatRoomRepository(),
     new Cloudinary(),
-    new UserRepsitories()
+    new MatchRepository()
   ),
   new JWTAdapter(new TokenRepository())
 );
@@ -77,7 +80,7 @@ export const messageService = new MessageService(
   new MessageRepository(),
   new ChatRoomRepository(),
   new Cloudinary(),
-  new UserRepsitories()
+  new MatchRepository()
 );
 export const resportAbuserService = new ReportAbuseService(
   new ReportUserRepository(),
@@ -101,7 +104,8 @@ export const userProfileService = new UserProfileService(
   new Cloudinary(),
   new UserRepsitories(),
   authService,
-  planService
+  planService,
+  new UserProfileRepository
 );
 
 const userController: IUserController = new UserController(
@@ -116,23 +120,23 @@ const userController: IUserController = new UserController(
 const messageController=new MessageController(chatRoom,messageService)
 const userAuthController=new UserAuthController( authService,otpService)
 
-export {userAuthController,messageController,userController,acceptAndRejectDTOSchema,
-  acssTknRenualDTOSchema,
-  addMatchDtoSchema,
-  createTextsDTOSchema,
+export {userAuthController,messageController,userController,acceptAndRejectValidator,
+  acssTknRenualValidator,
+  addMatchValidator,
+  createTextsValidator,
   deleteMatchedUser,
-  emailDtoSchema,
-  firstBatchDataDtoSchema,
-  fromValidatorDTOSchema,
-  loginDtoSchema,
-  messageViewedDTOSchema,
-  otpCreationDtoSchema,
-  otpDtoSchema,
-  passResetProfileDTOSchema,
-  passwordResetDTOSchema,
-  purchasePlanDTOSchema,
-  reportAbuserUserDTOSchema,
+  emailValidator,
+  firstBatchDataValidator,
+  fromValidatorValidator,
+  loginValidator,
+  messageViewedValidator,
+  otpCreationValidator,
+  otpValidator,
+  passResetProfileValidator,
+  passwordResetValidator,
+  purchasePlanValidator,
+  reportAbuserUserValidator,
   userJwtAuthenticator,
   Router,
-  secondBatchDtoSchema,upload
+  secondBatchValidator,upload
 }

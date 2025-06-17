@@ -16,7 +16,7 @@ export class ChatRoomRepository
   constructor() {
     super(chatModel);
   }
-  async findChatRoomWithIDs(
+  async fetchChatRoomWithIDs(
     user1: string,
     user2: string
   ): Promise<IChatRoom | null> {
@@ -36,7 +36,7 @@ export class ChatRoomRepository
       }
     }
   }
-  async findChatRoomWithID(id: string): Promise<IFetchedChat | null> {
+  async fetchChatRoomWithID(id: string): Promise<IFetchedChat | null> {
     try {
       return await this.model
         .findOne({ id })

@@ -12,7 +12,7 @@ export class MessageRepository
   constructor() {
     super(messageModel);
   }
-  async findMessages(chatRoomId: unknown): Promise<IMessage[] | []> {
+  async fetchMessages(chatRoomId: unknown): Promise<IMessage[] | []> {
     if (typeof chatRoomId !== "string") {
       throw new Error("interanal server error on message fetching");
     }
@@ -27,7 +27,7 @@ export class MessageRepository
       }
     }
   }
-  async findAllMessage(chatRoomId: string): Promise<IMessage[] | []> {
+  async fetchAllMessage(chatRoomId: string): Promise<IMessage[] | []> {
     try {
       return await messageModel
         .find(
@@ -73,7 +73,7 @@ export class MessageRepository
       }
     }
   }
-  async findNewMessages(userId: string, partnerIds: string[]) {
+  async fetchNewMessages(userId: string, partnerIds: string[]) {
     if (partnerIds?.length <= 0) {
       return [];
     }

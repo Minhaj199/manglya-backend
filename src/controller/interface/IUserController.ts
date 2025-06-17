@@ -1,11 +1,10 @@
 import { Request, Response, NextFunction } from "express";
 
-
-export interface IMessageController{
-getChats(req: Request, res: Response, next: NextFunction): Promise<void>;
+export interface IMessageController {
+  fetchChats(req: Request, res: Response, next: NextFunction): Promise<void>;
   createTexts(req: Request, res: Response, next: NextFunction): Promise<void>;
-  getMessages(req: Request, res: Response, next: NextFunction): Promise<void>;
-  getUserForChat(
+  fetchMessages(req: Request, res: Response, next: NextFunction): Promise<void>;
+  fetchUserForChat(
     req: Request,
     res: Response,
     next: NextFunction
@@ -13,22 +12,12 @@ getChats(req: Request, res: Response, next: NextFunction): Promise<void>;
   MsgCount(req: Request, res: Response, next: NextFunction): Promise<void>;
   MessageViewed(req: Request, res: Response, next: NextFunction): Promise<void>;
   saveImage(req: Request, res: Response, next: NextFunction): Promise<void>;
- 
 }
 
-
-
-
-
-
-
-
-
-
-export interface IAuthController{
-signup (req: Request, res: Response, next: NextFunction): Promise<void>;
-   login(req: Request, res: Response, next: NextFunction): Promise<void>;  
-   forgotCheckValidate(
+export interface IAuthController {
+  signup(req: Request, res: Response, next: NextFunction): Promise<void>;
+  login(req: Request, res: Response, next: NextFunction): Promise<void>;
+  forgotCheckValidate(
     req: Request,
     res: Response,
     next: NextFunction
@@ -43,25 +32,29 @@ signup (req: Request, res: Response, next: NextFunction): Promise<void>;
     res: Response,
     next: NextFunction
   ): Promise<void>;
-   resetPassword(req: Request, res: Response, next: NextFunction): Promise<void>;
-    getNewToken(req: Request, res: Response, next: NextFunction): Promise<void>;
+  resetPassword(req: Request, res: Response, next: NextFunction): Promise<void>;
+  genetateNewToken(
+    req: Request,
+    res: Response,
+    next: NextFunction
+  ): Promise<void>;
 }
 
-
 export interface IUserController {
-  
   otpCreation(req: Request, res: Response, next: NextFunction): Promise<void>;
-  
-  fetchProfileData(req: Request,res: Response,next: NextFunction
+
+  fetchProfileData(
+    req: Request,
+    res: Response,
+    next: NextFunction
   ): Promise<void>;
   otpValidation(req: Request, res: Response, next: NextFunction): Promise<void>;
-  
+
   secondBatch(req: Request, res: Response, next: NextFunction): Promise<void>;
   addMatch(req: Request, res: Response, next: NextFunction): Promise<void>;
   manageReqRes(req: Request, res: Response, next: NextFunction): Promise<void>;
   fetchPlanData(req: Request, res: Response, next: NextFunction): Promise<void>;
   purchasePlan(req: Request, res: Response, next: NextFunction): Promise<void>;
-  
 
   fetchDataForProfile(
     req: Request,
@@ -69,7 +62,7 @@ export interface IUserController {
     next: NextFunction
   ): Promise<void>;
   fetchInterest(req: Request, res: Response, next: NextFunction): Promise<void>;
-  getUserProfile(
+  fetchUserProfile(
     req: Request,
     res: Response,
     next: NextFunction
@@ -84,7 +77,7 @@ export interface IUserController {
     res: Response,
     next: NextFunction
   ): Promise<void>;
- 
+
   editProfile(req: Request, res: Response, next: NextFunction): Promise<void>;
   matchedUser(req: Request, res: Response, next: NextFunction): Promise<void>;
   deleteMatched(req: Request, res: Response, next: NextFunction): Promise<void>;
@@ -94,7 +87,7 @@ export interface IUserController {
     res: Response,
     next: NextFunction
   ): Promise<void>;
-  
+
   planHistoryAndRequest(
     req: Request,
     res: Response,

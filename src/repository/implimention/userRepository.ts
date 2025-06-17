@@ -6,16 +6,11 @@ import { UserModel } from "../../models/userModel.ts";
 import {
   ILandingShowUesrsInterface,
   IUserWithID,
-  UpdatedData,
 } from "../../types/UserRelatedTypes.ts";
 import {
   CurrentPlanType,
   IAdminPlanType,
-  IMatchedProfileType,
   IPlanOrder,
-  IProfileTypeFetch,
-  IRequestInterface,
-  ISuggestion,
   IUserCurrentPlan,
 } from "../../types/TypesAndInterfaces.ts";
 import { ResponseMessage } from "../../constrain/ResponseMessageContrain.ts";
@@ -28,7 +23,7 @@ export class UserRepsitories
     super(UserModel);
   }
 
-  async findByEmail(email: string): Promise<IUserWithID | null> {
+  async fetchByEmail(email: string): Promise<IUserWithID | null> {
     try {
       const user = await this.model.findOne({ email, block: false }).lean();
 
@@ -41,238 +36,8 @@ export class UserRepsitories
       }
     }
   }
-  async addPhoto(photo: string, email: string): Promise<boolean> {
-    try {
-      const result = await UserModel.updateOne(
-        { email },
-        { $set: { "PersonalInfo.image": photo } }
-      );
 
-      if (result) {
-        return true;
-      } else {
-        return false;
-      }
-    } catch (error) {
-      if (error instanceof Error) {
-        throw new Error(error.message);
-      } else {
-        throw new Error(ResponseMessage.SERVER_ERROR);
-      }
-    }
-  }
-  async addInterest(interst: string[], email: string): Promise<boolean> {
-    try {
-      const result = await UserModel.updateOne(
-        { email },
-        { $set: { "PersonalInfo.interest": interst } }
-      );
-      if (result) {
-        return true;
-      } else {
-        return false;
-      }
-    } catch (error) {
-      if (error instanceof Error) {
-        throw new Error(error.message);
-      } else {
-        throw new Error(ResponseMessage.SERVER_ERROR);
-      }
-    }
-  }
-  async addMatch(
-    userId: unknown,
-    matchedId: string,
-    user: IUserWithID
-  ): Promise<boolean> {
-    if (typeof userId === "string") {
-      if (userId && matchedId) {
-        const userMatchId = new Types.ObjectId(matchedId);
-        const userID = new Types.ObjectId(userId);
-        try {
-          if (user?.CurrentPlan && user.CurrentPlan.avialbleConnect === 1) {
-            const result = await UserModel.bulkWrite([
-              {
-                updateOne: {
-                  filter: {
-                    _id: userId,
-                    match: { $not: { $elemMatch: { _id: userMatchId } } },
-                  },
-                  update: {
-                    $addToSet: {
-                      match: { _id: userMatchId, typeOfRequest: "send" },
-                    },
-                  },
-                },
-              },
-              {
-                updateOne: {
-                  filter: {
-                    _id: userId,
-                    match: { $not: { $elemMatch: { _id: userMatchId } } },
-                  },
-                  update: { $set: { subscriber: "connection finished" } },
-                },
-              },
-              {
-                updateOne: {
-                  filter: { _id: userId },
-                  update: { $inc: { "CurrentPlan.avialbleConnect": -1 } },
-                },
-              },
-              {
-                updateOne: {
-                  filter: {
-                    _id: matchedId,
-                    match: { $not: { $elemMatch: { _id: userMatchId } } },
-                  },
-                  update: {
-                    $addToSet: {
-                      match: { _id: userID, typeOfRequest: "recieved" },
-                    },
-                  },
-                },
-              },
-            ]);
-            if (result) {
-              return true;
-            }
-          } else if (
-            user?.CurrentPlan &&
-            user.CurrentPlan.avialbleConnect > 1
-          ) {
-            const result = await UserModel.bulkWrite([
-              {
-                updateOne: {
-                  filter: {
-                    _id: userId,
-                    match: { $not: { $elemMatch: { _id: userMatchId } } },
-                  },
-                  update: {
-                    $addToSet: {
-                      match: { _id: userMatchId, typeOfRequest: "send" },
-                    },
-                  },
-                },
-              },
-              {
-                updateOne: {
-                  filter: { _id: userId },
-                  update: { $inc: { "CurrentPlan.avialbleConnect": -1 } },
-                },
-              },
-              {
-                updateOne: {
-                  filter: {
-                    _id: matchedId,
-                    match: { $not: { $elemMatch: { _id: userId } } },
-                  },
-                  update: {
-                    $addToSet: {
-                      match: { _id: userID, typeOfRequest: "recieved" },
-                    },
-                  },
-                },
-              },
-            ]);
-            if (result) {
-              return true;
-            } else {
-              throw new Error("Error on Request sending");
-            }
-          } else {
-            throw new Error("Connection count over");
-          }
-        } catch  {
-      
-          return false;
-        }
-      }
-    } else {
-      return false;
-    }
-    return false;
-  }
-  async manageReqRes(
-    requesterId: string,
-    userId: unknown,
-    action: string
-  ): Promise<boolean> {
-    try {
-      if (action === "accept" && typeof userId === "string") {
-        try {
-          const convertedReqID = new Types.ObjectId(requesterId);
-          const convertedUserID = new Types.ObjectId(userId);
-
-          const response = await UserModel.bulkWrite([
-            {
-              updateOne: {
-                filter: { _id: convertedUserID, "match._id": convertedReqID },
-                update: { $set: { "match.$.status": "accepted" } },
-              },
-            },
-            {
-              updateOne: {
-                filter: { _id: convertedReqID, "match._id": convertedUserID },
-                update: { $set: { "match.$.status": "accepted" } },
-              },
-            },
-          ]);
-          if (response) {
-            return true;
-          } else {
-            return true;
-          }
-        } catch (error) {
-        if (error instanceof Error) {
-        throw new Error(error.message);
-      } else {
-        throw new Error(ResponseMessage.SERVER_ERROR);
-      }
-        }
-      } else if (action === "reject" && typeof userId === "string") {
-        try {
-          const convertedReqID = new Types.ObjectId(requesterId);
-          const convertedUserID = new Types.ObjectId(userId);
-
-          const response = await UserModel.bulkWrite([
-            {
-              updateOne: {
-                filter: {
-                  _id: convertedUserID,
-                  "match._id": convertedReqID,
-                  "match.status": "pending",
-                },
-                update: { $set: { "match.$.status": "rejected" } },
-              },
-            },
-            {
-              updateOne: {
-                filter: {
-                  _id: convertedReqID,
-                  "match._id": convertedUserID,
-                  "match.status": "pending",
-                },
-                update: { $set: { "match.$.status": "rejected" } },
-              },
-            },
-          ]);
-          if (response) {
-            return true;
-          } else {
-            return false;
-          }
-        } catch {
-          throw new Error("error on manage Request");
-        }
-      } else {
-        throw new Error("error on manage request");
-      }
-    } catch {
-      throw new Error("error on manage request");
-    }
-  }
-  async getUsers(): Promise<ILandingShowUesrsInterface[] | []> {
+  async fetchUsers(): Promise<ILandingShowUesrsInterface[] | []> {
     try {
       const data = (await UserModel.aggregate([
         {
@@ -318,7 +83,7 @@ export class UserRepsitories
       }
     }
   }
-  async findEmailByID(id: unknown): Promise<{ email: string }> {
+  async fetchEmailByID(id: unknown): Promise<{ email: string }> {
     try {
       if (!id || typeof id !== "string") {
         throw new Error(ResponseMessage.ID_NOT_FOUND);
@@ -340,43 +105,8 @@ export class UserRepsitories
       }
     }
   }
-  async getUserProfile(id: string): Promise<IUserWithID> {
-    try {
-      const user: unknown = await UserModel.findOne({ _id: id }).lean();
-      if (user) {
-        return user as IUserWithID;
-      } else {
-        throw new Error("user not found");
-      }
-    } catch (error) {
-      if (error instanceof Error) {
-        throw new Error(error.message);
-      } else {
-        throw new Error(ResponseMessage.SERVER_ERROR);
-      }
-    }
-  }
-  async update(user: UpdatedData, id: string): Promise<IUserWithID> {
-    try {
-      const response: unknown = await UserModel.findOneAndUpdate(
-        { _id: new Types.ObjectId(id) },
-        { $set: user },
-        { new: true }
-      );
-      if (response) {
-        return response as IUserWithID;
-      } else {
-        throw new Error("not updated");
-      }
-    } catch (error) {
-      if (error instanceof Error) {
-        throw new Error(error.message);
-      } else {
-        throw new Error(ResponseMessage.SERVER_ERROR);
-      }
-    }
-  }
-  async getRevenue(): Promise<{ _id: string; total: number }[]> {
+
+  async fetchRevenue(): Promise<{ _id: string; total: number }[]> {
     const result = await planOrderModel.aggregate([
       {
         $group: {
@@ -390,7 +120,7 @@ export class UserRepsitories
 
     return result;
   }
-  async getSubcriberCount(): Promise<{ _id: string; count: number }[]> {
+  async fetchSubcriberCount(): Promise<{ _id: string; count: number }[]> {
     try {
       const data: { _id: string; count: number }[] = await UserModel.aggregate([
         { $group: { _id: "$subscriber", count: { $sum: 1 } } },
@@ -405,7 +135,7 @@ export class UserRepsitories
       }
     }
   }
-  async getDashCount(): Promise<{
+  async fetchDashCount(): Promise<{
     subscriberGroups: { _id: string; count: number }[];
     totalCount: number;
   }> {
@@ -433,68 +163,8 @@ export class UserRepsitories
       totalCount: data[0].totalCount[0].totalCount,
     };
   }
-  async getMatchedRequest(id: string): Promise<IMatchedProfileType[] | []> {
-  
 
-    try {
-      const profiles = await UserModel.aggregate([
-        { $match: { _id: new Types.ObjectId(id) } },
-        { $project: { match: 1, _id: 0 } },
-        { $unwind: "$match" },
-        {
-          $lookup: {
-            from: "users",
-            localField: "match._id",
-            foreignField: "_id",
-            as: "datas",
-          },
-        },
-        { $unwind: "$datas" },
-        { $match: { "match.status": "accepted" } },
-        {
-          $project: {
-            _id: "$datas._id",
-            photo: "$datas.PersonalInfo.image",
-            firstName: "$datas.PersonalInfo.firstName",
-            secondName: "$datas.PersonalInfo.secondName",
-            state: "$datas.PersonalInfo.state",
-            dateOfBirth: "$datas.PersonalInfo.dateOfBirth",
-          },
-        },
-      ]);
-      return profiles;
-    } catch (error) {
-      if (error instanceof Error) {
-        throw new Error(error.message);
-      } else {
-        throw new Error(ResponseMessage.SERVER_ERROR);
-      }
-    }
-  }
-  async deleteMatched(id: string, matched: string): Promise<boolean> {
-    try {
-      const response: UpdateWriteOpResult = await UserModel.updateOne(
-        { _id: new Types.ObjectId(id) },
-        { $pull: { match: { _id: matched } } }
-      );
-      await UserModel.updateOne(
-        { _id: new Types.ObjectId(matched) },
-        { $pull: { match: { _id: id } } }
-      );
-      if (response && response.acknowledged && response.modifiedCount>= 1) {
-        return true;
-      } else {
-        throw new Error("not deleted");
-      }
-    } catch (error) {
-      if (error instanceof Error) {
-        throw new Error(error.message);
-      } else {
-        throw new Error(ResponseMessage.SERVER_ERROR);
-      }
-    }
-  }
-  async changePassword(
+  async updatePassword(
     email: string,
     hashedPassword: string
   ): Promise<boolean> {
@@ -516,94 +186,8 @@ export class UserRepsitories
       }
     }
   }
-  async fetchPartnerProfils(
-    userId: string,
-    userGender: string,
-    partnerGender: string
-  ): Promise<{ profile: IProfileTypeFetch; request: IProfileTypeFetch }[]> {
-    try {
-      return this.model.aggregate([
-        {
-          $facet: {
-            profile: [
-              {
-                $match: {
-                  $and: [
-                    { "PersonalInfo.gender": partnerGender },
-                    { "partnerData.gender": userGender },
-                    {
-                      match: {
-                        $not: {
-                          $elemMatch: { _id: new Types.ObjectId(userId) },
-                        },
-                      },
-                    },
-                    { _id: { $ne: new Types.ObjectId(userId) } },
-                  ],
-                },
-              },
-              {
-                $project: {
-                  name: "$PersonalInfo.firstName",
-                  lookingFor: "$partnerData.gender",
-                  secondName: "$PersonalInfo.secondName",
-                  state: "$PersonalInfo.state",
-                  gender: "$PersonalInfo.gender",
-                  dateOfBirth: "$PersonalInfo.dateOfBirth",
-                  interest: "$PersonalInfo.interest",
-                  photo: "$PersonalInfo.image",
-                  match: "$match",
-                },
-              },
-              { $sort: { _id: -1 } },
-              {$limit:3}
-            ],
-            request: [
-              { $match: { _id: new Types.ObjectId(userId) } },
-              { $unwind: "$match" },
-              {
-                $match: {
-                  "match.status": "pending",
-                  "match.typeOfRequest": "recieved",
-                },
-              },
-              {
-                $lookup: {
-                  from: "users",
-                  localField: "match._id",
-                  foreignField: "_id",
-                  as: "matchedUser",
-                },
-              },
-              { $unwind: "$matchedUser" },
-              { $project: { _id: 0, matchedUser: 1 } },
-              {
-                $project: {
-                  _id: "$matchedUser._id",
-                  name: "$matchedUser.PersonalInfo.firstName",
-                  lookingFor: "$matchedUser.partnerData.gender",
-                  secondName: "$matchedUser.PersonalInfo.secondName",
-                  state: "$matchedUser.PersonalInfo.state",
-                  gender: "$matchedUser.PersonalInfo.gender",
-                  dateOfBirth: "$matchedUser.PersonalInfo.dateOfBirth",
-                  interest: "$matchedUser.PersonalInfo.interest",
-                  photo: "$matchedUser.PersonalInfo.image",
-                },
-              },
-              { $sort: { _id: -1 } },
-            ],
-          },
-        },
-      ]);
-    } catch (error) {
-      if (error instanceof Error) {
-        throw new Error(error.message);
-      } else {
-        throw new Error(ResponseMessage.SERVER_ERROR);
-      }
-    }
-  }
-  async getCurrentPlan(
+
+  async fetchCurrentPlan(
     userId: string
   ): Promise<{ CurrentPlan: IUserCurrentPlan }[] | []> {
     try {
@@ -622,7 +206,7 @@ export class UserRepsitories
       }
     }
   }
-  async findCurrentPlanAndRequests(id: string) {
+  async fetchCurrentPlanAndRequests(id: string) {
     try {
       const response: CurrentPlanType[] = await this.model.aggregate([
         {
@@ -657,7 +241,9 @@ export class UserRepsitories
         },
       ]);
 
-      const data = {request: response[0].request || [],plan: response[0]?.currertPlan[0].CurrentPlan
+      const data = {
+        request: response[0].request || [],
+        plan: response[0]?.currertPlan[0].CurrentPlan
           ? response[0]?.currertPlan[0].CurrentPlan
           : [],
       };
@@ -670,7 +256,7 @@ export class UserRepsitories
       }
     }
   }
-  async addPurchaseData(
+  async updatePurchaseData(
     planId: string,
     id: string,
     data: IPlanOrder
@@ -697,106 +283,8 @@ export class UserRepsitories
       }
     }
   }
-  async fetchSuggetions(
-    id: string,
-    gender: string,
-    partnerPreference: string
-  ): Promise<
-    {
-      profile: ISuggestion[] | [];
-      request: IProfileTypeFetch | [];
-      userProfile: IUserWithID[] | [];
-    }[]
-  > {
-    try {
-      const datas: {
-        profile: ISuggestion[] | [];
-        request: IProfileTypeFetch | [];
-        userProfile: IUserWithID[] | [];
-      }[] = await UserModel.aggregate([
-        {
-          $facet: {
-            profile: [
-              {
-                $match: {
-                  $and: [
-                    { "PersonalInfo.gender": partnerPreference },
-                    { "partnerData.gender": gender },
-                    { _id: { $ne: new Types.ObjectId(id) } },
-                    {
-                      match: {
-                        $not: { $elemMatch: { _id: new Types.ObjectId(id) } },
-                      },
-                    },
-                  ],
-                },
-              },
-              {
-                $project: {
-                  name: "$PersonalInfo.firstName",
-                  lookingFor: "$partnerData.gender",
-                  secondName: "$PersonalInfo.secondName",
-                  state: "$PersonalInfo.state",
-                  gender: "$PersonalInfo.gender",
-                  dateOfBirth: "$PersonalInfo.dateOfBirth",
-                  interest: "$PersonalInfo.interest",
-                  photo: "$PersonalInfo.image",
-                  match: "$match",
-                  subscriber: "$subscriber",
-                  planFeatures: "$CurrentPlan.features",
-                },
-              },
-              { $sort: { _id: -1 } },
-            ],
-            request: [
-              { $match: { _id: new Types.ObjectId(id) } },
-              { $unwind: "$match" },
-              {
-                $match: {
-                  "match.status": "pending",
-                  "match.typeOfRequest": "recieved",
-                },
-              },
-              {
-                $lookup: {
-                  from: "users",
-                  localField: "match._id",
-                  foreignField: "_id",
-                  as: "matchedUser",
-                },
-              },
-              { $unwind: "$matchedUser" },
-              { $project: { _id: 0, matchedUser: 1 } },
-              {
-                $project: {
-                  _id: "$matchedUser._id",
-                  name: "$matchedUser.PersonalInfo.firstName",
-                  lookingFor: "$matchedUser.partnerData.gender",
-                  secondName: "$matchedUser.PersonalInfo.secondName",
-                  state: "$matchedUser.PersonalInfo.state",
-                  gender: "$matchedUser.PersonalInfo.gender",
-                  dateOfBirth: "$matchedUser.PersonalInfo.dateOfBirth",
-                  interest: "$matchedUser.PersonalInfo.interest",
-                  photo: "$matchedUser.PersonalInfo.image",
-                },
-              },
-              { $sort: { _id: -1 } },
-            ],
-            userProfile: [{ $match: { _id: new Types.ObjectId(id) } }],
-          },
-        },
-      ]);
 
-      return datas;
-    } catch (error) {
-      if (error instanceof Error) {
-        throw new Error(error.message);
-      } else {
-        throw new Error(ResponseMessage.SERVER_ERROR);
-      }
-    }
-  }
-  async findEmail(email: string): Promise<IUserWithID | null> {
+  async fetchEmail(email: string): Promise<IUserWithID | null> {
     try {
       return await UserModel.findOne({ email: email });
     } catch (error) {
@@ -807,33 +295,8 @@ export class UserRepsitories
       }
     }
   }
-  
-  async createRequest(id: string): Promise<IRequestInterface[]> {
-    try {
-      const user = await UserModel.aggregate([
-        { $match: { _id: new Types.ObjectId(id) } },
-        {
-          $project: {
-            _id: "$_id",
-            photo: "$PersonalInfo.image",
-            name: "$PersonalInfo.firstName",
-          },
-        },
-      ]);
-      if (user) {
-        return { ...user[0] };
-      } else {
-        throw new Error("user not found");
-      }
-    } catch (error) {
-      if (error instanceof Error) {
-        throw new Error(error.message);
-      } else {
-        throw new Error(ResponseMessage.ID_NOT_FOUND);
-      }
-    }
-  }
-  async makeUserPlanExpire(currentDate:Date) {
+
+  async expireUserPlans(currentDate: Date) {
     try {
       await this.model.updateMany(
         {
@@ -850,23 +313,7 @@ export class UserRepsitories
       }
     }
   }
-  async fetchName(id: string): Promise<string> {
-    try {
-      const name: { PersonalInfo: { firstName: string } } | null =
-        await UserModel.findById(id, { _id: 0, "PersonalInfo.firstName": 1 });
-      if (name?.PersonalInfo.firstName) {
-        return name?.PersonalInfo.firstName;
-      } else {
-        return "name";
-      }
-    } catch (error) {
-      if (error instanceof Error) {
-        throw new Error(error.message);
-      } else {
-        throw new Error(ResponseMessage.SERVER_ERROR);
-      }
-    }
-  }
+
   async fetchUserDataForAdmin() {
     try {
       return await this.model.aggregate([
@@ -941,24 +388,4 @@ export class UserRepsitories
       }
     }
   }
-  async findPartnerIds(id: string) {
-    try {
-      const result: { match: { _id: Types.ObjectId } }[] =
-        await this.model.aggregate([
-          { $match: { _id: new Types.ObjectId(id) } },
-          { $project: { _id: 0, match: 1 } },
-          { $unwind: "$match" },
-          { $match: { "match.status": "accepted" } },
-          { $project: { "match._id": 1 } },
-        ]);
-      return result;
-    } catch (error) {
-      if (error instanceof Error) {
-        throw new Error(error.message);
-      } else {
-        throw new Error(ResponseMessage.SERVER_ERROR);
-      }
-    }
-  }
-  
 }

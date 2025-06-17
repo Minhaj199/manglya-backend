@@ -1,5 +1,5 @@
 import { Types } from "mongoose";
-import { IUserRepository } from "../../repository/interface/IUserRepository.ts";
+import { IUserProfileRepository} from "../../repository/interface/IUserRepository.ts";
 import { IChatRepository } from "../../repository/interface/IChatRoomRepository.ts";
 import { objectIdToString } from "../../utils/objectIdToString.ts";
 import { IChatService } from "../interfaces/IChatService.ts";
@@ -15,26 +15,20 @@ import { AppError } from "../../types/customErrorClass.ts";
 import { ResponseMessage } from "../../constrain/ResponseMessageContrain.ts";
 
 export class ChatService implements IChatService {
-  private userRepo: IUserRepository;
-  private chatRoomRepo: IChatRepository;
-  private messageService: IMessageService;
-  private jwtService: IJwtService;
+  
   constructor(
-    userRepo: IUserRepository,
-    chatRoomRepo: IChatRepository,
-    messageService: IMessageService,
-    jwtService: IJwtService
+  private userProfileRepo:IUserProfileRepository,
+  private chatRoomRepo: IChatRepository,
+  private messageService: IMessageService,
+  private jwtService: IJwtService
   ) {
-    this.userRepo = userRepo;
-    this.chatRoomRepo = chatRoomRepo;
-    this.messageService = messageService;
-    this.jwtService = jwtService;
+    
   }
   async fetchChats(client1: unknown, client2: unknown) {
     if (typeof client1 === "string" && typeof client2 === "string") {
       try {
         const chat: IChatRoom | null =
-          await this.chatRoomRepo.findChatRoomWithIDs(client1, client2);
+          await this.chatRoomRepo.fetchChatRoomWithIDs(client1, client2);
 
         if (chat && chat._id) {
           return { chatRoomId: objectIdToString(chat._id) };
@@ -103,7 +97,7 @@ export class ChatService implements IChatService {
         throw new AppError(ResponseMessage.ID_NOT_FOUND, 404);
       }
    
-      const userData = await this.userRepo.getUserProfile(id);
+      const userData = await this.userProfileRepo.fetchUserProfile(id);
       return {
         name: userData.PersonalInfo.firstName
           ? userData.PersonalInfo.firstName

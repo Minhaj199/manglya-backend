@@ -74,24 +74,24 @@ export class UserController implements IUserController {
       next(error);
     }
   };
-    otpForResetPassword = async (
-          req: Request,
-          res: Response,
-          next: NextFunction
-        ) => {
-          try {
-            if (!userIDValidator(req.userID)) {
-              throw new AppError(ResponseMessage.ID_NOT_FOUND, 404);
-            }
-            const sentOtp = await this.otpService.otpDispatchingForEditProfile(
-              req.userID
-            );
-            res.json(sentOtp);
-          } catch (error) {
-            next(error);
-          }
-        };
- 
+  otpForResetPassword = async (
+    req: Request,
+    res: Response,
+    next: NextFunction
+  ) => {
+    try {
+      if (!userIDValidator(req.userID)) {
+        throw new AppError(ResponseMessage.ID_NOT_FOUND, 404);
+      }
+      const sentOtp = await this.otpService.otpDispatchingForEditProfile(
+        req.userID
+      );
+      res.json(sentOtp);
+    } catch (error) {
+      next(error);
+    }
+  };
+
   otpValidation = async (
     req: Request,
     res: Response,
@@ -110,7 +110,7 @@ export class UserController implements IUserController {
       next(error);
     }
   };
-  
+
   secondBatch = async (
     req: Request,
     res: Response,
@@ -234,7 +234,11 @@ export class UserController implements IUserController {
       next(error);
     }
   };
-  getUserProfile = async (req: Request, res: Response, next: NextFunction) => {
+  fetchUserProfile = async (
+    req: Request,
+    res: Response,
+    next: NextFunction
+  ) => {
     try {
       if (!userIDValidator(req.userID)) {
         throw new AppError(ResponseMessage.ID_NOT_FOUND, 404);
@@ -267,7 +271,7 @@ export class UserController implements IUserController {
       next(error);
     }
   };
- 
+
   editProfile = async (req: Request, res: Response, next: NextFunction) => {
     try {
       const response = await this.userProfileService.updateProfile(

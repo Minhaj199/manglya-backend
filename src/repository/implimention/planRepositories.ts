@@ -15,7 +15,7 @@ export class PlanRepository
     super(planModel);
   }
 
-  async getAllPlans(): Promise<SubscriptionPlanDocument[] | []> {
+  async fetchAllPlans(): Promise<SubscriptionPlanDocument[] | []> {
     try {
       const response: SubscriptionPlanDocument[] | [] = await planModel.find({
         delete: false,

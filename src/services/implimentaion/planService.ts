@@ -15,7 +15,7 @@ export class PlanService implements IPlanService {
   }
   async fetchAll() {
     try {
-      const planData = await this.planRepo.getAllPlans();
+      const planData = await this.planRepo.fetchAllPlans();
       return new PlanDTO(planData);
     } catch (error) {
       if (error instanceof Error) {

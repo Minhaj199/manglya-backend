@@ -8,10 +8,9 @@ export const dtoValidate =
       const result = schama.safeParse(
         req.method === "GET" ? req.query : req.body
       );
-      console.log(req.body)
+
       if (!result.success) {
         if (result.error instanceof ZodError) {
-            console.log(result.error.issues)
           res
             .status(HttpStatus.BAD_REQUEST)
             .json({ message: result.error.issues[0].message });

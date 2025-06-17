@@ -2,6 +2,8 @@ import { Request, Response, NextFunction } from "express";
 import { JWTAdapter } from "../utils/jwtAdapter.ts";
 import { TokenRepository } from "../repository/implimention/otherRepository.ts";
 import { jwtInterface } from "../types/TypesAndInterfaces.ts";
+import { ResponseMessage } from "../constrain/ResponseMessageContrain.ts";
+import { HttpStatus } from "../constrain/statusCodeContrain.ts";
 
 const jwtAdmpter = new JWTAdapter(new TokenRepository());
 export const adminJwtAuthenticator = (
@@ -19,7 +21,7 @@ export const adminJwtAuthenticator = (
       if (typeof decode === "string") {
         res.json({
           message: "token is not valid",
-          name: "authentication failed",
+          name: ResponseMessage.AUTHENTICATION_FAILD,
         });
       }
       const currentTime = Math.floor(Date.now() / 1000);
@@ -28,21 +30,21 @@ export const adminJwtAuthenticator = (
           next();
         } else {
           res.json({
-            message: "validation Faild",
-            name: "authentication failed",
+            message: ResponseMessage.VALIDATION_FAILED,
+            name: ResponseMessage.AUTHENTICATION_FAILD,
           });
         }
       } else {
         res.json({
-          message: "validation Faild",
-          name: "authentication failed",
+          message: ResponseMessage.VALIDATION_FAILED,
+          name: ResponseMessage.AUTHENTICATION_FAILD,
         });
       }
     } catch (error: unknown) {
       if (error instanceof Error) {
-        res.status(405).json({
-          message: error.message || "validation Faild",
-          name: "authentication failed",
+        res.status(HttpStatus.FORBIDDEN).json({
+          message: error.message || ResponseMessage.VALIDATION_FAILED,
+          name: ResponseMessage.AUTHENTICATION_FAILD,
         });
       } else {
         throw new Error("error is not getting");
@@ -51,6 +53,9 @@ export const adminJwtAuthenticator = (
   } else {
     res
       .status(405)
-      .json({ message: "validation Faild", name: "authentication failed" });
+      .json({
+        message: ResponseMessage.VALIDATION_FAILED,
+        name: ResponseMessage.AUTHENTICATION_FAILD,
+      });
   }
 };

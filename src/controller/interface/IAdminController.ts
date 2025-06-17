@@ -4,7 +4,7 @@ export interface IAdminController{
     login (req: Request, res: Response,next:NextFunction):Promise<void> ,
       fetchData (req: Request, res: Response,next:NextFunction):Promise<void>, 
       userBlockAndUnblock (req: Request, res: Response,next:NextFunction):Promise<void>,
-      addPlan (req: Request, res: Response,next:NextFunction):Promise<void>,
+      createPlan (req: Request, res: Response,next:NextFunction):Promise<void>,
       fetchPlanData (req: Request, res: Response,next:NextFunction):Promise<void>,
       editPlan (req: Request, res: Response,next:NextFunction):Promise<void>,
       softDlt (req: Request, res: Response,next:NextFunction):Promise<void>,
@@ -14,7 +14,7 @@ export interface IAdminController{
 }
 export interface IReportAbuseController{
   sendWarningMails (req: Request, res: Response,next:NextFunction):Promise<void>,
-      getReports (req: Request, res: Response,next:NextFunction):Promise<void>,
+      fetchReports (req: Request, res: Response,next:NextFunction):Promise<void>,
       blockAbuser (req: Request, res: Response,next:NextFunction):Promise<void>,
       rejecReport (req: Request, res: Response,next:NextFunction):Promise<void>,
       reportToggle (req: Request, res: Response,next:NextFunction):Promise<void>,

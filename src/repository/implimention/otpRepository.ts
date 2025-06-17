@@ -11,7 +11,7 @@ export class OtpRepository
   constructor() {
     super(OtpModel);
   }
-  async getOTP(email: string, from: string): Promise<OtpEntity | []> {
+  async fetchOTP(email: string, from: string): Promise<OtpEntity | []> {
     try {
       const otpDoc: OtpEntity[] = await OtpModel.aggregate([
         { $match: { $and: [{ email: email }, { from: from }] } },

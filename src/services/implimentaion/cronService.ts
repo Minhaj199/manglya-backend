@@ -8,7 +8,7 @@ export class CronService implements ICronServiceInterface {
   }
   async checkExpiration() {
     try {
-      await this.userRepo.makeUserPlanExpire(new Date);
+      await this.userRepo.expireUserPlans(new Date);
     } catch  {
       throw new Error('error on cron job')
     }

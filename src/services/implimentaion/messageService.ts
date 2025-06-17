@@ -1,5 +1,5 @@
 import { IChatRepository } from "../../repository/interface/IChatRoomRepository.ts";
-import { IUserRepository } from "../../repository/interface/IUserRepository.ts";
+import { IMatchRepository} from "../../repository/interface/IUserRepository.ts";
 import { IMessageService } from "../interfaces/IMessageSerivice.ts";
 import {
   IChatMessage,
@@ -11,20 +11,15 @@ import { ResponseMessage } from "../../constrain/ResponseMessageContrain.ts";
 import { objectIdToString } from "../../utils/objectIdToString.ts";
 
 export class MessageService implements IMessageService {
-  private messageRepo: IMessageRepository;
-  private chatRepositroy: IChatRepository;
-  private photoCloud: ICloudinaryAdapter;
-  private userRepo: IUserRepository;
+  
   constructor(
-    messageRepo: IMessageRepository,
-    chatRepositroy: IChatRepository,
-    photoCloud: ICloudinaryAdapter,
-    userRepo: IUserRepository
+    private messageRepo: IMessageRepository,
+  private chatRepositroy: IChatRepository,
+  private photoCloud: ICloudinaryAdapter,
+  private matchRepo: IMatchRepository,
+  
   ) {
-    this.messageRepo = messageRepo;
-    this.chatRepositroy = chatRepositroy;
-    this.photoCloud = photoCloud;
-    this.userRepo = userRepo;
+    
   }
   async createMessage(data: IMessageWithoutId) {
     try {
@@ -39,7 +34,7 @@ export class MessageService implements IMessageService {
   }
   async findAllMessage(id: string) {
     try {
-      const get_All_Messages = await this.messageRepo.findAllMessage(id);
+      const get_All_Messages = await this.messageRepo.fetchAllMessage(id);
       if (get_All_Messages?.length > 0) {
         const final: IChatMessage[] = get_All_Messages.map((message) => {
           return {
@@ -143,11 +138,10 @@ export class MessageService implements IMessageService {
     if (typeof id !== "string") {
       throw new Error("id not found");
     }
-    // [ '68506fe9fa31dbadd3bfeaef', '684fdab19950c8ce3ea68b15' ]
     try {
       let formatedIds: string[] = [];
       
-      const rowIds=await this.userRepo.findPartnerIds(id);
+      const rowIds=await this.matchRepo.fetchPartnerIds(id);
 
       if (rowIds?.length > 0) {
           formatedIds= rowIds?.map((el) => {
@@ -157,7 +151,7 @@ export class MessageService implements IMessageService {
        const ids:string[]=formatedIds
 
 
-      const response = await this.messageRepo.findNewMessages(id, ids);
+      const response = await this.messageRepo.fetchNewMessages(id, ids);
       return response;
     } catch (error) {
       if (error instanceof Error) {

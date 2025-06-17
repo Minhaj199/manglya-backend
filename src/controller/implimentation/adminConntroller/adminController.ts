@@ -15,8 +15,7 @@ export class AdminController implements IAdminController {
     private planService: IPlanService,
     private interestAndFeaturesService: IFixedDataService,
     private userProfileService: IUserProfileService,
-    private dashService: IAdminDashService,
-    
+    private dashService: IAdminDashService
   ) {}
   login = async (req: Request, res: Response) => {
     try {
@@ -41,6 +40,7 @@ export class AdminController implements IAdminController {
     }
   };
   fetchData = async (req: Request, res: Response, next: NextFunction) => {
+    /////////////// fetching suscriber page data and user page data////////////////
     try {
       const response = await this.userProfileService.fetchDatasForAdmin(
         req.query.from
@@ -69,7 +69,7 @@ export class AdminController implements IAdminController {
       next(error);
     }
   };
-  addPlan = async (req: Request, res: Response, next: NextFunction) => {
+  createPlan = async (req: Request, res: Response, next: NextFunction) => {
     try {
       const plan: ISubscriptionPlan = {
         name: req.body.datas.name,
@@ -132,6 +132,7 @@ export class AdminController implements IAdminController {
     }
   };
   fetchDashData = async (req: Request, res: Response, next: NextFunction) => {
+    ////////////////// fech data for dash board///////////
     try {
       if (req.query.from === "dashCount") {
         const getDashBoardDatas = await this.dashService.dashCount();
@@ -147,6 +148,4 @@ export class AdminController implements IAdminController {
       next(error);
     }
   };
- 
-  ;
 }

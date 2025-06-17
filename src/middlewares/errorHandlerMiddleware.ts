@@ -3,6 +3,7 @@ import { AppError } from "../types/customErrorClass";
 import mongoose from "mongoose";
 import { HttpStatus } from "../constrain/statusCodeContrain";
 import logger from "../config/winstonConfig";
+import { ResponseMessage } from "../constrain/ResponseMessageContrain";
 
 export const globalErrorHandler: ErrorRequestHandler = (
   err: unknown,
@@ -19,7 +20,6 @@ export const globalErrorHandler: ErrorRequestHandler = (
     body: req.body,
     time: new Date().toISOString(),
   });
-  console.log(err)
   if (err instanceof AppError) {
     res.status(HttpStatus.INTERNAL_SERVER_ERROR).json({ message: err.message });
     return;
@@ -37,9 +37,9 @@ export const globalErrorHandler: ErrorRequestHandler = (
   if (err instanceof Error) {
     res
       .status(500)
-      .json({ message: err.message || "Unexpected error occurred" });
+      .json({ message: err.message ||ResponseMessage.SERVER_ERROR });
     return;
   }
-  res.status(500).json({ message: "Unexpected error occurred" });
+  res.status(500).json({ message: ResponseMessage.SERVER_ERROR });
   next();
 };

@@ -27,7 +27,7 @@ export class ReportAbuseService implements IReportAbuseService {
     profileId: string
   ) {
     try {
-      const check: IAbuserReport | null = await this.reportRepo.findComplain(
+      const check: IAbuserReport | null = await this.reportRepo.fetchComplain(
         id,
         reason,
         profileId
@@ -89,9 +89,9 @@ export class ReportAbuseService implements IReportAbuseService {
   async sendWarningMail(reporter: string, reported: string, reportId: string) {
     try {
       const reportedEmail: { email: string } | null =
-        await this.userRepo.findEmailByID(reported);
+        await this.userRepo.fetchEmailByID(reported);
       const reporterEmail: { email: string } | null =
-        await this.userRepo.findEmailByID(reporter);
+        await this.userRepo.fetchEmailByID(reporter);
       if (!reportedEmail?.email || !reporterEmail.email) {
         throw new Error("In sufficient data");
       }
@@ -128,10 +128,10 @@ export class ReportAbuseService implements IReportAbuseService {
   async blockReportedUser(reporter: string, reported: string, docId: string) {
     try {
       const reportedEmail: { email: string } | null =
-        await this.userRepo.findEmailByID(reported);
+        await this.userRepo.fetchEmailByID(reported);
       const reporterEmail: { email: string } | null =
-        await this.userRepo.findEmailByID(reporter);
-      if (!reportedEmail?.email || !reporterEmail.email)
+        await this.userRepo.fetchEmailByID(reporter);
+      if (!reportedEmail?.email ||!reporterEmail.email)
         throw new Error("in sufficient data");
       const matter = `Dear user,
              this warning male from mangalya matrimonial. You have been reported from abusive acts,your account suspended till further update
@@ -161,7 +161,7 @@ export class ReportAbuseService implements IReportAbuseService {
   }
   async getAllMessages() {
     try {
-      const response = await this.reportRepo.getMessages();
+      const response = await this.reportRepo.fetchMessages();
       return new AbuseMessageDTO(response);
     } catch (error) {
       if (error instanceof Error) {
@@ -174,7 +174,7 @@ export class ReportAbuseService implements IReportAbuseService {
   async rejectReport(reporter: string, reported: string, docId: string) {
     try {
       const reporterEmail: { email: string } | null =
-        await this.userRepo.findEmailByID(reporter);
+        await this.userRepo.fetchEmailByID(reporter);
       if (!reporterEmail.email) {
         throw new Error("in sufficient data");
       }

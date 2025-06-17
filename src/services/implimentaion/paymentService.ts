@@ -28,7 +28,7 @@ export class PaymentSerivice implements IPaymentSerivice {
     userId: string
   ): Promise<boolean> {
     try {
-      const userPlan = await this.userRepo.getCurrentPlan(userId);
+      const userPlan = await this.userRepo.fetchCurrentPlan(userId);
 
       if (userPlan.length > 0 && userPlan[0]?.CurrentPlan && userPlan[0]) {
         if (
@@ -57,7 +57,7 @@ export class PaymentSerivice implements IPaymentSerivice {
         const id = String(response?._id);
 
         if (typeof id === "string") {
-          const response2 = await this.userRepo.addPurchaseData(
+          const response2 = await this.userRepo.updatePurchaseData(
             id,
             userId,
             data

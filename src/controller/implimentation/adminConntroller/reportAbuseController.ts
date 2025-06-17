@@ -2,15 +2,14 @@ import { NextFunction, Request, Response } from "express";
 import { IReportAbuseController } from "../../interface/IAdminController";
 import { IReportAbuseService } from "../../../services/interfaces/IReportAbuseService";
 
+export class ReportAbuseController implements IReportAbuseController {
+  constructor(private resportAbuserService: IReportAbuseService) {}
 
-
-
-export class ReportAbuseController implements IReportAbuseController{
-    constructor(private resportAbuserService: IReportAbuseService){
-
-    }
-
-    sendWarningMails = async (req: Request,res: Response,next: NextFunction) => {
+  sendWarningMails = async (
+    req: Request,
+    res: Response,
+    next: NextFunction
+  ) => {
     try {
       const sendWarningMale = await this.resportAbuserService.sendWarningMail(
         req.body.reporter,
@@ -22,7 +21,7 @@ export class ReportAbuseController implements IReportAbuseController{
       next(error);
     }
   };
-  getReports = async (req: Request, res: Response, next: NextFunction) => {
+  fetchReports = async (req: Request, res: Response, next: NextFunction) => {
     try {
       const { messagesDatas } =
         await this.resportAbuserService.getAllMessages();
@@ -75,7 +74,5 @@ export class ReportAbuseController implements IReportAbuseController{
     } catch (error) {
       next(error);
     }
-  }
-    
-
+  };
 }

@@ -80,7 +80,7 @@ export class AuthService implements IAuthSevice {
   }
   async login(email: string, password: string) {
     try {
-      const user = await this.userRepository.findByEmail(email);
+      const user = await this.userRepository.fetchByEmail(email);
 
       if (!user) {
         throw new Error("user not found");
@@ -153,7 +153,7 @@ export class AuthService implements IAuthSevice {
       const hashed = await this.bcryptAdapter.hash(password);
 
       if (email && hashed) {
-        const response = await this.userRepository.changePassword(
+        const response = await this.userRepository.updatePassword(
           email,
           hashed
         );
@@ -186,7 +186,7 @@ export class AuthService implements IAuthSevice {
       throw new Error("Password not match");
     }
     try {
-      const email: { email: string } = await this.userRepository.findEmailByID(
+      const email: { email: string } = await this.userRepository.fetchEmailByID(
         id
       );
 
