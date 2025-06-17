@@ -77,10 +77,8 @@ npm install
 npm run build
 ```
 
-## . Mock payment card 
+####  Mock payment card  form payment
 ```bash
 $ 4242 4242 4242 4242
-```
-
 ```
 
