@@ -10,7 +10,10 @@ export interface IAdminController{
       softDlt (req: Request, res: Response,next:NextFunction):Promise<void>,
       fetchFeature (req: Request, res: Response,next:NextFunction):Promise<void>,
       fetchDashData (req: Request, res: Response,next:NextFunction):Promise<void>,
-      sendWarningMails (req: Request, res: Response,next:NextFunction):Promise<void>,
+      
+}
+export interface IReportAbuseController{
+  sendWarningMails (req: Request, res: Response,next:NextFunction):Promise<void>,
       getReports (req: Request, res: Response,next:NextFunction):Promise<void>,
       blockAbuser (req: Request, res: Response,next:NextFunction):Promise<void>,
       rejecReport (req: Request, res: Response,next:NextFunction):Promise<void>,

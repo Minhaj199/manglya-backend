@@ -1,14 +1,13 @@
 import { NextFunction, Request, Response } from "express";
-import { ISubscriptionPlan } from "../../types/TypesAndInterfaces.ts";
-import { IAdminAuthService } from "../../services/interfaces/IAaminAuthenticationServices.ts";
-import { IUserProfileService } from "../../services/interfaces/IUserProfileService.ts";
-import { IPlanService } from "../../services/interfaces/IPlanService.ts";
-import { ResponseMessage } from "../../constrain/ResponseMessageContrain.ts";
-import { IFixedDataService } from "../../services/interfaces/IInterstAndFeatureSerivice.ts";
-import { IAdminDashService } from "../../services/interfaces/IAdminDashboardService.ts";
-import { IReportAbuseService } from "../../services/interfaces/IReportAbuseService.ts";
-import { IAdminController } from "../interface/IAdminController.ts";
-import { AppError } from "../../types/customErrorClass.ts";
+import { ISubscriptionPlan } from "../../../types/TypesAndInterfaces.ts";
+import { IAdminAuthService } from "../../../services/interfaces/IAaminAuthenticationServices.ts";
+import { IUserProfileService } from "../../../services/interfaces/IUserProfileService.ts";
+import { IPlanService } from "../../../services/interfaces/IPlanService.ts";
+import { ResponseMessage } from "../../../constrain/ResponseMessageContrain.ts";
+import { IFixedDataService } from "../../../services/interfaces/IInterstAndFeatureSerivice.ts";
+import { IAdminDashService } from "../../../services/interfaces/IAdminDashboardService.ts";
+import { IAdminController } from "../../interface/IAdminController.ts";
+import { AppError } from "../../../types/customErrorClass.ts";
 
 export class AdminController implements IAdminController {
   constructor(
@@ -17,7 +16,7 @@ export class AdminController implements IAdminController {
     private interestAndFeaturesService: IFixedDataService,
     private userProfileService: IUserProfileService,
     private dashService: IAdminDashService,
-    private resportAbuserService: IReportAbuseService
+    
   ) {}
   login = async (req: Request, res: Response) => {
     try {
@@ -148,74 +147,6 @@ export class AdminController implements IAdminController {
       next(error);
     }
   };
-  sendWarningMails = async (
-    req: Request,
-    res: Response,
-    next: NextFunction
-  ) => {
-    try {
-      const sendWarningMale = await this.resportAbuserService.sendWarningMail(
-        req.body.reporter,
-        req.body.reported,
-        req.params.id
-      );
-      res.json({ data: sendWarningMale });
-    } catch (error) {
-      next(error);
-    }
-  };
-  getReports = async (req: Request, res: Response, next: NextFunction) => {
-    try {
-      const { messagesDatas } =
-        await this.resportAbuserService.getAllMessages();
-      res.json({ data: messagesDatas });
-    } catch (error: unknown) {
-      next(error);
-    }
-  };
-  blockAbuser = async (req: Request, res: Response, next: NextFunction) => {
-    try {
-      const fetchReport = await this.resportAbuserService.blockReportedUser(
-        req.body.reporter,
-        req.body.reported,
-        req.params.id
-      );
-      res.json({ data: fetchReport });
-    } catch (error: unknown) {
-      next(error);
-    }
-  };
-  rejecReport = async (req: Request, res: Response, next: NextFunction) => {
-    try {
-      const fetchReport = await this.resportAbuserService.rejectReport(
-        req.body.reporter,
-        req.body.reported,
-        req.params.id
-      );
-      res.json({ data: fetchReport });
-    } catch (error: unknown) {
-      next(error);
-    }
-  };
-  reportToggle = async (req: Request, res: Response, next: NextFunction) => {
-    try {
-      const fetchReport = await this.resportAbuserService.toggleReportRead(
-        req.params.id,
-        req.body.status
-      );
-      res.json({ data: fetchReport });
-    } catch (error) {
-      next(error);
-    }
-  };
-  deleteMsg = async (req: Request, res: Response, next: NextFunction) => {
-    try {
-      const response = await this.resportAbuserService.deleteMessage(
-        req.params.id
-      );
-      res.json({ data: response });
-    } catch (error) {
-      next(error);
-    }
-  };
+ 
+  ;
 }

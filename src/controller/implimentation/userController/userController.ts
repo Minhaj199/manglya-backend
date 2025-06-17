@@ -1,48 +1,28 @@
 import { Response, Request, NextFunction } from "express";
-import { AppError } from "../../types/customErrorClass.ts";
-import { IOtpService } from "../../services/interfaces/IOtpService.ts";
-import { IParnterService } from "../../services/interfaces/IPartnerService.ts";
-import { IChatService } from "../../services/interfaces/IChatService.ts";
-import { IPlanService } from "../../services/interfaces/IPlanService.ts";
-import { IPaymentSerivice } from "../../services/interfaces/IPaymentService.ts";
-import { IFixedDataService } from "../../services/interfaces/IInterstAndFeatureSerivice.ts";
-import { IAuthSevice } from "../../services/interfaces/IAuthSerivce.ts";
-import { IUserProfileService } from "../../services/interfaces/IUserProfileService.ts";
-import { IMessageService } from "../../services/interfaces/IMessageSerivice.ts";
-import { IReportAbuseService } from "../../services/interfaces/IReportAbuseService.ts";
-import { ResponseMessage } from "../../constrain/ResponseMessageContrain.ts";
-import { HttpStatus } from "../../constrain/statusCodeContrain.ts";
-import { IUserController } from "../interface/IUserController.ts";
-import { userIDValidator } from "../../utils/userIDValidator.ts";
+import { AppError } from "../../../types/customErrorClass.ts";
+import { IOtpService } from "../../../services/interfaces/IOtpService.ts";
+import { IParnterService } from "../../../services/interfaces/IPartnerService.ts";
+import { IPlanService } from "../../../services/interfaces/IPlanService.ts";
+import { IPaymentSerivice } from "../../../services/interfaces/IPaymentService.ts";
+import { IFixedDataService } from "../../../services/interfaces/IInterstAndFeatureSerivice.ts";
+import { IUserProfileService } from "../../../services/interfaces/IUserProfileService.ts";
+import { IReportAbuseService } from "../../../services/interfaces/IReportAbuseService.ts";
+import { ResponseMessage } from "../../../constrain/ResponseMessageContrain.ts";
+import { HttpStatus } from "../../../constrain/statusCodeContrain.ts";
+import { IUserController } from "../../interface/IUserController.ts";
+import { userIDValidator } from "../../../utils/userIDValidator.ts";
 
 export class UserController implements IUserController {
   constructor(
     private readonly otpService: IOtpService,
-    private readonly authService: IAuthSevice,
     private readonly reportAbuseService: IReportAbuseService,
     private readonly partnerServiece: IParnterService,
     private readonly userProfileService: IUserProfileService,
-    private readonly chatRoomService: IChatService,
     private readonly paymentService: IPaymentSerivice,
-    private readonly messageService: IMessageService,
     private readonly planService: IPlanService,
     private readonly interestService: IFixedDataService
   ) {}
-  signup = async (req: Request, res: Response, next: NextFunction) => {
-    try {
-      const user: { token: string; refreshToken: string } =
-        await this.authService.signupFirstBatch(req.body);
-      res.setHeader("authorizationforuser", user?.refreshToken);
-      res
-        .status(HttpStatus.CREATED)
-        .json({
-          message: ResponseMessage.USER_CREATION_SUCCESS,
-          token: user?.token,
-        });
-    } catch (error: unknown) {
-      next(error);
-    }
-  };
+
   otpCreation = async (req: Request, res: Response, next: NextFunction) => {
     const { email, from } = req.body;
     if (from === "forgot") {
@@ -77,35 +57,7 @@ export class UserController implements IUserController {
       }
     }
   };
-  login = async (req: Request, res: Response, next: NextFunction) => {
-    const { email, password } = req.body;
-    try {
-      const response = await this.authService.login(email, password);
-      const {
-        token,
-        refresh,
-        name,
-        photo,
-        partner,
-        gender,
-        subscriptionStatus,
-      } = response;
-      res.setHeader("authorizationforuser", refresh);
 
-      res.status(HttpStatus.OK).json({
-        message: "password matched",
-        token,
-        refresh,
-        name,
-        photo,
-        partner,
-        gender,
-        subscriptionStatus,
-      });
-    } catch (error: unknown) {
-      next(error);
-    }
-  };
   fetchProfileData = async (
     req: Request,
     res: Response,
@@ -122,42 +74,24 @@ export class UserController implements IUserController {
       next(error);
     }
   };
-  forgotCheckValidate = async (
-    req: Request,
-    res: Response,
-    next: NextFunction
-  ): Promise<void> => {
-    try {
-      const response = await this.otpService.otpVerificationForForgot(
-        req.query.email,
-        "forgot"
-      );
-      if (response) {
-        res.json({ email: req.query.email });
-      } else {
-        res.status(HttpStatus.OK).json(response);
-      }
-    } catch (error) {
-      next(error);
-    }
-  };
-  forgotCheckValidateSigunp = async (
-    req: Request,
-    res: Response,
-    next: NextFunction
-  ): Promise<void> => {
-    try {
-      const { email } = req.body;
-      const isValid = await this.otpService.ForgetValidateEmail(email);
-      if (isValid) {
-        res.json({ email: isValid });
-      } else {
-        res.json(false);
-      }
-    } catch (error) {
-      next(error);
-    }
-  };
+    otpForResetPassword = async (
+          req: Request,
+          res: Response,
+          next: NextFunction
+        ) => {
+          try {
+            if (!userIDValidator(req.userID)) {
+              throw new AppError(ResponseMessage.ID_NOT_FOUND, 404);
+            }
+            const sentOtp = await this.otpService.otpDispatchingForEditProfile(
+              req.userID
+            );
+            res.json(sentOtp);
+          } catch (error) {
+            next(error);
+          }
+        };
+ 
   otpValidation = async (
     req: Request,
     res: Response,
@@ -176,23 +110,7 @@ export class UserController implements IUserController {
       next(error);
     }
   };
-  changePassword = async (
-    req: Request,
-    res: Response,
-    next: NextFunction
-  ): Promise<void> => {
-    try {
-      const { password, email } = req.body;
-      const isValid = await this.authService.passwordChange(email, password);
-      if (isValid) {
-        res.json({ message: "password changed" });
-      } else {
-        res.json({ message: "error on password" });
-      }
-    } catch (error) {
-      next(error);
-    }
-  };
+  
   secondBatch = async (
     req: Request,
     res: Response,
@@ -329,23 +247,7 @@ export class UserController implements IUserController {
       next(error);
     }
   };
-  otpForResetPassword = async (
-    req: Request,
-    res: Response,
-    next: NextFunction
-  ) => {
-    try {
-      if (!userIDValidator(req.userID)) {
-        throw new AppError(ResponseMessage.ID_NOT_FOUND, 404);
-      }
-      const sentOtp = await this.otpService.otpDispatchingForEditProfile(
-        req.userID
-      );
-      res.json(sentOtp);
-    } catch (error) {
-      next(error);
-    }
-  };
+
   otpForUserResetPassword = async (
     req: Request,
     res: Response,
@@ -365,25 +267,7 @@ export class UserController implements IUserController {
       next(error);
     }
   };
-  resetPassword = async (req: Request, res: Response, next: NextFunction) => {
-    try {
-      if (!userIDValidator(req.userID)) {
-        throw new AppError(ResponseMessage.ID_NOT_FOUND, 404);
-      }
-      const { password, confirmPassword } = req.body;
-      const response = await this.authService.changePasswordEditProfile(
-        password,
-        confirmPassword,
-        req.userID
-      );
-      res.json({ status: response });
-    } catch (error) {
-      if (error instanceof Error) {
-        const err = new AppError(error.message);
-        next(err);
-      }
-    }
-  };
+ 
   editProfile = async (req: Request, res: Response, next: NextFunction) => {
     try {
       const response = await this.userProfileService.updateProfile(
@@ -463,116 +347,7 @@ export class UserController implements IUserController {
       next(error);
     }
   };
-  getChats = async (req: Request, res: Response, next: NextFunction) => {
-    try {
-      const { id } = req.params;
 
-      if (!id) {
-        throw new Error(ResponseMessage.ID_NOT_FOUND);
-      }
-      const response = await this.chatRoomService.fetchChats(
-        id,
-        req.userID
-      );
-
-      res.json(response);
-    } catch (error) {
-      next(error);
-    }
-  };
-  createTexts = async (req: Request, res: Response, next: NextFunction) => {
-    try {
-      if (req.body.chatId === "") {
-        throw new Error(ResponseMessage.ID_NOT_FOUND);
-      }
-
-      const response = await this.chatRoomService.createMessage(
-        req.body.chatId,
-        req.body.senderIdString,
-        req.body.receiverId,
-        req.body.text,
-        req.body.image
-      );
-      res.json({ newMessage: response });
-    } catch (error) {
-      next(error);
-    }
-  };
-  getMessages = async (req: Request, res: Response, next: NextFunction) => {
-    try {
-      const { id } = req.params;
-
-      if (!id) {
-        throw new Error(ResponseMessage.ID_NOT_FOUND);
-      }
-      const response = await this.messageService.findAllMessage(id);
-      res.json(response);
-    } catch (error) {
-      next(error);
-    }
-  };
-  getUserForChat = async (req: Request, res: Response, next: NextFunction) => {
-    try {
-      const { id } = req.params;
-      if (!id) {
-        throw new Error(ResponseMessage.ID_NOT_FOUND);
-      }
-      const response = await this.chatRoomService.fetchUserForChat(id);
-     
-      res.json(response);
-    } catch (error) {
-      console.log(error)
-      next(error);
-    }
-  };
-  MsgCount = async (req: Request, res: Response) => {
-    try {
-      const response = await this.messageService.messageCount(
-        req.userID,
-        req.query.from
-      );
-      res.json(response);
-    } catch {
-      res.json({ count: 0 });
-    }
-  };
-  MessageViewed = async (req: Request, res: Response) => {
-    try {
-      const response = await this.messageService.makeAllUsersMessageReaded(
-        req.body.from,
-        req.body.ids
-      );
-      res.json({ status: response });
-    } catch {
-      res.json({ status: false });
-    }
-  };
-  saveImage = async (req: Request, res: Response) => {
-    try {
-      if (req.file && typeof req.file.path === "string") {
-        const getImgUrl = await this.messageService.createImageUrl(
-          req.file.path
-        );
-        res.json({ image: getImgUrl });
-      } else {
-        throw new Error(ResponseMessage.SERVER_ERROR);
-      }
-    } catch {
-      res.json({ status: false });
-    }
-  };
-  getNewToken = async (req: Request, res: Response, next: NextFunction) => {
-    try {
-      const response = await this.authService.getNewToken(req.body.refresh);
-      if (response) {
-        res.status(HttpStatus.OK).json({ token: response });
-      } else {
-        throw new Error("refresh token not found");
-      }
-    } catch (err) {
-      next(err);
-    }
-  };
   planHistoryAndRequest = async (req: Request, res: Response) => {
     try {
       const response = await this.userProfileService.planHistoryAndRequest(

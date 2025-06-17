@@ -5,7 +5,7 @@ import { PartnerProfileService } from "./services/implimentaion/partnersProfileS
 import { UserProfileService } from "./services/implimentaion/userProfileService.ts"
 import { MessageService } from "./services/implimentaion/messageService.ts"
 import { JWTAdapter } from "./utils/jwtAdapter.ts"
-import { AuthService } from "./services/implimentaion/userAuthenticationService.ts"
+import { AuthService } from "./services/implimentaion/userAuthService.ts"
 
 
 

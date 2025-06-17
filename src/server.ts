@@ -1,6 +1,6 @@
 import express from "express";
 import dotenv from "dotenv";
-import adminRoutes from "./routes/adminRoute.ts";
+import adminRoutes from "./routes/adminRoute/adminRoute.ts";
 import cors from "cors";
 import morgan from "morgan";
 import { createServer } from "http";
@@ -9,7 +9,7 @@ import { socketMethod } from "./socket.ts";
 import { JWTAdapter } from "./utils/jwtAdapter.ts";
 import { FixedDataService } from "./services/implimentaion/InterestAndFeaturesService.ts";
 import fs from 'fs'
-import userRoutes, { authService, messageService, partnerServiece, userProfileService } from './routes/userRoutes.ts'
+
 import cookieParser from "cookie-parser";
 const app = express();
 const server = createServer(app);
@@ -17,6 +17,9 @@ import { job } from "./utils/cronJobAdapter.ts";
 import { globalErrorHandler } from "./middlewares/errorHandlerMiddleware.ts";
 import { connectMongdb } from "./config/mongodbConfig.ts";
 import { FeaturesRepository, InterestRepo, TokenRepository } from "./repository/implimention/otherRepository.ts";
+import { authService, messageService, partnerServiece } from "./routes/userRoutes/index.ts";
+import userRoute from './routes/userRoutes/userRoutes.ts'
+import { userProfileService } from "./routes/adminRoute/index.ts";
 
 export const io = new Server(server, {
   cors: {
@@ -45,7 +48,7 @@ app.use(cors(corsOpetion));
 
 app.use(morgan("tiny"));
 
-app.use("/user", userRoutes);
+app.use("/user", userRoute);
 app.use("/admin", adminRoutes);
 
 
