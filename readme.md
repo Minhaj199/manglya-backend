@@ -75,6 +75,7 @@ npm install
 ### 4. Start the Server
 ```bash
 npm run build
+```
 
 ## . Mock payment card 
 ```bash
