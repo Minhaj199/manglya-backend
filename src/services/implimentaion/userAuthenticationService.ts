@@ -113,7 +113,7 @@ export class AuthService implements IAuthSevice {
               gender,
             },
             jwt_access_key,
-            { expiresIn: "15m" }
+            { expiresIn: "5m" }
           );
           const refreshToken = await this.jwtGenerator.createRefreshToken(
             { id: JSON.stringify(user._id), role: "user" },

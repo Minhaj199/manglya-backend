@@ -117,6 +117,7 @@ export class PartnerProfileService implements IParnterService {
         interest: interestArray[0].allInterests,
       };
     } catch (error) {
+      console.log(error)
       if (error instanceof Error) {
         throw new Error(error.message);
       } else {
@@ -154,7 +155,7 @@ export class PartnerProfileService implements IParnterService {
       if (typeof id !== "string") {
         return [];
       }
-      const formatedResponse: IExtentedMatchProfile[] = [];
+      const changedResponse: IExtentedMatchProfile[] = [];
       const Place: string[] = [];
       const response: IMatchedProfileType[] | [] =
         await this.userRepository.getMatchedRequest(id);
@@ -167,23 +168,25 @@ export class PartnerProfileService implements IParnterService {
           }
         }
         response?.forEach((element) => {
-          formatedResponse.push({
+          changedResponse.push({
             ...element,
             age: getAge(element.dateOfBirth),
           });
           if (!Place.includes(element.state)) Place.push(element.state);
         });
+        console.log(response)
         const { connectedParterns, Places, onlines } = new ParternDataChatList(
-          formatedResponse,
+          changedResponse,
           Place,
           online
         );
-
-        return { connectedParterns, Places, onlines };
+        
+        return {connectedParterns, Places, onlines };
       } else {
         return [];
       }
     } catch (error) {
+      console.log(error)
       if (error instanceof Error) {
         throw new Error(error.message);
       } else {

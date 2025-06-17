@@ -65,7 +65,7 @@ export interface IUserController {
   getChats(req: Request, res: Response, next: NextFunction): Promise<void>;
   createTexts(req: Request, res: Response, next: NextFunction): Promise<void>;
   getMessages(req: Request, res: Response, next: NextFunction): Promise<void>;
-  getuserForChat(
+  getUserForChat(
     req: Request,
     res: Response,
     next: NextFunction

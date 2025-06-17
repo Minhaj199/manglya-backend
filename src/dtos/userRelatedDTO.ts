@@ -45,6 +45,7 @@ export class UserDTO implements IUserDTO {
       match: user.match,
       subscriber: user.subscriber,
       CurrentPlan: user.CurrentPlan,
+      
     };
   }
 }
@@ -59,7 +60,7 @@ export class UserFetchData implements IUserFetchDataDTO {
       Email: this.user.email,
       subscriptionStatus: this.user.subscriber,
       currentPlan: this.user.CurrentPlan,
-      PartnerData: this.user.PersonalInfo,
+      PartnerData: this.user.partnerData,
     };
   }
 }

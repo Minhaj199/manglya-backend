@@ -1,4 +1,4 @@
-import { array, boolean, date, number, string, z } from "zod";
+import { array, boolean, number, string, z } from "zod";
 import { ResponseMessage } from "../../constrain/ResponseMessageContrain";
 
 ///////////////////user signup first batch data/////////////////
@@ -67,7 +67,7 @@ export const otpDtoSchema = z.object({
     .max(6, "number should be 6 digits"),
 });
 
-///////////pasword reset
+///////////pasword reset///////////
 const passwordRegex = new RegExp(process.env.PASSWORD_REGEX!);
 export const passwordResetDTOSchema = z
   .object({
@@ -129,6 +129,29 @@ export const secondBatchDtoSchema = z.object({
     }
   ),
 });
+
+
+///////////////////passowrd reset from profile update ////''
+export const passResetProfileDTOSchema = z
+  .object({
+    password: string({ required_error: "password required" }).refine(
+      (value) => passwordRegex.test(value),
+      {
+        message:
+          "passoword not strong please add Upper,lower cases,number and special charetors",
+        path: ["password"],
+      }
+    ),
+    confirmPassword: string({ required_error: "confirm password required" }),
+  })
+  .refine(
+    (data: { password: string; confirmPassword: string }) =>
+      data.password === data.confirmPassword,
+    {
+      message: "Passwords do not match",
+      path: ["confirmPassword"],
+    }
+  );
 
 ////////////////////// getting new token after expired
 export const acssTknRenualDTOSchema = z.object({
@@ -236,31 +259,28 @@ export const deleteMatchedUser = z.object({
 });
 
 ////////////// edit profile ///////
-
-export const udapteUserProfileDTOSchema = z.object({
-  PersonalInfo: z.object({
-    firstName: string({
-      required_error: "first name string type expected",
-    }).optional(),
-    secondName: string({
+const PersonalInfoSchema = z.object({
+  firstName: z.string({required_error: "first name string type expected"}).optional(),
+  secondName: z.string({
       required_error: "last name string type expected",
     }).optional(),
-    state: string({ required_error: "state string type expected" }).optional(),
-    gender: string({
-      required_error: "gender string type expected",
-    }).optional(),
-    dateOfBirth: date({
+  state: z.string({ required_error: "state string type expected" }).optional(),
+  gender: z.string().optional(),
+  dateOfBirth: z.string({
       required_error: "date of birth date type expected",
-    }).optional(),
-    image: string({ required_error: "image string type expected" }).optional(),
-    interest: array(
-      string({ required_error: "interest string type expected" })
-    ).optional(),
-    photo: string({ required_error: "photo string type expected" }).optional(),
-  }),
-  partnerData: z.object({ gender: string().optional() }),
-  email: string().email(),
-  subscriber: string({
-    required_error: "subscriber string type expected",
+    }).optional(), 
+  image: z.string({ required_error: "image string type expected" }).optional(),
+  interest: z.array(z.string()).nullable().optional(),
+  photo: z.any().nullable().optional(),
+}).partial();
+const PartnerDataSchema = z.object({
+  gender: z.string({ required_error: "paterner gender string type expected" }).optional(),
+}).partial();
+ export const ProfileUpdateSchema = z.object({
+  PersonalInfo: PersonalInfoSchema.optional(),
+  partnerData: PartnerDataSchema.optional(),
+  email: z.string().refine((val) => val === "" || /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(val), {
+    message: "Invalid email",
   }).optional(),
+  subscriber: z.string({ required_error: "subscriber string type expected" }).optional(),
 });

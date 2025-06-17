@@ -8,6 +8,7 @@ import {
 } from "../../types/TypesAndInterfaces.ts";
 import { IMessageRepository } from "../../repository/interface/IMessageRepository.ts";
 import { ResponseMessage } from "../../constrain/ResponseMessageContrain.ts";
+import { objectIdToString } from "../../utils/objectIdToString.ts";
 
 export class MessageService implements IMessageService {
   private messageRepo: IMessageRepository;
@@ -142,8 +143,19 @@ export class MessageService implements IMessageService {
     if (typeof id !== "string") {
       throw new Error("id not found");
     }
+    // [ '68506fe9fa31dbadd3bfeaef', '684fdab19950c8ce3ea68b15' ]
     try {
-      const ids = await this.userRepo.findPartnerIds(id);
+      let formatedIds: string[] = [];
+      
+      const rowIds=await this.userRepo.findPartnerIds(id);
+
+      if (rowIds?.length > 0) {
+          formatedIds= rowIds?.map((el) => {
+          return objectIdToString(el.match._id);
+        });
+      }
+       const ids:string[]=formatedIds
+
 
       const response = await this.messageRepo.findNewMessages(id, ids);
       return response;

@@ -1,12 +1,7 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
-
-//////////////any to be removed from ////////////findCurrentPlanAndRequests
 import { IUserRepository } from "../interface/IUserRepository.ts";
 import { Types, UpdateWriteOpResult } from "mongoose";
 import { planOrderModel } from "../../models/planOrderModel.ts";
-import { getDateFromAge } from "../../utils/getDateFromAge.ts";
 import BaseRepository from "./baseRepository.ts";
-import { objectIdToString } from "../../utils/objectIdToString.ts";
 import { UserModel } from "../../models/userModel.ts";
 import {
   ILandingShowUesrsInterface,
@@ -23,6 +18,7 @@ import {
   ISuggestion,
   IUserCurrentPlan,
 } from "../../types/TypesAndInterfaces.ts";
+import { ResponseMessage } from "../../constrain/ResponseMessageContrain.ts";
 
 export class UserRepsitories
   extends BaseRepository<IUserWithID>
@@ -41,7 +37,7 @@ export class UserRepsitories
       if (error instanceof Error) {
         throw new Error(error.message);
       } else {
-        throw new Error("unexptected error");
+        throw new Error(ResponseMessage.SERVER_ERROR);
       }
     }
   }
@@ -61,7 +57,7 @@ export class UserRepsitories
       if (error instanceof Error) {
         throw new Error(error.message);
       } else {
-        throw new Error("unexptected error");
+        throw new Error(ResponseMessage.SERVER_ERROR);
       }
     }
   }
@@ -80,7 +76,7 @@ export class UserRepsitories
       if (error instanceof Error) {
         throw new Error(error.message);
       } else {
-        throw new Error("unexptected error");
+        throw new Error(ResponseMessage.SERVER_ERROR);
       }
     }
   }
@@ -231,7 +227,7 @@ export class UserRepsitories
         if (error instanceof Error) {
         throw new Error(error.message);
       } else {
-        throw new Error("unexptected error");
+        throw new Error(ResponseMessage.SERVER_ERROR);
       }
         }
       } else if (action === "reject" && typeof userId === "string") {
@@ -318,172 +314,14 @@ export class UserRepsitories
       if (error instanceof Error) {
         throw new Error(error.message);
       } else {
-        throw new Error("unexptected error");
-      }
-    }
-  }
-  async getSearch(
-    data: string,
-    gender: string,
-    preferedGender: string
-  ): Promise<IProfileTypeFetch | []> {
-    try {
-      const datas: {
-        minAge: number;
-        maxAge: number;
-        district: string;
-        interest: string[];
-      } = JSON.parse(data);
-      if (datas.minAge > datas.maxAge) {
-        throw new Error("please enter a valid range");
-      }
-      const dates = getDateFromAge(datas.minAge, datas.maxAge);
-      if (datas.district && datas.interest.length !== 0) {
-        const responseDB: any = await UserModel.aggregate([
-          {
-            $match: {
-              $and: [
-                { "PersonalInfo.gender": preferedGender },
-                { "partnerData.gender": gender },
-                {
-                  "PersonalInfo.dateOfBirth": {
-                    $lte: dates.minAgeDate,
-                    $gte: dates.maxAgeDate,
-                  },
-                },
-                { "PersonalInfo.state": datas.district },
-                { "PersonalInfo.interest": { $all: datas.interest } },
-              ],
-            },
-          },
-          {
-            $project: {
-              name: "$PersonalInfo.firstName",
-              lookingFor: "$partnerData.gender",
-              secondName: "$PersonalInfo.secondName",
-              state: "$PersonalInfo.state",
-              gender: "$PersonalInfo.gender",
-              dateOfBirth: "$PersonalInfo.dateOfBirth",
-              interest: "$PersonalInfo.interest",
-              photo: "$PersonalInfo.image",
-              match: "$match",
-            },
-          },
-          { $sort: { _id: -1 } },
-        ]);
-        return responseDB;
-      } else if (!datas.district && datas.interest.length === 0) {
-        const responseDB: any = await UserModel.aggregate([
-          {
-            $match: {
-              $and: [
-                { "PersonalInfo.gender": preferedGender },
-                { "partnerData.gender": gender },
-                {
-                  "PersonalInfo.dateOfBirth": {
-                    $lte: dates.minAgeDate,
-                    $gte: dates.maxAgeDate,
-                  },
-                },
-              ],
-            },
-          },
-          {
-            $project: {
-              name: "$PersonalInfo.firstName",
-              lookingFor: "$partnerData.gender",
-              secondName: "$PersonalInfo.secondName",
-              state: "$PersonalInfo.state",
-              gender: "$PersonalInfo.gender",
-              dateOfBirth: "$PersonalInfo.dateOfBirth",
-              interest: "$PersonalInfo.interest",
-              photo: "$PersonalInfo.image",
-              match: "$match",
-            },
-          },
-          { $sort: { _id: -1 } },
-        ]);
-
-        return responseDB;
-      } else if (datas.district) {
-        const responseDB: any = await UserModel.aggregate([
-          {
-            $match: {
-              $and: [
-                {
-                  "PersonalInfo.dateOfBirth": {
-                    $lte: dates.minAgeDate,
-                    $gte: dates.maxAgeDate,
-                  },
-                },
-                { "PersonalInfo.state": datas.district },
-              ],
-            },
-          },
-          {
-            $project: {
-              name: "$PersonalInfo.firstName",
-              lookingFor: "$partnerData.gender",
-              secondName: "$PersonalInfo.secondName",
-              state: "$PersonalInfo.state",
-              gender: "$PersonalInfo.gender",
-              dateOfBirth: "$PersonalInfo.dateOfBirth",
-              interest: "$PersonalInfo.interest",
-              photo: "$PersonalInfo.image",
-              match: "$match",
-            },
-          },
-          { $sort: { _id: -1 } },
-        ]);
-
-        return responseDB;
-      } else if (datas.interest.length !== 0) {
-        const responseDB: any = await UserModel.aggregate([
-          {
-            $match: {
-              $and: [
-                { "PersonalInfo.gender": preferedGender },
-                { "partnerData.gender": gender },
-                {
-                  "PersonalInfo.dateOfBirth": {
-                    $lte: dates.minAgeDate,
-                    $gte: dates.maxAgeDate,
-                  },
-                },
-                { "PersonalInfo.interest": { $all: datas.interest } },
-              ],
-            },
-          },
-          {
-            $project: {
-              name: "$PersonalInfo.firstName",
-              lookingFor: "$partnerData.gender",
-              secondName: "$PersonalInfo.secondName",
-              state: "$PersonalInfo.state",
-              gender: "$PersonalInfo.gender",
-              dateOfBirth: "$PersonalInfo.dateOfBirth",
-              interest: "$PersonalInfo.interest",
-              photo: "$PersonalInfo.image",
-              match: "$match",
-            },
-          },
-          { $sort: { _id: -1 } },
-        ]);
-        return responseDB;
-      }
-      throw new Error("Error on search ");
-    } catch (error) {
-      if (error instanceof Error) {
-        throw new Error(error.message);
-      } else {
-        throw new Error("unexptected error");
+        throw new Error(ResponseMessage.SERVER_ERROR);
       }
     }
   }
   async findEmailByID(id: unknown): Promise<{ email: string }> {
     try {
       if (!id || typeof id !== "string") {
-        throw new Error("id not found");
+        throw new Error(ResponseMessage.ID_NOT_FOUND);
       }
       const changedId = id as string;
       const email: { email: string } | null = await UserModel.findById(
@@ -498,7 +336,7 @@ export class UserRepsitories
       if (error instanceof Error) {
         throw new Error(error.message);
       } else {
-        throw new Error("unexptected error");
+        throw new Error(ResponseMessage.SERVER_ERROR);
       }
     }
   }
@@ -514,7 +352,7 @@ export class UserRepsitories
       if (error instanceof Error) {
         throw new Error(error.message);
       } else {
-        throw new Error("unexptected error");
+        throw new Error(ResponseMessage.SERVER_ERROR);
       }
     }
   }
@@ -534,7 +372,7 @@ export class UserRepsitories
       if (error instanceof Error) {
         throw new Error(error.message);
       } else {
-        throw new Error("unexptected error");
+        throw new Error(ResponseMessage.SERVER_ERROR);
       }
     }
   }
@@ -563,7 +401,7 @@ export class UserRepsitories
       if (error instanceof Error) {
         throw new Error(error.message);
       } else {
-        throw new Error("unexptected error");
+        throw new Error(ResponseMessage.SERVER_ERROR);
       }
     }
   }
@@ -596,11 +434,11 @@ export class UserRepsitories
     };
   }
   async getMatchedRequest(id: string): Promise<IMatchedProfileType[] | []> {
-    const cropedId = id;
+  
 
     try {
       const profiles = await UserModel.aggregate([
-        { $match: { _id: new Types.ObjectId(cropedId) } },
+        { $match: { _id: new Types.ObjectId(id) } },
         { $project: { match: 1, _id: 0 } },
         { $unwind: "$match" },
         {
@@ -629,17 +467,13 @@ export class UserRepsitories
       if (error instanceof Error) {
         throw new Error(error.message);
       } else {
-        throw new Error("unexptected error");
+        throw new Error(ResponseMessage.SERVER_ERROR);
       }
     }
   }
   async deleteMatched(id: string, matched: string): Promise<boolean> {
     try {
-      const response: {
-        acknowledged: boolean;
-        modifiedCount: number;
-        matchedCount: number;
-      } = await UserModel.updateOne(
+      const response: UpdateWriteOpResult = await UserModel.updateOne(
         { _id: new Types.ObjectId(id) },
         { $pull: { match: { _id: matched } } }
       );
@@ -647,7 +481,7 @@ export class UserRepsitories
         { _id: new Types.ObjectId(matched) },
         { $pull: { match: { _id: id } } }
       );
-      if (response && response.acknowledged && response.modifiedCount === 1) {
+      if (response && response.acknowledged && response.modifiedCount>= 1) {
         return true;
       } else {
         throw new Error("not deleted");
@@ -656,7 +490,7 @@ export class UserRepsitories
       if (error instanceof Error) {
         throw new Error(error.message);
       } else {
-        throw new Error("unexptected error");
+        throw new Error(ResponseMessage.SERVER_ERROR);
       }
     }
   }
@@ -678,7 +512,7 @@ export class UserRepsitories
       if (error instanceof Error) {
         throw new Error(error.message);
       } else {
-        throw new Error("unexptected error");
+        throw new Error(ResponseMessage.SERVER_ERROR);
       }
     }
   }
@@ -722,6 +556,7 @@ export class UserRepsitories
                 },
               },
               { $sort: { _id: -1 } },
+              {$limit:3}
             ],
             request: [
               { $match: { _id: new Types.ObjectId(userId) } },
@@ -764,7 +599,7 @@ export class UserRepsitories
       if (error instanceof Error) {
         throw new Error(error.message);
       } else {
-        throw new Error("unexptected error");
+        throw new Error(ResponseMessage.SERVER_ERROR);
       }
     }
   }
@@ -783,7 +618,55 @@ export class UserRepsitories
       if (error instanceof Error) {
         throw new Error(error.message);
       } else {
-        throw new Error("unexptected error");
+        throw new Error(ResponseMessage.SERVER_ERROR);
+      }
+    }
+  }
+  async findCurrentPlanAndRequests(id: string) {
+    try {
+      const response: CurrentPlanType[] = await this.model.aggregate([
+        {
+          $facet: {
+            request: [
+              { $match: { _id: new Types.ObjectId(id) } },
+              { $project: { match: 1, _id: 0 } },
+              { $unwind: "$match" },
+              { $match: { "match.typeOfRequest": "send" } },
+              { $replaceRoot: { newRoot: "$match" } },
+              {
+                $lookup: {
+                  from: "users",
+                  localField: "_id",
+                  foreignField: "_id",
+                  as: "info",
+                },
+              },
+              {
+                $project: {
+                  status: "$status",
+                  typeOfRequest: "$typeOfRequest",
+                  name: { $arrayElemAt: ["$info.PersonalInfo.firstName", 0] },
+                },
+              },
+            ],
+            currertPlan: [
+              { $match: { _id: new Types.ObjectId(id) } },
+              { $project: { CurrentPlan: 1, _id: 0 } },
+            ],
+          },
+        },
+      ]);
+
+      const data = {request: response[0].request || [],plan: response[0]?.currertPlan[0].CurrentPlan
+          ? response[0]?.currertPlan[0].CurrentPlan
+          : [],
+      };
+      return data;
+    } catch (error) {
+      if (error instanceof Error) {
+        throw new Error(error.message);
+      } else {
+        throw new Error(ResponseMessage.SERVER_ERROR);
       }
     }
   }
@@ -810,7 +693,7 @@ export class UserRepsitories
       if (error instanceof Error) {
         throw new Error(error.message);
       } else {
-        throw new Error("unexptected error");
+        throw new Error(ResponseMessage.SERVER_ERROR);
       }
     }
   }
@@ -909,7 +792,7 @@ export class UserRepsitories
       if (error instanceof Error) {
         throw new Error(error.message);
       } else {
-        throw new Error("unexptected error");
+        throw new Error(ResponseMessage.SERVER_ERROR);
       }
     }
   }
@@ -920,10 +803,11 @@ export class UserRepsitories
       if (error instanceof Error) {
         throw new Error(error.message);
       } else {
-        throw new Error("unexptected error");
+        throw new Error(ResponseMessage.SERVER_ERROR);
       }
     }
   }
+  
   async createRequest(id: string): Promise<IRequestInterface[]> {
     try {
       const user = await UserModel.aggregate([
@@ -945,14 +829,12 @@ export class UserRepsitories
       if (error instanceof Error) {
         throw new Error(error.message);
       } else {
-        throw new Error("unexptected error");
+        throw new Error(ResponseMessage.ID_NOT_FOUND);
       }
     }
   }
-  async makePlanExpire() {
+  async makeUserPlanExpire(currentDate:Date) {
     try {
-      const currentDate = new Date();
-
       await this.model.updateMany(
         {
           subscriber: "subscribed",
@@ -964,7 +846,7 @@ export class UserRepsitories
       if (error instanceof Error) {
         throw new Error(error.message);
       } else {
-        throw new Error("unexptected error");
+        throw new Error(ResponseMessage.SERVER_ERROR);
       }
     }
   }
@@ -981,7 +863,7 @@ export class UserRepsitories
       if (error instanceof Error) {
         throw new Error(error.message);
       } else {
-        throw new Error("unexptected error");
+        throw new Error(ResponseMessage.SERVER_ERROR);
       }
     }
   }
@@ -1004,7 +886,7 @@ export class UserRepsitories
       if (error instanceof Error) {
         throw new Error(error.message);
       } else {
-        throw new Error("unexptected error");
+        throw new Error(ResponseMessage.SERVER_ERROR);
       }
     }
   }
@@ -1036,7 +918,7 @@ export class UserRepsitories
       if (error instanceof Error) {
         throw new Error(error.message);
       } else {
-        throw new Error("unexptected error");
+        throw new Error(ResponseMessage.SERVER_ERROR);
       }
     }
   }
@@ -1055,7 +937,7 @@ export class UserRepsitories
       if (error instanceof Error) {
         throw new Error(error.message);
       } else {
-        throw new Error("unexptected error");
+        throw new Error(ResponseMessage.SERVER_ERROR);
       }
     }
   }
@@ -1069,69 +951,14 @@ export class UserRepsitories
           { $match: { "match.status": "accepted" } },
           { $project: { "match._id": 1 } },
         ]);
-      let finalResult: string[] = [];
-      if (result?.length > 0) {
-        finalResult = result?.map((el) => {
-          return objectIdToString(el.match._id);
-        });
-      }
-      return finalResult;
+      return result;
     } catch (error) {
       if (error instanceof Error) {
         throw new Error(error.message);
       } else {
-        throw new Error("unexptected error");
+        throw new Error(ResponseMessage.SERVER_ERROR);
       }
     }
   }
-  async findCurrentPlanAndRequests(id: string) {
-    try {
-      const response: CurrentPlanType[] = await this.model.aggregate([
-        {
-          $facet: {
-            request: [
-              { $match: { _id: new Types.ObjectId(id) } },
-              { $project: { match: 1, _id: 0 } },
-              { $unwind: "$match" },
-              { $match: { "match.typeOfRequest": "send" } },
-              { $replaceRoot: { newRoot: "$match" } },
-              {
-                $lookup: {
-                  from: "users",
-                  localField: "_id",
-                  foreignField: "_id",
-                  as: "info",
-                },
-              },
-              {
-                $project: {
-                  status: "$status",
-                  typeOfRequest: "$typeOfRequest",
-                  name: { $arrayElemAt: ["$info.PersonalInfo.firstName", 0] },
-                },
-              },
-            ],
-            currertPlan: [
-              { $match: { _id: new Types.ObjectId(id) } },
-              { $project: { CurrentPlan: 1, _id: 0 } },
-            ],
-          },
-        },
-      ]);
-
-      const data = {
-        request: response[0].request || [],
-        plan: response[0]?.currertPlan[0].CurrentPlan
-          ? response[0]?.currertPlan[0].CurrentPlan
-          : [],
-      };
-      return data;
-    } catch (error) {
-      if (error instanceof Error) {
-        throw new Error(error.message);
-      } else {
-        throw new Error("unexptected error");
-      }
-    }
-  }
+  
 }

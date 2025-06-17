@@ -75,6 +75,7 @@ export type PersonalInfoWithAge = Omit<User, "PersonalInfo" | "password"> & {
   };
 };
 
+
 export type DataToBeUpdatedType = {
   PersonalInfo: {
     _id: string;

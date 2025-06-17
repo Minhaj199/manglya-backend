@@ -19,6 +19,7 @@ export const globalErrorHandler: ErrorRequestHandler = (
     body: req.body,
     time: new Date().toISOString(),
   });
+  console.log(err)
   if (err instanceof AppError) {
     res.status(HttpStatus.INTERNAL_SERVER_ERROR).json({ message: err.message });
     return;

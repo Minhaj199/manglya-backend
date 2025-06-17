@@ -87,7 +87,7 @@ export class ChatService implements IChatService {
       };
       const createdMessage = await this.messageService.createMessage(rowdata);
       const { message } = new MessageDTO(createdMessage);
-      return { ...message };
+      return message ;
     } catch (error) {
       if (error instanceof Error) {
         throw new Error(error.message);
@@ -98,9 +98,11 @@ export class ChatService implements IChatService {
   }
   async fetchUserForChat(id: string) {
     try {
+   
       if (!id) {
         throw new AppError(ResponseMessage.ID_NOT_FOUND, 404);
       }
+   
       const userData = await this.userRepo.getUserProfile(id);
       return {
         name: userData.PersonalInfo.firstName

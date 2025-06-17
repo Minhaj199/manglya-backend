@@ -1,6 +1,7 @@
 import {User, UserLinsting} from '../../types/UserRelatedTypes.ts'
 import { CurrentPlanReturnType, IAdminPlanType, IFindCurrentPlanAndRequests, IMatchedProfileType, IPlanOrder, IProfileTypeFetch, IRequestInterface, ISuggestion, IUserCurrentPlan } from "../../types/TypesAndInterfaces.ts";
 import { ILandingShowUesrsInterface, IUserWithID,  UpdatedData } from "../../types/UserRelatedTypes.ts";
+import { Types } from 'mongoose';
 
 
 
@@ -14,7 +15,6 @@ export interface IUserRepository{
     addMatch(userId:string,matchedId:string,user:IUserWithID):Promise<boolean>
     manageReqRes(requesterId:string,userId:string,action:string):Promise<boolean>
     getUsers():Promise<ILandingShowUesrsInterface[]|[]>
-    getSearch(data:string,gender:string,preferedGender:string):Promise<IProfileTypeFetch|[]>
     findEmailByID(id:unknown):Promise<{email:string}>
     getUserProfile(id:string):Promise<IUserWithID>
     getDashCount():Promise<{subscriberGroups:{ _id:string, count:number}[],totalCount:number}>
@@ -29,12 +29,12 @@ export interface IUserRepository{
     fetchSuggetions(id:string,gender:string,partnerPreference:string):Promise<{profile:ISuggestion[]|[],request:IProfileTypeFetch|[],userProfile:IUserWithID[]|[]}[]>
     createRequest(id:string):Promise<IRequestInterface[]>
     findEmail(email:string):Promise<IUserWithID|null>
-    makePlanExpire():Promise<void>
+    makeUserPlanExpire(currentDate:Date):Promise<void>
     fetchName(id:string):Promise<string>
     fetchUserDataForAdmin(): Promise<UserLinsting>
     fetchSubscriber():Promise<IAdminPlanType[]|[]>
     blockAndUnblockUser(id:string,action:boolean):Promise<boolean>
-    findPartnerIds(id: string): Promise<string[]>
+    findPartnerIds(id: string): Promise< { match: { _id:Types.ObjectId }}[]>
     findCurrentPlanAndRequests(id: string): Promise<{
         request: IFindCurrentPlanAndRequests[]
         plan:CurrentPlanReturnType

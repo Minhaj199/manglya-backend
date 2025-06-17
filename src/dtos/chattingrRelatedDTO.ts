@@ -38,6 +38,7 @@ export class MessageDTO implements IMessageDTO {
   message: IMessageOuput;
   constructor(private rowMessage: IMessageRow) {
     this.message = {
+      _id:rowMessage._id as string,
       chatRoomId: this.rowMessage.chatRoomId,
       senderId: this.rowMessage.senderId,
       receiverId: this.rowMessage.receiverId,

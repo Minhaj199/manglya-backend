@@ -3,6 +3,7 @@ import { IMessageRepository } from "../interface/IMessageRepository.ts";
 import { IMessage, IMessageRow } from "../../types/TypesAndInterfaces.ts";
 import { messageModel } from "../../models/messageModel.ts";
 import BaseRepository from "./baseRepository.ts";
+import { ResponseMessage } from "../../constrain/ResponseMessageContrain.ts";
 
 export class MessageRepository
   extends BaseRepository<IMessageRow>
@@ -22,7 +23,7 @@ export class MessageRepository
       if (error instanceof Error) {
         throw new Error(error.message);
       } else {
-        throw new Error("unexptected error");
+        throw new Error(ResponseMessage.SERVER_ERROR);
       }
     }
   }
@@ -38,7 +39,7 @@ export class MessageRepository
       if (error instanceof Error) {
         throw new Error(error.message);
       } else {
-        throw new Error("unexptected error");
+        throw new Error(ResponseMessage.SERVER_ERROR);
       }
     }
   }
@@ -138,7 +139,7 @@ export class MessageRepository
       if (error instanceof Error) {
         throw new Error(error.message);
       } else {
-        throw new Error("unexptected error");
+        throw new Error(ResponseMessage.SERVER_ERROR);
       }
     }
   }

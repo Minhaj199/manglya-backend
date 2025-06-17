@@ -46,11 +46,11 @@ import {
   messageViewedDTOSchema,
   otpCreationDtoSchema,
   otpDtoSchema,
+  passResetProfileDTOSchema,
   passwordResetDTOSchema,
   purchasePlanDTOSchema,
   reportAbuserUserDTOSchema,
   secondBatchDtoSchema,
-  udapteUserProfileDTOSchema,
 } from "../dtos/validator/userDTOs.ts";
 
 const router = Router();
@@ -206,7 +206,7 @@ router.post(
 );
 router.patch(
   "/resetPassword",
-  dtoValidate(passwordResetDTOSchema),
+  dtoValidate(passResetProfileDTOSchema),
   userJwtAuthenticator,
   userController.resetPassword
 );
@@ -219,7 +219,7 @@ router.delete(
 );
 router.put(
   "/editProfile",
-  dtoValidate(udapteUserProfileDTOSchema),
+ 
   userJwtAuthenticator,
   upload.single("file"),
   userController.editProfile
@@ -253,7 +253,7 @@ router.get(
 router.get(
   "/userForChat/:id",
   userJwtAuthenticator,
-  userController.getuserForChat
+  userController.getUserForChat
 );
 router.get(
   "/countMessages",

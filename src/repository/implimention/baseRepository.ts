@@ -1,6 +1,7 @@
 import { Document, Model } from "mongoose";
 import { IBaseRepository } from "../interface/IOtherRepositories.ts";
 import { isMongoDuplicateError } from "../../utils/mongoDuplcateErrorFinder.ts";
+import { ResponseMessage } from "../../constrain/ResponseMessageContrain.ts";
 
 export default abstract class BaseRepository<T extends Document>
   implements IBaseRepository
@@ -19,7 +20,7 @@ export default abstract class BaseRepository<T extends Document>
           throw new Error(error.message || "Error on data fetching");
         }
       } else {
-        throw new Error("Error on data fetching");
+        throw new Error(ResponseMessage.SERVER_ERROR);
       }
     }
   }

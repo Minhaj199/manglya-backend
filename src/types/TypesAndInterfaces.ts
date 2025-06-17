@@ -212,6 +212,7 @@ export interface IChatRoom extends Document {
   members: Types.ObjectId[];
 }
 export interface IMessageOuput {
+  _id:string,
   chatRoomId: Types.ObjectId;
   senderId: Types.ObjectId;
   receiverId: Types.ObjectId;

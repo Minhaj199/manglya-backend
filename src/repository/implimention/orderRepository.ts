@@ -3,6 +3,7 @@ import { IPurchasedPlan } from "../interface/IOtherRepositories.ts";
 import { IPlanOrder, PlanOrderMongo } from "../../types/TypesAndInterfaces.ts";
 import { planOrderModel } from "../../models/planOrderModel.ts";
 import BaseRepository from "./baseRepository.ts";
+import { ResponseMessage } from "../../constrain/ResponseMessageContrain.ts";
 
 export class PurchasedPlanRepository
   extends BaseRepository<PlanOrderMongo>
@@ -31,7 +32,7 @@ export class PurchasedPlanRepository
       if (error instanceof Error) {
         throw new Error(error.message);
       } else {
-        throw new Error("unexptected error");
+        throw new Error(ResponseMessage.SERVER_ERROR);
       }
     }
   }
@@ -47,7 +48,7 @@ export class PurchasedPlanRepository
       if (error instanceof Error) {
         throw new Error(error.message);
       } else {
-        throw new Error("unexptected error");
+        throw new Error(ResponseMessage.SERVER_ERROR);
       }
     }
   }

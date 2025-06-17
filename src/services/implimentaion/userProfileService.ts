@@ -18,6 +18,8 @@ import { IPlanService } from "../interfaces/IPlanService.ts";
 import { AppError } from "../../types/customErrorClass.ts";
 import { UserFetchData, UserInfoDTO } from "../../dtos/userRelatedDTO.ts";
 import { SubscriberPlanDTO } from "../../dtos/planRelatedDTO.ts";
+import { zodDataValidator } from "../../utils/zodDataValidator.ts";
+import { ProfileUpdateSchema} from "../../dtos/validator/userDTOs.ts";
 
 export class UserProfileService implements IUserProfileService {
   constructor(
@@ -63,6 +65,7 @@ export class UserProfileService implements IUserProfileService {
     try {
       if (typeof id === "string") {
         const data: IUserWithID = await this.userRepository.getUserProfile(id);
+        console.log(data)
         return new UserFetchData(data);
       } else {
         throw new Error("id not found-");
@@ -101,21 +104,21 @@ export class UserProfileService implements IUserProfileService {
     if (data.partnerData.gender !== "")
       updateData["partnerData.gender"] = data.partnerData.gender;
     if (data.email !== "") updateData["email"] = data.email;
-
+  console.log(data)
     try {
       if (Object.keys(updateData).length) {
         const data: IUserWithID = await this.userRepository.update(
           updateData,
           id
         );
-
+  
         const token: string = this.authService.regenerateToken(
           JSON.stringify(data._id),
           "user",
           data.partnerData?.gender,
           data.PersonalInfo?.gender
         );
-
+  
         if (data._id) {
           const useFullData: IuserProfileReturnType = {
             PersonalInfo: {
@@ -274,14 +277,17 @@ export class UserProfileService implements IUserProfileService {
       ) {
         const email = await this.fetchUserByID(userID);
         await this.uploadPhoto(file.path, email);
+        
         const updateDetail = await this.updateEditedData(
           JSON.parse(data),
           userID
         );
         return { status: true, newData: updateDetail };
       } else {
+        const parsedData=JSON.parse(data)
+        const validate:DataToBeUpdatedType=zodDataValidator(parsedData,ProfileUpdateSchema)
         const updateDetail = await this.updateEditedData(
-          JSON.parse(data),
+          validate,
           userID
         );
 
@@ -292,6 +298,7 @@ export class UserProfileService implements IUserProfileService {
         }
       }
     } catch (error) {
+      console.log(error)
       if (error instanceof Error) {
         throw new Error(error.message);
       } else {

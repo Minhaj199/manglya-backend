@@ -53,10 +53,14 @@ export const userJwtAuthenticator = async (
         typeof refresh === "string" &&
         error.message === "jwt expired"
       ) {
-        res.status(400).json("access token expired");
+        console.log('55')
+
+        res.status(402).json("access token expired");
         return;
       }
       if (error instanceof Error && "TokenExpiredError" in error) {
+        console.log('60')
+        
         res.status(400).json({
           message:
             error?.TokenExpiredError || "validation Faild,please log out",
@@ -64,6 +68,7 @@ export const userJwtAuthenticator = async (
         });
         return;
       } else {
+        console.log('67')
         res
           .status(400)
           .json({ message: "validation Faild,please log out", status: 400 });

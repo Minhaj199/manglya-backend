@@ -465,13 +465,13 @@ export class UserController implements IUserController {
   };
   getChats = async (req: Request, res: Response, next: NextFunction) => {
     try {
-      const { userId } = req.params;
+      const { id } = req.params;
 
-      if (!userId) {
+      if (!id) {
         throw new Error(ResponseMessage.ID_NOT_FOUND);
       }
       const response = await this.chatRoomService.fetchChats(
-        userId,
+        id,
         req.userID
       );
 
@@ -500,27 +500,28 @@ export class UserController implements IUserController {
   };
   getMessages = async (req: Request, res: Response, next: NextFunction) => {
     try {
-      const { userId } = req.params;
+      const { id } = req.params;
 
-      if (!userId) {
+      if (!id) {
         throw new Error(ResponseMessage.ID_NOT_FOUND);
       }
-      const response = await this.messageService.findAllMessage(userId);
+      const response = await this.messageService.findAllMessage(id);
       res.json(response);
     } catch (error) {
       next(error);
     }
   };
-  getuserForChat = async (req: Request, res: Response, next: NextFunction) => {
+  getUserForChat = async (req: Request, res: Response, next: NextFunction) => {
     try {
-      const { userId } = req.params;
-
-      if (!userId) {
+      const { id } = req.params;
+      if (!id) {
         throw new Error(ResponseMessage.ID_NOT_FOUND);
       }
-      const response = await this.chatRoomService.fetchUserForChat(userId);
+      const response = await this.chatRoomService.fetchUserForChat(id);
+     
       res.json(response);
     } catch (error) {
+      console.log(error)
       next(error);
     }
   };

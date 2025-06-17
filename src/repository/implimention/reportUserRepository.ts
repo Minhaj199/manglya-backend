@@ -3,6 +3,7 @@ import { IReportAbuserRepository } from "../interface/IAbuseRepository.ts";
 import { IAbuserMongoDoc } from "../../types/TypesAndInterfaces.ts";
 import { reportUser } from "../../models/reportedUserModel.ts";
 import BaseRepository from "./baseRepository.ts";
+import { ResponseMessage } from "../../constrain/ResponseMessageContrain.ts";
 
 export class ReportUserRepository
   extends BaseRepository<IAbuserMongoDoc>
@@ -17,16 +18,14 @@ export class ReportUserRepository
     partnerId: string
   ): Promise<IAbuserMongoDoc | null> {
     try {
-      return await this.model.findOne({
-        reporter: new Types.ObjectId(id),
-        reported: new Types.ObjectId(partnerId),
+      return await this.model.findOne({reporter: new Types.ObjectId(id),reported: new Types.ObjectId(partnerId),
         reason: reason,
       });
     } catch (error) {
       if (error instanceof Error) {
         throw new Error(error.message);
       } else {
-        throw new Error("unexptected error");
+        throw new Error(ResponseMessage.SERVER_ERROR);
       }
     }
   }
@@ -42,7 +41,7 @@ export class ReportUserRepository
       if (error instanceof Error) {
         throw new Error(error.message);
       } else {
-        throw new Error("unexptected error");
+        throw new Error(ResponseMessage.SERVER_ERROR);
       }
     }
   }
@@ -59,7 +58,7 @@ export class ReportUserRepository
       if (error instanceof Error) {
         throw new Error(error.message);
       } else {
-        throw new Error("unexptected error");
+        throw new Error(ResponseMessage.SERVER_ERROR);
       }
     }
   }
@@ -83,7 +82,7 @@ export class ReportUserRepository
       if (error instanceof Error) {
         throw new Error(error.message);
       } else {
-        throw new Error("unexptected error");
+        throw new Error(ResponseMessage.SERVER_ERROR);
       }
     }
   }

@@ -7,6 +7,7 @@ import {
 } from "../../types/TypesAndInterfaces.ts";
 import { chatModel } from "../../models/chatModel.ts";
 import BaseRepository from "./baseRepository.ts";
+import { ResponseMessage } from "../../constrain/ResponseMessageContrain.ts";
 
 export class ChatRoomRepository
   extends BaseRepository<IChatRoom>
@@ -31,7 +32,7 @@ export class ChatRoomRepository
       if (error instanceof Error) {
         throw new Error(error.message);
       } else {
-        throw new Error("unexptected error");
+        throw new Error(ResponseMessage.SERVER_ERROR);
       }
     }
   }
@@ -47,7 +48,7 @@ export class ChatRoomRepository
       if (error instanceof Error) {
         throw new Error(error.message);
       } else {
-        throw new Error("unexptected error");
+        throw new Error(ResponseMessage.SERVER_ERROR);
       }
     }
   }
@@ -85,7 +86,7 @@ export class ChatRoomRepository
       if (error instanceof Error) {
         throw new Error(error.message);
       } else {
-        throw new Error("unexptected error");
+        throw new Error(ResponseMessage.SERVER_ERROR);
       }
     }
   }

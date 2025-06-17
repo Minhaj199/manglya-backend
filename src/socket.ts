@@ -115,7 +115,7 @@ export const socketMethod=(socket:Socket,partnerService:PartnerProfileService,us
         chatId:string    
       })=>{
        try {
-       
+       console.log('socket')
            const receiver=socketIdMap.get(data.receiverId)
            const senderId=jwtService.verifyRefreshToken(data.senderId,'user')
            if(receiver&&senderId){
