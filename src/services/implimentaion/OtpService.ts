@@ -55,9 +55,12 @@ export class OtpService implements IOtpService {
       }
     }
   }
-  async otpVerificationForForgot(email: unknown, from: string) {
+  async otpVerificationForForgot(email: unknown, from: unknown) {
     try {
       if (!email || typeof email !== "string") {
+        throw new Error("Email not found");
+      }
+      if (!from || typeof from !== "string") {
         throw new Error("Email not found");
       }
       const isValid = await this.ForgetValidateEmail(email);

@@ -6,10 +6,12 @@ import { IJwtService, IUserWithID } from "../../types/UserRelatedTypes.ts";
 import { IUserRepository } from "../../repository/interface/IUserRepository.ts";
 import { IFirstBatch } from "../../types/UserRelatedTypes.ts";
 import { ResponseMessage } from "../../constrain/ResponseMessageContrain.ts";
+import { HttpStatus } from "../../constrain/statusCodeContrain.ts";
+import { AppError } from "../../types/customErrorClass.ts";
 
 dotEnv.config();
 
-///////////////checking completed/////////////////
+
 
 export class AuthService implements IAuthSevice {
   private bcryptAdapter: IBcryptAdapter;
@@ -238,7 +240,7 @@ export class AuthService implements IAuthSevice {
   async getNewToken(refreshToken: string) {
     try {
       if (typeof refreshToken !== "string") {
-        throw new Error("token not found");
+         throw new AppError('refresh token not found',HttpStatus.UNAUTHORIZED);
       }
       const extractId = this.jwtGenerator.verifyRefreshToken(
         refreshToken,
@@ -268,9 +270,9 @@ export class AuthService implements IAuthSevice {
       }
     } catch (error) {
       if (error instanceof Error) {
-        throw new Error(error.message);
+        throw new AppError(error.message,HttpStatus.UNAUTHORIZED);
       } else {
-        throw new Error("unexptected error");
+        throw new Error(ResponseMessage.SERVER_ERROR);
       }
     }
   }

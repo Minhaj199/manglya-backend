@@ -18,11 +18,6 @@ import {
 import { Types } from "mongoose";
 
 export interface ISuggestionRepository {
-  fetchPartnerProfils(
-    userId: string,
-    userGender: string,
-    partnerGender: string
-  ): Promise<{ profile: IProfileTypeFetch; request: IProfileTypeFetch }[]>;
   fetchSuggetions(
     id: string,
     gender: string,
@@ -42,6 +37,11 @@ export interface IUserProfileRepository {
   updateInterest(interest: string[], email: string): Promise<boolean>;
   fetchUserProfile(id: string): Promise<IUserWithID>;
   fetchName(id: string): Promise<string>;
+  fetchPartnerProfils(
+    userId: string,
+    userGender: string,
+    partnerGender: string
+  ): Promise<{ profile: IProfileTypeFetch; request: IProfileTypeFetch }[]>;
 }
 export interface IMatchRepository {
   addMatch(

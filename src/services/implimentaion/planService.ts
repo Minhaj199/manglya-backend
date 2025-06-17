@@ -5,6 +5,7 @@ import { IPlanRepository } from "../../repository/interface/IPlanRepository.ts";
 import { IPurchasedPlan } from "../../repository/interface/IOtherRepositories.ts";
 import { PlanDTO } from "../../dtos/planRelatedDTO.ts";
 import { AppError } from "../../types/customErrorClass.ts";
+import { ResponseMessage } from "../../constrain/ResponseMessageContrain.ts";
 
 export class PlanService implements IPlanService {
   private planRepo: IPlanRepository;
@@ -21,7 +22,7 @@ export class PlanService implements IPlanService {
       if (error instanceof Error) {
         throw new Error(error.message);
       } else {
-        throw new Error("unexptected error");
+        throw new Error(ResponseMessage.SERVER_ERROR);
       }
     }
   }
@@ -39,7 +40,7 @@ export class PlanService implements IPlanService {
       if (error instanceof Error) {
         throw new Error(error.message);
       } else {
-        throw new Error("unexptected error");
+        throw new Error(ResponseMessage.SERVER_ERROR);
       }
     }
   }
@@ -50,7 +51,7 @@ export class PlanService implements IPlanService {
       if (error instanceof Error) {
         throw new Error(error.message);
       } else {
-        throw new Error("unexptected error");
+        throw new Error(ResponseMessage.SERVER_ERROR);
       }
     }
   }
@@ -64,7 +65,7 @@ export class PlanService implements IPlanService {
       if (error instanceof Error) {
         throw new Error(error.message);
       } else {
-        throw new Error("unexptected error");
+        throw new Error(ResponseMessage.SERVER_ERROR);
       }
     }
   }
@@ -76,7 +77,7 @@ export class PlanService implements IPlanService {
       if (error instanceof Error) {
         throw new Error(error.message);
       } else {
-        throw new Error("unexptected error");
+        throw new Error(ResponseMessage.SERVER_ERROR);
       }
     }
   }

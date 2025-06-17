@@ -1,6 +1,6 @@
 export const getAge = (birthDate: Date) => {
   const currentDate = new Date();
-  let year: number = birthDate.getFullYear() - currentDate.getFullYear();
+  let year: number = currentDate.getFullYear()-birthDate.getFullYear();
   if (
     currentDate.getMonth() < birthDate.getMonth() ||
     (currentDate.getMonth() === birthDate.getMonth() &&
@@ -8,5 +8,6 @@ export const getAge = (birthDate: Date) => {
   ) {
     year--;
   }
-  return Math.abs(year);
+
+  return year;
 };

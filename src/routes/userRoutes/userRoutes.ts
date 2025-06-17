@@ -6,7 +6,6 @@ import {
   acssTknRenualValidator,
   addMatchValidator,
   createTextsValidator,
-  deleteMatchedUser,
   emailValidator,
   firstBatchDataValidator,
   fromValidatorValidator,
@@ -115,8 +114,7 @@ router.patch(
 );
 
 router.delete(
-  "/deleteMatched",
-  dtoValidate(deleteMatchedUser),
+  "/deleteMatched/:id",
   userJwtAuthenticator,
   userController.deleteMatched
 );

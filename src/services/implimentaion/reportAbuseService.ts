@@ -48,7 +48,7 @@ export class ReportAbuseService implements IReportAbuseService {
     moreInfo: string
   ) {
     try {
-      if (!userIDValidator(userId) && typeof reporedId === "string") {
+      if (userIDValidator(userId) && typeof reporedId === "string") {
         const isDuplicate = await this.checkingDupliacateComplaint(
           userId as string,
           reason,

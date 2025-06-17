@@ -3,6 +3,8 @@ import { TokenRepository } from '../repository/implimention/otherRepository.ts'
 import { Types } from 'mongoose'
 import { IJwtService } from '../types/UserRelatedTypes.ts'
 import { IJwtInterface } from '../types/TypesAndInterfaces.ts'
+import { AppError } from '../types/customErrorClass.ts'
+import { HttpStatus } from '../constrain/statusCodeContrain.ts'
 
 
 
@@ -77,7 +79,7 @@ export class JWTAdapter implements IJwtService{
             }  
         } catch (error) {
       if (error instanceof Error) {
-        throw new Error(error.message);
+        throw new AppError(error.message,HttpStatus.UNAUTHORIZED);
       } else {
         throw new Error("unexptected error");
       }

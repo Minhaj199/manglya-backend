@@ -8,7 +8,10 @@ export function userIDValidator(id:unknown){
             throw new Error('user id not found')
         }
         const parsedId=id as string
-        return Types.ObjectId.isValid(parsedId)
+        
+        const data=Types.ObjectId.isValid(parsedId)
+        
+        return data
     } catch  {
         throw new AppError('id not found',404)
     }

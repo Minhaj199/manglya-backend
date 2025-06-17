@@ -66,7 +66,6 @@ export class UserProfileService implements IUserProfileService {
     try {
       if (typeof id === "string") {
         const data: IUserWithID = await this.userProfileRepo.fetchUserProfile(id);
-        console.log(data)
         return new UserFetchData(data);
       } else {
         throw new Error("id not found-");
@@ -105,7 +104,7 @@ export class UserProfileService implements IUserProfileService {
     if (data.partnerData.gender !== "")
       updateData["partnerData.gender"] = data.partnerData.gender;
     if (data.email !== "") updateData["email"] = data.email;
-  console.log(data)
+ 
     try {
       if (Object.keys(updateData).length) {
         const data: IUserWithID = await this.userProfileRepo.update(
@@ -299,7 +298,7 @@ export class UserProfileService implements IUserProfileService {
         }
       }
     } catch (error) {
-      console.log(error)
+    
       if (error instanceof Error) {
         throw new Error(error.message);
       } else {

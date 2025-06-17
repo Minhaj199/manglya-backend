@@ -21,7 +21,7 @@ export const globalErrorHandler: ErrorRequestHandler = (
     time: new Date().toISOString(),
   });
   if (err instanceof AppError) {
-    res.status(HttpStatus.INTERNAL_SERVER_ERROR).json({ message: err.message });
+    res.status(err.statusCode||HttpStatus.INTERNAL_SERVER_ERROR).json({ message: err.message });
     return;
   }
   if (err instanceof Error && "code" in err && err.code === 11000) {
@@ -36,7 +36,7 @@ export const globalErrorHandler: ErrorRequestHandler = (
   }
   if (err instanceof Error) {
     res
-      .status(500)
+      .status(HttpStatus.BAD_REQUEST)
       .json({ message: err.message ||ResponseMessage.SERVER_ERROR });
     return;
   }

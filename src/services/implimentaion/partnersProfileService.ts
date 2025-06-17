@@ -85,7 +85,7 @@ export class PartnerProfileService implements IParnterService {
       const datas: {
         profile: IProfileTypeFetch;
         request: IProfileTypeFetch;
-      }[] = await this.suggetionRepo.fetchPartnerProfils(
+      }[] = await this.userProfileRepo.fetchPartnerProfils(
         userId,
         userGender,
         partnerGender
@@ -117,7 +117,6 @@ export class PartnerProfileService implements IParnterService {
         interest: interestArray[0].allInterests,
       };
     } catch (error) {
-      console.log(error)
       if (error instanceof Error) {
         throw new Error(error.message);
       } else {
@@ -174,7 +173,6 @@ export class PartnerProfileService implements IParnterService {
           });
           if (!Place.includes(element.state)) Place.push(element.state);
         });
-        console.log(response)
         const { connectedParterns, Places, onlines } = new ParternDataChatList(
           changedResponse,
           Place,
@@ -186,7 +184,6 @@ export class PartnerProfileService implements IParnterService {
         return [];
       }
     } catch (error) {
-      console.log(error)
       if (error instanceof Error) {
         throw new Error(error.message);
       } else {

@@ -14,6 +14,10 @@ import { adminJwtAuthenticator } from "../../middlewares/jwtAdminMiddleware.ts";
 
 const router = Router();
 
+
+
+router.post('/login',adminController.login)
+
 //fetch data to user table
 router.get("/fetchUserData", adminJwtAuthenticator, adminController.fetchData);
 router.get(
@@ -29,6 +33,7 @@ router.post(
 );
 router.patch(
   "/block&Unblock/:id",
+  adminJwtAuthenticator,
   dtoValidate(blockAndUnblockValidator),
   adminController.userBlockAndUnblock
 );

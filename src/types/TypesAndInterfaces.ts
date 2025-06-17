@@ -13,10 +13,12 @@ export interface IAbuserReport {
   block: boolean;
   rejected: boolean;
 }
-export interface IAbuserMongoDoc extends IAbuserReport, Document {
+export interface IReportAbuserMongoDoc extends IAbuserReport, Document {
   createdAt: Date;
 }
-
+export interface IReportAbuseOutput extends IAbuserReport{
+   createdAt: Date;
+}
 ////////////////////partner realted//////////////////
 export type IMatchedProfileType = {
   _id: string;

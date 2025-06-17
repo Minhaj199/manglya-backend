@@ -1,12 +1,12 @@
 import { Types } from "mongoose";
 import { IReportAbuserRepository } from "../interface/IAbuseRepository.ts";
-import { IAbuserMongoDoc } from "../../types/TypesAndInterfaces.ts";
+import { IReportAbuserMongoDoc } from "../../types/TypesAndInterfaces.ts";
 import { reportUser } from "../../models/reportedUserModel.ts";
 import BaseRepository from "./baseRepository.ts";
 import { ResponseMessage } from "../../constrain/ResponseMessageContrain.ts";
 
 export class ReportUserRepository
-  extends BaseRepository<IAbuserMongoDoc>
+  extends BaseRepository<IReportAbuserMongoDoc>
   implements IReportAbuserRepository
 {
   constructor() {
@@ -16,7 +16,7 @@ export class ReportUserRepository
     id: string,
     reason: string,
     partnerId: string
-  ): Promise<IAbuserMongoDoc | null> {
+  ): Promise<IReportAbuserMongoDoc | null> {
     try {
       return await this.model.findOne({reporter: new Types.ObjectId(id),reported: new Types.ObjectId(partnerId),
         reason: reason,
@@ -29,7 +29,7 @@ export class ReportUserRepository
       }
     }
   }
-  async fetchMessages(): Promise<IAbuserMongoDoc[] | []> {
+  async fetchMessages(): Promise<IReportAbuserMongoDoc[] | []> {
     try {
       const response = await this.model
         .find()

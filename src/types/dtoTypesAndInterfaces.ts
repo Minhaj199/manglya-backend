@@ -1,9 +1,9 @@
 // types //////////////
 
 import {
-  IAbuserReport,
   IExtentedMatchProfile,
   IMessageOuput,
+  IReportAbuseOutput,
   IUserDatasForAdmin,
 } from "./TypesAndInterfaces";
 import { IuserProfileReturnType, User } from "./UserRelatedTypes";
@@ -25,7 +25,7 @@ export interface IUserInfoDTO {
   processedData: IUserDatasForAdmin[];
 }
 export interface IAbuseMessageDTO {
-  messagesDatas: IAbuserReport[] | [];
+  messagesDatas: IReportAbuseOutput[] | [];
 }
 export interface IUserDTO {
   userData: Omit<User, "password">;

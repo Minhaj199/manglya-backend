@@ -304,7 +304,10 @@ export class UserController implements IUserController {
   };
   deleteMatched = async (req: Request, res: Response, next: NextFunction) => {
     try {
-      const { id } = req.body;
+      const { id } = req.params;
+      if(!id||typeof id !=='string'){
+        throw new Error(ResponseMessage.ID_NOT_FOUND)
+      }
       const response = await this.partnerServiece.deleteMatchedUser(
         req.userID,
         id
@@ -332,6 +335,7 @@ export class UserController implements IUserController {
         res.json({ data: false });
       }
     } catch (error) {
+   
       next(error);
     }
   };

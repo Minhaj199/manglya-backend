@@ -1,10 +1,10 @@
 import { IAbuseMessageDTO } from "../types/dtoTypesAndInterfaces";
-import { IAbuserMongoDoc, IAbuserReport } from "../types/TypesAndInterfaces";
+import { IReportAbuseOutput, IReportAbuserMongoDoc} from "../types/TypesAndInterfaces";
 
 export class AbuseMessageDTO implements IAbuseMessageDTO{
-        messagesDatas:IAbuserReport[]
-    constructor(private readonly messageData:IAbuserMongoDoc[]|[]){
-        this.messagesDatas=this.messageData?.map((elem:IAbuserMongoDoc)=>{
+        messagesDatas:IReportAbuseOutput[]
+    constructor(private readonly messageData:IReportAbuserMongoDoc[]|[]){
+        this.messagesDatas=this.messageData?.map((elem:IReportAbuserMongoDoc)=>{
             return{
                 _id:elem._id,
                 reporter: elem.reporter,
@@ -15,6 +15,7 @@ export class AbuseMessageDTO implements IAbuseMessageDTO{
                   warningMail: elem.warningMail,
                   block: elem.block,
                   rejected: elem.rejected,
+                  createdAt:elem.createdAt
             }
         })||[]
     }

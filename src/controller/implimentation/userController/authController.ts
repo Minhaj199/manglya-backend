@@ -63,7 +63,7 @@ export class UserAuthController implements IAuthController {
     try {
       const response = await this.otpService.otpVerificationForForgot(
         req.query.email,
-        "forgot"
+        req.query.from
       );
       if (response) {
         res.json({ email: req.query.email });
@@ -119,7 +119,7 @@ export class UserAuthController implements IAuthController {
       if (response) {
         res.status(HttpStatus.OK).json({ token: response });
       } else {
-        throw new Error("refresh token not found");
+        throw new AppError("refresh token not found", HttpStatus.UNAUTHORIZED);
       }
     } catch (err) {
       next(err);

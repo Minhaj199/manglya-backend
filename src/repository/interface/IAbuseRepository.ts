@@ -1,5 +1,5 @@
 import {
-  IAbuserMongoDoc,
+  IReportAbuserMongoDoc,
   IAbuserReport,
 } from "../../types/TypesAndInterfaces.ts";
 
@@ -8,9 +8,9 @@ export interface IReportAbuserRepository {
     id: string,
     reason: string,
     profileId: string
-  ): Promise<IAbuserMongoDoc | null>;
-  fetchMessages(): Promise<IAbuserMongoDoc[] | []>;
-  create(data: IAbuserReport): Promise<IAbuserMongoDoc>;
+  ): Promise<IReportAbuserMongoDoc | null>;
+  fetchMessages(): Promise<IReportAbuserMongoDoc[] | []>;
+  create(data: IAbuserReport): Promise<IReportAbuserMongoDoc>;
   update(id: string, field: string, change: string | boolean): Promise<boolean>;
   delete(id: string): Promise<boolean>;
 }
