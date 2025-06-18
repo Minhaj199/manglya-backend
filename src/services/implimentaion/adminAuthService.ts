@@ -1,6 +1,6 @@
-import { ResponseMessage } from "../../constrain/ResponseMessageContrain.ts";
-import { IJwtService } from "../../types/UserRelatedTypes.ts";
-import { IAdminAuthService } from "../interfaces/IAaminAuthenticationServices.ts";
+import { ResponseMessage } from "../../constrain/ResponseMessageContrain";
+import { IJwtService } from "../../types/UserRelatedTypes";
+import { IAdminAuthService } from "../interfaces/IAaminAuthenticationServices";
 import dotenv from "dotenv";
 dotenv.config();
 export class AdminAuth implements IAdminAuthService {

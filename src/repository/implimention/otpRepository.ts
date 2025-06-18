@@ -1,8 +1,8 @@
-import { OtpEntity } from "../../types/TypesAndInterfaces.ts";
-import { IOTPrespository } from "../interface/IOtpRepsitory.ts";
-import { IOTPWithID } from "../../types/TypesAndInterfaces.ts";
-import { OtpModel } from "../../models/otpModel.ts";
-import BaseRepository from "./baseRepository.ts";
+import { OtpEntity } from "../../types/TypesAndInterfaces";
+import { IOTPrespository } from "../interface/IOtpRepsitory";
+import { IOTPWithID } from "../../types/TypesAndInterfaces";
+import { OtpModel } from "../../models/otpModel";
+import BaseRepository from "./baseRepository";
 
 export class OtpRepository
   extends BaseRepository<IOTPWithID>

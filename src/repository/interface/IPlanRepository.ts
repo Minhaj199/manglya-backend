@@ -1,7 +1,7 @@
 import {
   ISubscriptionPlan,
   SubscriptionPlanDocument,
-} from "../../types/TypesAndInterfaces.ts";
+} from "../../types/TypesAndInterfaces";
 
 export interface IPlanRepository {
   create(plan: ISubscriptionPlan): Promise<SubscriptionPlanDocument>;

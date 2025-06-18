@@ -1,6 +1,6 @@
 import { CronJob } from "cron";
-import { CronService } from "../services/implimentaion/cronService.ts";
-import { UserRepsitories } from "../repository/implimention/userRepository.ts";
+import { CronService } from "../services/implimentaion/cronService";
+import { UserRepsitories } from "../repository/implimention/userRepository";
 
 const cronService = new CronService(new UserRepsitories());
 export const job = new CronJob("0 0 0/24 * * *", () => {

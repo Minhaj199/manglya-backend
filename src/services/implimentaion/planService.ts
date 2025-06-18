@@ -1,11 +1,11 @@
-import { ISubscriptionPlan } from "../../types/TypesAndInterfaces.ts";
-import { IPlanService } from "../interfaces/IPlanService.ts";
-import { SubscriptionPlanDocument } from "../../types/TypesAndInterfaces.ts";
-import { IPlanRepository } from "../../repository/interface/IPlanRepository.ts";
-import { IPurchasedPlan } from "../../repository/interface/IOtherRepositories.ts";
-import { PlanDTO } from "../../dtos/planRelatedDTO.ts";
-import { AppError } from "../../types/customErrorClass.ts";
-import { ResponseMessage } from "../../constrain/ResponseMessageContrain.ts";
+import { ISubscriptionPlan } from "../../types/TypesAndInterfaces";
+import { IPlanService } from "../interfaces/IPlanService";
+import { SubscriptionPlanDocument } from "../../types/TypesAndInterfaces";
+import { IPlanRepository } from "../../repository/interface/IPlanRepository";
+import { IPurchasedPlan } from "../../repository/interface/IOtherRepositories";
+import { PlanDTO } from "../../dtos/planRelatedDTO";
+import { AppError } from "../../types/customErrorClass";
+import { ResponseMessage } from "../../constrain/ResponseMessageContrain";
 
 export class PlanService implements IPlanService {
   private planRepo: IPlanRepository;

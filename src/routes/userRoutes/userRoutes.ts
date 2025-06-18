@@ -21,8 +21,8 @@ import {
   userJwtAuthenticator,
   upload,
   Router,
-} from "./index.ts";
-import { dtoValidate } from "../adminRoute/index.ts";
+} from "./index";
+import { dtoValidate } from "../adminRoute/index";
 
 const router = Router();
 

@@ -27,19 +27,7 @@ export interface IParnterService {
     id: unknown,
     partnerPreference: string,
     gender: string
-  ): Promise<
-    | {
-        datas: {
-          profile: never[];
-        }[];
-        currntPlan?: undefined;
-      }
-    | {
-        datas: {
-          profile: ISuggestion[];
-          request: IProfileTypeFetch;
-        }[];
-        currntPlan: ISubscriptionPlanModel;
+  ): Promise<| {datas: {profile: never[];}[];currntPlan?: undefined;}| {datas: {profile: ISuggestion[];request: IProfileTypeFetch;}[];currntPlan?: ISubscriptionPlanModel|null;
       }
   >;
   deleteMatchedUser(userId: unknown, partnerId: string): Promise<boolean>;

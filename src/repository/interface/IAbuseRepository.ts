@@ -1,7 +1,7 @@
 import {
   IReportAbuserMongoDoc,
   IAbuserReport,
-} from "../../types/TypesAndInterfaces.ts";
+} from "../../types/TypesAndInterfaces";
 
 export interface IReportAbuserRepository {
   fetchComplain(

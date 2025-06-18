@@ -1,5 +1,5 @@
 import mongoose, { Schema } from "mongoose";
-import { IRefeshToken } from "../types/TypesAndInterfaces.ts";
+import { IRefeshToken } from "../types/TypesAndInterfaces";
 
 const tokenSchema = new Schema<IRefeshToken>(
   {

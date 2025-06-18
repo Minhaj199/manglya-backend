@@ -1,9 +1,9 @@
 import { Types } from "mongoose";
-import { IPurchasedPlan } from "../interface/IOtherRepositories.ts";
-import { IPlanOrder, PlanOrderMongo } from "../../types/TypesAndInterfaces.ts";
-import { planOrderModel } from "../../models/planOrderModel.ts";
-import BaseRepository from "./baseRepository.ts";
-import { ResponseMessage } from "../../constrain/ResponseMessageContrain.ts";
+import { IPurchasedPlan } from "../interface/IOtherRepositories";
+import { IPlanOrder, PlanOrderMongo } from "../../types/TypesAndInterfaces";
+import { planOrderModel } from "../../models/planOrderModel";
+import BaseRepository from "./baseRepository";
+import { ResponseMessage } from "../../constrain/ResponseMessageContrain";
 
 export class PurchasedPlanRepository
   extends BaseRepository<PlanOrderMongo>

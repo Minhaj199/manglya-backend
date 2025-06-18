@@ -1,9 +1,9 @@
 import { Request, Response, NextFunction } from "express";
-import { JWTAdapter } from "../utils/jwtAdapter.ts";
-import { TokenRepository } from "../repository/implimention/otherRepository.ts";
-import { jwtInterface } from "../types/TypesAndInterfaces.ts";
-import { ResponseMessage } from "../constrain/ResponseMessageContrain.ts";
-import { HttpStatus } from "../constrain/statusCodeContrain.ts";
+import { JWTAdapter } from "../utils/jwtAdapter";
+import { TokenRepository } from "../repository/implimention/otherRepository";
+import { jwtInterface } from "../types/TypesAndInterfaces";
+import { ResponseMessage } from "../constrain/ResponseMessageContrain";
+import { HttpStatus } from "../constrain/statusCodeContrain";
 
 const jwtAdmpter = new JWTAdapter(new TokenRepository());
 export const adminJwtAuthenticator = (

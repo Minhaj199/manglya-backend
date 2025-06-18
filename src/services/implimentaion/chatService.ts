@@ -1,18 +1,18 @@
 import { Types } from "mongoose";
-import { IUserProfileRepository} from "../../repository/interface/IUserRepository.ts";
-import { IChatRepository } from "../../repository/interface/IChatRoomRepository.ts";
-import { objectIdToString } from "../../utils/objectIdToString.ts";
-import { IChatService } from "../interfaces/IChatService.ts";
-import { IMessageService } from "../interfaces/IMessageSerivice.ts";
-import { IJwtService } from "../../types/UserRelatedTypes.ts";
+import { IUserProfileRepository} from "../../repository/interface/IUserRepository";
+import { IChatRepository } from "../../repository/interface/IChatRoomRepository";
+import { objectIdToString } from "../../utils/objectIdToString";
+import { IChatService } from "../interfaces/IChatService";
+import { IMessageService } from "../interfaces/IMessageSerivice";
+import { IJwtService } from "../../types/UserRelatedTypes";
 import {
   IChatRoom,
   IChatRoomInput,
   IMessageWithoutId,
-} from "../../types/TypesAndInterfaces.ts";
-import { MessageDTO } from "../../dtos/chattingrRelatedDTO.ts";
-import { AppError } from "../../types/customErrorClass.ts";
-import { ResponseMessage } from "../../constrain/ResponseMessageContrain.ts";
+} from "../../types/TypesAndInterfaces";
+import { MessageDTO } from "../../dtos/chattingrRelatedDTO";
+import { AppError } from "../../types/customErrorClass";
+import { ResponseMessage } from "../../constrain/ResponseMessageContrain";
 
 export class ChatService implements IChatService {
   

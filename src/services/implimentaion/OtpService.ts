@@ -1,9 +1,9 @@
-import { OtpEntity } from "../../types/TypesAndInterfaces.ts";
-import { generateOTP } from "../../utils/otpGenerator.ts";
-import { IOtpService } from "../interfaces/IOtpService.ts";
-import { IUserRepository } from "../../repository/interface/IUserRepository.ts";
-import { IOTPrespository } from "../../repository/interface/IOtpRepsitory.ts";
-import { IEmailService } from "../../types/TypesAndInterfaces.ts";
+import { OtpEntity } from "../../types/TypesAndInterfaces";
+import { generateOTP } from "../../utils/otpGenerator";
+import { IOtpService } from "../interfaces/IOtpService";
+import { IUserRepository } from "../../repository/interface/IUserRepository";
+import { IOTPrespository } from "../../repository/interface/IOtpRepsitory";
+import { IEmailService } from "../../types/TypesAndInterfaces";
 export class OtpService implements IOtpService {
   private userRepository: IUserRepository;
   private otpRepository: IOTPrespository;

@@ -3,7 +3,7 @@ import {
   IMessage,
   IMessageRow,
   IMessageWithoutId,
-} from "../../types/TypesAndInterfaces.ts";
+} from "../../types/TypesAndInterfaces";
 
 export interface IMessageRepository {
   create(data: IMessageWithoutId): Promise<IMessageRow>;

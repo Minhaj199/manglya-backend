@@ -9,8 +9,8 @@ import {
   abuseMessageToggleShema,
   dtoValidate,
   Router,
-} from "./index.ts";
-import { adminJwtAuthenticator } from "../../middlewares/jwtAdminMiddleware.ts";
+} from "./index";
+import { adminJwtAuthenticator } from "../../middlewares/jwtAdminMiddleware";
 
 const router = Router();
 

@@ -1,11 +1,11 @@
 import { Types } from "mongoose";
-import { IAbuserReport } from "../../types/TypesAndInterfaces.ts";
-import { IReportAbuseService } from "../interfaces/IReportAbuseService.ts";
-import { IUserRepository } from "../../repository/interface/IUserRepository.ts";
-import { IEmailService } from "../../types/TypesAndInterfaces.ts";
-import { IReportAbuserRepository } from "../../repository/interface/IAbuseRepository.ts";
-import { AbuseMessageDTO } from "../../dtos/abuseMessageDTO.ts";
-import { userIDValidator } from "../../utils/userIDValidator.ts";
+import { IAbuserReport } from "../../types/TypesAndInterfaces";
+import { IReportAbuseService } from "../interfaces/IReportAbuseService";
+import { IUserRepository } from "../../repository/interface/IUserRepository";
+import { IEmailService } from "../../types/TypesAndInterfaces";
+import { IReportAbuserRepository } from "../../repository/interface/IAbuseRepository";
+import { AbuseMessageDTO } from "../../dtos/abuseMessageDTO";
+import { userIDValidator } from "../../utils/userIDValidator";
 export class ReportAbuseService implements IReportAbuseService {
   private reportRepo: IReportAbuserRepository;
   private emailService: IEmailService;

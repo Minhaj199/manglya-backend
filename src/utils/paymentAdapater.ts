@@ -2,8 +2,8 @@ import { v4 as uuidv4 } from "uuid";
 
 import { Token } from "@stripe/stripe-js";
 
-import { IUserCurrentPlan } from "../types/TypesAndInterfaces.ts";
-import { stripe } from "../config/stripeConfig.ts";
+import { IUserCurrentPlan } from "../types/TypesAndInterfaces";
+import { stripe } from "../config/stripeConfig";
 
 
 

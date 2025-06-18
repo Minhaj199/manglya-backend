@@ -1,7 +1,7 @@
 import { Document, Model } from "mongoose";
-import { IBaseRepository } from "../interface/IOtherRepositories.ts";
-import { isMongoDuplicateError } from "../../utils/mongoDuplcateErrorFinder.ts";
-import { ResponseMessage } from "../../constrain/ResponseMessageContrain.ts";
+import { IBaseRepository } from "../interface/IOtherRepositories";
+import { isMongoDuplicateError } from "../../utils/mongoDuplcateErrorFinder";
+import { ResponseMessage } from "../../constrain/ResponseMessageContrain";
 
 export default abstract class BaseRepository<T extends Document>
   implements IBaseRepository

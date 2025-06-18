@@ -1,6 +1,6 @@
 import { Transporter } from "nodemailer";
-import { IEmailService } from "../types/TypesAndInterfaces.ts";
-import { tranporter } from "../config/emailConfig.ts";
+import { IEmailService } from "../types/TypesAndInterfaces";
+import { tranporter } from "../config/emailConfig";
 export class EmailService implements IEmailService {
   private transporter: Transporter;
   private userName: string | undefined;

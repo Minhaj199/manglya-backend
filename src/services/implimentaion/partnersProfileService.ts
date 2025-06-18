@@ -1,20 +1,20 @@
-import { getAge } from "../../utils/ageCalculator.ts";
-import { socketIdMap } from "../../server.ts";
-import { IParnterService } from "../interfaces/IPartnerService.ts";
+import { getAge } from "../../utils/ageCalculator";
+import { socketIdMap } from "../../server";
+import { IParnterService } from "../interfaces/IPartnerService";
 import {
   IExtentedMatchProfile,
   IMatchedProfileType,
   IProfileTypeFetch,
   ISuggestion,
-} from "../../types/TypesAndInterfaces.ts";
-import { IMatchRepository, ISuggestionRepository, IUserProfileRepository, IUserRepository } from "../../repository/interface/IUserRepository.ts";
-import { IOtherRepositories } from "../../repository/interface/IOtherRepositories.ts";
+} from "../../types/TypesAndInterfaces";
+import { IMatchRepository, ISuggestionRepository, IUserProfileRepository, IUserRepository } from "../../repository/interface/IUserRepository";
+import { IOtherRepositories } from "../../repository/interface/IOtherRepositories";
 import {
   ILandingShowUesrsInterface,
   IUserWithID,
-} from "../../types/UserRelatedTypes.ts";
-import { ParternDataChatList } from "../../dtos/chattingrRelatedDTO.ts";
-import { IParternDataChatListDTO } from "../../types/dtoTypesAndInterfaces.ts";
+} from "../../types/UserRelatedTypes";
+import { ParternDataChatList } from "../../dtos/chattingrRelatedDTO";
+import { IParternDataChatListDTO } from "../../types/dtoTypesAndInterfaces";
 
 export class PartnerProfileService implements IParnterService {
 
@@ -130,7 +130,7 @@ export class PartnerProfileService implements IParnterService {
         await this.userRepository.fetchUsers();
       if (data.length > 0) {
         const response: { name: string; age: number; image: string }[] = [];
-        data.forEach((el) => {
+        data.forEach((el:ILandingShowUesrsInterface) => {
           response.push({
             name: `${el.name} ${el.secondName}`,
             age: getAge(el.age),
@@ -248,7 +248,7 @@ export class PartnerProfileService implements IParnterService {
           const main: IUserWithID = datas[0].userProfile[0];
 
           if (!main.PersonalInfo?.interest?.length) {
-            return { datas: [{ profile: [] }] };
+            return { datas: [{ profile: [], request:  datas[0].request }] };
           }
           const FirstCat: {
             subscriber: ISuggestion[];
@@ -304,7 +304,7 @@ export class PartnerProfileService implements IParnterService {
         }
         return {
           datas: fetchedProfiles,
-          currntPlan: currntPlan[0]?.CurrentPlan,
+          currntPlan: (currntPlan[0]?.CurrentPlan)?currntPlan[0]?.CurrentPlan:null,
         };
       } else {
         throw new Error("id not found");
@@ -332,3 +332,6 @@ export class PartnerProfileService implements IParnterService {
     }
   }
 }
+
+
+  

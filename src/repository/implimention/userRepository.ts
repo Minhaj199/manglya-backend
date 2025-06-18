@@ -1,19 +1,21 @@
-import { IUserRepository } from "../interface/IUserRepository.ts";
+import { IUserRepository } from "../interface/IUserRepository";
 import { Types, UpdateWriteOpResult } from "mongoose";
-import { planOrderModel } from "../../models/planOrderModel.ts";
-import BaseRepository from "./baseRepository.ts";
-import { UserModel } from "../../models/userModel.ts";
+import { planOrderModel } from "../../models/planOrderModel";
+import BaseRepository from "./baseRepository";
+import { UserModel } from "../../models/userModel";
 import {
   ILandingShowUesrsInterface,
   IUserWithID,
-} from "../../types/UserRelatedTypes.ts";
+} from "../../types/UserRelatedTypes";
 import {
+  CurrentPlanReturnType,
   CurrentPlanType,
   IAdminPlanType,
+  IFindCurrentPlanAndRequests,
   IPlanOrder,
   IUserCurrentPlan,
-} from "../../types/TypesAndInterfaces.ts";
-import { ResponseMessage } from "../../constrain/ResponseMessageContrain.ts";
+} from "../../types/TypesAndInterfaces";
+import { ResponseMessage } from "../../constrain/ResponseMessageContrain";
 
 export class UserRepsitories
   extends BaseRepository<IUserWithID>
@@ -240,10 +242,10 @@ export class UserRepsitories
           },
         },
       ]);
-
-      const data = {
-        request: response[0].request || [],
-        plan: response[0]?.currertPlan[0].CurrentPlan
+      const data:{
+          request: IFindCurrentPlanAndRequests[];
+          plan: CurrentPlanReturnType;
+        } = {request: response[0].request || [],plan: response[0]?.currertPlan[0].CurrentPlan
           ? response[0]?.currertPlan[0].CurrentPlan
           : [],
       };
@@ -389,3 +391,5 @@ export class UserRepsitories
     }
   }
 }
+
+

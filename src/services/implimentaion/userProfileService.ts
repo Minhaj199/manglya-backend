@@ -1,25 +1,25 @@
-import { IUserProfileRepository, IUserRepository } from "../../repository/interface/IUserRepository.ts";
-import { IPlanRepository } from "../../repository/interface/IPlanRepository.ts";
-import { getAge } from "../../utils/ageCalculator.ts";
+import { IUserProfileRepository, IUserRepository } from "../../repository/interface/IUserRepository";
+import { IPlanRepository } from "../../repository/interface/IPlanRepository";
+import { getAge } from "../../utils/ageCalculator";
 import {
   IAdminPlanType,
   ICloudinaryAdapter,
-} from "../../types/TypesAndInterfaces.ts";
-import { IUserProfileService } from "../interfaces/IUserProfileService.ts";
-import { IAuthSevice } from "../interfaces/IAuthSerivce.ts";
+} from "../../types/TypesAndInterfaces";
+import { IUserProfileService } from "../interfaces/IUserProfileService";
+import { IAuthSevice } from "../interfaces/IAuthSerivce";
 import {
   DataToBeUpdatedType,
   IuserProfileReturnType,
   IUserWithID,
   signupSecondBatchResType,
-} from "../../types/UserRelatedTypes.ts";
-import { ResponseMessage } from "../../constrain/ResponseMessageContrain.ts";
-import { IPlanService } from "../interfaces/IPlanService.ts";
-import { AppError } from "../../types/customErrorClass.ts";
-import { UserFetchData, UserInfoDTO } from "../../dtos/userRelatedDTO.ts";
-import { SubscriberPlanDTO } from "../../dtos/planRelatedDTO.ts";
-import { zodDataValidator } from "../../utils/zodDataValidator.ts";
-import { ProfileUpdateSchema} from "../../dtos/validator/userValidator.ts";
+} from "../../types/UserRelatedTypes";
+import { ResponseMessage } from "../../constrain/ResponseMessageContrain";
+import { IPlanService } from "../interfaces/IPlanService";
+import { AppError } from "../../types/customErrorClass";
+import { UserFetchData, UserInfoDTO } from "../../dtos/userRelatedDTO";
+import { SubscriberPlanDTO } from "../../dtos/planRelatedDTO";
+import { zodDataValidator } from "../../utils/zodDataValidator";
+import { ProfileUpdateSchema} from "../../dtos/validator/userValidator";
 
 export class UserProfileService implements IUserProfileService {
   constructor(

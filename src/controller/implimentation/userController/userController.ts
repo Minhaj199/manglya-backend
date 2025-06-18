@@ -1,16 +1,16 @@
 import { Response, Request, NextFunction } from "express";
-import { AppError } from "../../../types/customErrorClass.ts";
-import { IOtpService } from "../../../services/interfaces/IOtpService.ts";
-import { IParnterService } from "../../../services/interfaces/IPartnerService.ts";
-import { IPlanService } from "../../../services/interfaces/IPlanService.ts";
-import { IPaymentSerivice } from "../../../services/interfaces/IPaymentService.ts";
-import { IFixedDataService } from "../../../services/interfaces/IInterstAndFeatureSerivice.ts";
-import { IUserProfileService } from "../../../services/interfaces/IUserProfileService.ts";
-import { IReportAbuseService } from "../../../services/interfaces/IReportAbuseService.ts";
-import { ResponseMessage } from "../../../constrain/ResponseMessageContrain.ts";
-import { HttpStatus } from "../../../constrain/statusCodeContrain.ts";
-import { IUserController } from "../../interface/IUserController.ts";
-import { userIDValidator } from "../../../utils/userIDValidator.ts";
+import { AppError } from "../../../types/customErrorClass";
+import { IOtpService } from "../../../services/interfaces/IOtpService";
+import { IParnterService } from "../../../services/interfaces/IPartnerService";
+import { IPlanService } from "../../../services/interfaces/IPlanService";
+import { IPaymentSerivice } from "../../../services/interfaces/IPaymentService";
+import { IFixedDataService } from "../../../services/interfaces/IInterstAndFeatureSerivice";
+import { IUserProfileService } from "../../../services/interfaces/IUserProfileService";
+import { IReportAbuseService } from "../../../services/interfaces/IReportAbuseService";
+import { ResponseMessage } from "../../../constrain/ResponseMessageContrain";
+import { HttpStatus } from "../../../constrain/statusCodeContrain";
+import { IUserController } from "../../interface/IUserController";
+import { userIDValidator } from "../../../utils/userIDValidator";
 
 export class UserController implements IUserController {
   constructor(

@@ -1,5 +1,5 @@
-import { ICloudinaryAdapter } from "../../types/TypesAndInterfaces.ts";
-import { IImageServiceInterface } from "../interfaces/IImageService.ts";
+import { ICloudinaryAdapter } from "../../types/TypesAndInterfaces";
+import { IImageServiceInterface } from "../interfaces/IImageService";
 
 export class ImageService implements IImageServiceInterface {
   private imageService: ICloudinaryAdapter;

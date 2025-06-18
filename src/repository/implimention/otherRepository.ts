@@ -1,21 +1,21 @@
-import BaseRepository from "./baseRepository.ts";
+import BaseRepository from "./baseRepository";
 
 import { Types } from "mongoose";
 import {
   IFeaturesRepository,
   IOtherRepositories,
   IRefreshToken,
-} from "../interface/IOtherRepositories.ts";
-import { featureModel } from "../../models/featureModel.ts";
-import { InterestModel } from "../../models/signupInterestModel.ts";
-import { refeshTokenModel } from "../../models/refreshTokenModel.ts";
-import { ResponseMessage } from "../../constrain/ResponseMessageContrain.ts";
+} from "../interface/IOtherRepositories";
+import { featureModel } from "../../models/featureModel";
+import { InterestModel } from "../../models/signupInterestModel";
+import { refeshTokenModel } from "../../models/refreshTokenModel";
+import { ResponseMessage } from "../../constrain/ResponseMessageContrain";
 import {
   IFeatures,
   IInterestInterface,
   IRefeshToken,
   IRefreshWithPopulatedData,
-} from "../../types/TypesAndInterfaces.ts";
+} from "../../types/TypesAndInterfaces";
 
 export class InterestRepo
   extends BaseRepository<IInterestInterface>

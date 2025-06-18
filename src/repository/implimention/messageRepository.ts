@@ -1,9 +1,9 @@
 import { Types } from "mongoose";
-import { IMessageRepository } from "../interface/IMessageRepository.ts";
-import { IMessage, IMessageRow } from "../../types/TypesAndInterfaces.ts";
-import { messageModel } from "../../models/messageModel.ts";
-import BaseRepository from "./baseRepository.ts";
-import { ResponseMessage } from "../../constrain/ResponseMessageContrain.ts";
+import { IMessageRepository } from "../interface/IMessageRepository";
+import { IMessage, IMessageRow } from "../../types/TypesAndInterfaces";
+import { messageModel } from "../../models/messageModel";
+import BaseRepository from "./baseRepository";
+import { ResponseMessage } from "../../constrain/ResponseMessageContrain";
 
 export class MessageRepository
   extends BaseRepository<IMessageRow>

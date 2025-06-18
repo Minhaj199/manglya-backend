@@ -1,4 +1,4 @@
-import { User, UserLinsting } from "../../types/UserRelatedTypes.ts";
+import { User, UserLinsting } from "../../types/UserRelatedTypes"
 import {
   CurrentPlanReturnType,
   IAdminPlanType,
@@ -9,12 +9,12 @@ import {
   IRequestInterface,
   ISuggestion,
   IUserCurrentPlan,
-} from "../../types/TypesAndInterfaces.ts";
+} from "../../types/TypesAndInterfaces";
 import {
   ILandingShowUesrsInterface,
   IUserWithID,
   UpdatedData,
-} from "../../types/UserRelatedTypes.ts";
+} from "../../types/UserRelatedTypes";
 import { Types } from "mongoose";
 
 export interface ISuggestionRepository {

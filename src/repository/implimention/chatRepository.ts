@@ -1,13 +1,13 @@
 import { Types } from "mongoose";
-import { IChatRepository } from "../interface/IChatRoomRepository.ts";
+import { IChatRepository } from "../interface/IChatRoomRepository";
 import {
   IChatRoom,
   IFetchedChat,
   IMember,
-} from "../../types/TypesAndInterfaces.ts";
-import { chatModel } from "../../models/chatModel.ts";
-import BaseRepository from "./baseRepository.ts";
-import { ResponseMessage } from "../../constrain/ResponseMessageContrain.ts";
+} from "../../types/TypesAndInterfaces";
+import { chatModel } from "../../models/chatModel";
+import BaseRepository from "./baseRepository";
+import { ResponseMessage } from "../../constrain/ResponseMessageContrain";
 
 export class ChatRoomRepository
   extends BaseRepository<IChatRoom>

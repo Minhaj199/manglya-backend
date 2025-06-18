@@ -24,8 +24,8 @@ import { BcryptAdapter } from "../../utils/bcryptAdapter";
 import { Cloudinary } from "../../utils/cloudinaryAdapter";
 import { EmailService } from "../../utils/emailAdapter";
 import { JWTAdapter } from "../../utils/jwtAdapter";
-import { userJwtAuthenticator } from "../../middlewares/jwtUserMiddleware.ts";
-import { upload } from "../../config/multerConfig.ts";
+import { userJwtAuthenticator } from "../../middlewares/jwtUserMiddleware";
+import { upload } from "../../config/multerConfig";
 import { Router } from "express";
 import {
   acceptAndRejectValidator,
@@ -45,10 +45,10 @@ import {
   purchasePlanValidator,
   reportAbuserUserValidator,
   secondBatchValidator,
-} from "../../dtos/validator/userValidator.ts";
-import { UserProfileRepository } from "../../repository/implimention/userProfileRepository.ts";
-import { SuggestionRepository } from "../../repository/implimention/suggestionRepository.ts";
-import { MatchRepository } from "../../repository/implimention/matchRepository.ts";
+} from "../../dtos/validator/userValidator";
+import { UserProfileRepository } from "../../repository/implimention/userProfileRepository";
+import { SuggestionRepository } from "../../repository/implimention/suggestionRepository";
+import { MatchRepository } from "../../repository/implimention/matchRepository";
 
 const otpService = new OtpService(
   new UserRepsitories(),new OtpRepository(),new EmailService()

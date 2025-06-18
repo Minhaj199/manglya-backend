@@ -1,14 +1,14 @@
-import { IChatRepository } from "../../repository/interface/IChatRoomRepository.ts";
-import { IMatchRepository} from "../../repository/interface/IUserRepository.ts";
-import { IMessageService } from "../interfaces/IMessageSerivice.ts";
+import { IChatRepository } from "../../repository/interface/IChatRoomRepository";
+import { IMatchRepository} from "../../repository/interface/IUserRepository";
+import { IMessageService } from "../interfaces/IMessageSerivice";
 import {
   IChatMessage,
   ICloudinaryAdapter,
   IMessageWithoutId,
-} from "../../types/TypesAndInterfaces.ts";
-import { IMessageRepository } from "../../repository/interface/IMessageRepository.ts";
-import { ResponseMessage } from "../../constrain/ResponseMessageContrain.ts";
-import { objectIdToString } from "../../utils/objectIdToString.ts";
+} from "../../types/TypesAndInterfaces";
+import { IMessageRepository } from "../../repository/interface/IMessageRepository";
+import { ResponseMessage } from "../../constrain/ResponseMessageContrain";
+import { objectIdToString } from "../../utils/objectIdToString";
 
 export class MessageService implements IMessageService {
   
@@ -75,7 +75,7 @@ export class MessageService implements IMessageService {
 
         if (response.length >= 1) {
           const ids: string[] = [];
-          response.forEach((el) => {
+          response.forEach((el:{chats: { _id: string }}) => {
             ids.push(el.chats._id);
           });
           if (ids.every((el) => typeof el === "string")) {

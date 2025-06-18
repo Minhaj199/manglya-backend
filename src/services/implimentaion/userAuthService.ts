@@ -1,13 +1,13 @@
-import { IBcryptAdapter } from "../../types/TypesAndInterfaces.ts";
-import { User } from "../../types/UserRelatedTypes.ts";
+import { IBcryptAdapter } from "../../types/TypesAndInterfaces";
+import { User } from "../../types/UserRelatedTypes";
 import dotEnv from "dotenv";
-import { IAuthSevice } from "../interfaces/IAuthSerivce.ts";
-import { IJwtService, IUserWithID } from "../../types/UserRelatedTypes.ts";
-import { IUserRepository } from "../../repository/interface/IUserRepository.ts";
-import { IFirstBatch } from "../../types/UserRelatedTypes.ts";
-import { ResponseMessage } from "../../constrain/ResponseMessageContrain.ts";
-import { HttpStatus } from "../../constrain/statusCodeContrain.ts";
-import { AppError } from "../../types/customErrorClass.ts";
+import { IAuthSevice } from "../interfaces/IAuthSerivce";
+import { IJwtService, IUserWithID } from "../../types/UserRelatedTypes";
+import { IUserRepository } from "../../repository/interface/IUserRepository";
+import { IFirstBatch } from "../../types/UserRelatedTypes";
+import { ResponseMessage } from "../../constrain/ResponseMessageContrain";
+import { HttpStatus } from "../../constrain/statusCodeContrain";
+import { AppError } from "../../types/customErrorClass";
 
 dotEnv.config();
 
@@ -115,7 +115,7 @@ export class AuthService implements IAuthSevice {
               gender,
             },
             jwt_access_key,
-            { expiresIn: "5m" }
+            { expiresIn: "15m" }
           );
           const refreshToken = await this.jwtGenerator.createRefreshToken(
             { id: JSON.stringify(user._id), role: "user" },

@@ -1,12 +1,12 @@
 import { Socket } from "socket.io";
-import { io } from "./server.ts";
-import { socketIdMap } from "./server.ts";
-import { PartnerProfileService } from "./services/implimentaion/partnersProfileService.ts";
-import { UserProfileService } from "./services/implimentaion/userProfileService.ts";
-import { MessageService } from "./services/implimentaion/messageService.ts";
-import { JWTAdapter } from "./utils/jwtAdapter.ts";
-import { AuthService } from "./services/implimentaion/userAuthService.ts";
-import { ResponseMessage } from "./constrain/ResponseMessageContrain.ts";
+import { io } from "./server";
+import { socketIdMap } from "./server";
+import { PartnerProfileService } from "./services/implimentaion/partnersProfileService";
+import { UserProfileService } from "./services/implimentaion/userProfileService";
+import { MessageService } from "./services/implimentaion/messageService";
+import { JWTAdapter } from "./utils/jwtAdapter";
+import { AuthService } from "./services/implimentaion/userAuthService";
+import { ResponseMessage } from "./constrain/ResponseMessageContrain";
 
 export const socketMethod = (
   socket: Socket,
@@ -132,7 +132,8 @@ export const socketMethod = (
       try {
         const receiver = socketIdMap.get(data.receiverId);
         const senderId = jwtService.verifyRefreshToken(data.senderId, "user");
-        if (receiver && senderId) {
+        console.log(senderId)
+        if (receiver && senderId&&typeof senderId==='string') {
           const recieverName = await userProfileService.fetchName(senderId);
 
           io.to(receiver || "").emit("recieveMessage", data);

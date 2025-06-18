@@ -2,7 +2,7 @@ import {
   IChatRoom,
   IChatRoomInput,
   IFetchedChat,
-} from "../../types/TypesAndInterfaces.ts";
+} from "../../types/TypesAndInterfaces";
 
 export interface IChatRepository {
   create(data: IChatRoomInput): Promise<IChatRoom>;

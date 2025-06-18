@@ -1,13 +1,13 @@
 import { NextFunction, Request, Response } from "express";
-import { ISubscriptionPlan } from "../../../types/TypesAndInterfaces.ts";
-import { IAdminAuthService } from "../../../services/interfaces/IAaminAuthenticationServices.ts";
-import { IUserProfileService } from "../../../services/interfaces/IUserProfileService.ts";
-import { IPlanService } from "../../../services/interfaces/IPlanService.ts";
-import { ResponseMessage } from "../../../constrain/ResponseMessageContrain.ts";
-import { IFixedDataService } from "../../../services/interfaces/IInterstAndFeatureSerivice.ts";
-import { IAdminDashService } from "../../../services/interfaces/IAdminDashboardService.ts";
-import { IAdminController } from "../../interface/IAdminController.ts";
-import { AppError } from "../../../types/customErrorClass.ts";
+import { ISubscriptionPlan } from "../../../types/TypesAndInterfaces";
+import { IAdminAuthService } from "../../../services/interfaces/IAaminAuthenticationServices";
+import { IUserProfileService } from "../../../services/interfaces/IUserProfileService";
+import { IPlanService } from "../../../services/interfaces/IPlanService";
+import { ResponseMessage } from "../../../constrain/ResponseMessageContrain";
+import { IFixedDataService } from "../../../services/interfaces/IInterstAndFeatureSerivice";
+import { IAdminDashService } from "../../../services/interfaces/IAdminDashboardService";
+import { IAdminController } from "../../interface/IAdminController";
+import { AppError } from "../../../types/customErrorClass";
 
 export class AdminController implements IAdminController {
   constructor(

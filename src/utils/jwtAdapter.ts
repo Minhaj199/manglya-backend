@@ -1,10 +1,10 @@
 import jwt from 'jsonwebtoken'
-import { TokenRepository } from '../repository/implimention/otherRepository.ts' 
+import { TokenRepository } from '../repository/implimention/otherRepository' 
 import { Types } from 'mongoose'
-import { IJwtService } from '../types/UserRelatedTypes.ts'
-import { IJwtInterface } from '../types/TypesAndInterfaces.ts'
-import { AppError } from '../types/customErrorClass.ts'
-import { HttpStatus } from '../constrain/statusCodeContrain.ts'
+import { IJwtService } from '../types/UserRelatedTypes'
+import { IJwtInterface } from '../types/TypesAndInterfaces'
+import { AppError } from '../types/customErrorClass'
+import { HttpStatus } from '../constrain/statusCodeContrain'
 
 
 

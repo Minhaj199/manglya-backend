@@ -1,6 +1,6 @@
-import { IPurchasedPlan } from "../../repository/interface/IOtherRepositories.ts";
-import { IUserRepository } from "../../repository/interface/IUserRepository.ts";
-import { IAdminDashService } from "../interfaces/IAdminDashboardService.ts";
+import { IPurchasedPlan } from "../../repository/interface/IOtherRepositories";
+import { IUserRepository } from "../../repository/interface/IUserRepository";
+import { IAdminDashService } from "../interfaces/IAdminDashboardService";
 
 export class DashService implements IAdminDashService {
   private userRepo: IUserRepository;

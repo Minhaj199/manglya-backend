@@ -1,5 +1,5 @@
-import { IUserRepository } from "../../repository/interface/IUserRepository.ts";
-import { ICronServiceInterface } from "../interfaces/ICroneSevice.ts";
+import { IUserRepository } from "../../repository/interface/IUserRepository";
+import { ICronServiceInterface } from "../interfaces/ICroneSevice";
 
 export class CronService implements ICronServiceInterface {
   private userRepo: IUserRepository;

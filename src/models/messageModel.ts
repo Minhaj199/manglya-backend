@@ -1,5 +1,5 @@
 import mongoose from "mongoose";
-import { IMessageRow } from "../types/TypesAndInterfaces.ts";
+import { IMessageRow } from "../types/TypesAndInterfaces";
 
 const messageSchema = new mongoose.Schema<IMessageRow>(
   {

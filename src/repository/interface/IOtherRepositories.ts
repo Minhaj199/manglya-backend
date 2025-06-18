@@ -8,7 +8,7 @@ import {
   IRefeshToken,
   IRefreshWithPopulatedData,
   PlanOrderMongo,
-} from "../../types/TypesAndInterfaces.ts";
+} from "../../types/TypesAndInterfaces";
 
 export interface IBaseRepository {
   create(data: Partial<unknown>): Promise<unknown>;

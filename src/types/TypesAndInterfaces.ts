@@ -1,6 +1,6 @@
 import { Document, Types } from "mongoose";
-import { IUserRepository } from "../repository/interface/IUserRepository.ts";
-import { IUserWithID } from "./UserRelatedTypes.ts";
+import { IUserRepository } from "../repository/interface/IUserRepository";
+import { IUserWithID } from "./UserRelatedTypes";
 
 //////////////////////// Report Abuser///////////////////////////
 export interface IAbuserReport {

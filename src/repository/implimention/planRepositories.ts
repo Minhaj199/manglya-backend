@@ -1,8 +1,8 @@
 import { Document, UpdateWriteOpResult } from "mongoose";
-import { ISubscriptionPlan } from "../../types/TypesAndInterfaces.ts";
-import { planModel } from "../../models/planModel.ts";
-import BaseRepository from "./baseRepository.ts";
-import { IPlanRepository } from "../interface/IPlanRepository.ts";
+import { ISubscriptionPlan } from "../../types/TypesAndInterfaces";
+import { planModel } from "../../models/planModel";
+import BaseRepository from "./baseRepository";
+import { IPlanRepository } from "../interface/IPlanRepository";
 
 interface SubscriptionPlanDocument extends ISubscriptionPlan, Document {
   delete: boolean;

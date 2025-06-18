@@ -1,9 +1,9 @@
 import { Types } from "mongoose";
-import { IReportAbuserRepository } from "../interface/IAbuseRepository.ts";
-import { IReportAbuserMongoDoc } from "../../types/TypesAndInterfaces.ts";
-import { reportUser } from "../../models/reportedUserModel.ts";
-import BaseRepository from "./baseRepository.ts";
-import { ResponseMessage } from "../../constrain/ResponseMessageContrain.ts";
+import { IReportAbuserRepository } from "../interface/IAbuseRepository";
+import { IReportAbuserMongoDoc } from "../../types/TypesAndInterfaces";
+import { reportUser } from "../../models/reportedUserModel";
+import BaseRepository from "./baseRepository";
+import { ResponseMessage } from "../../constrain/ResponseMessageContrain";
 
 export class ReportUserRepository
   extends BaseRepository<IReportAbuserMongoDoc>

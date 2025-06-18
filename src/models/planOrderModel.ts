@@ -1,5 +1,5 @@
 import mongoose, { Schema, Types } from "mongoose";
-import { PlanOrderMongo } from "../types/TypesAndInterfaces.ts";
+import { PlanOrderMongo } from "../types/TypesAndInterfaces";
 
 const PlanOrderSchema = new Schema<PlanOrderMongo>({
   userID: Types.ObjectId,

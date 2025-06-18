@@ -1,25 +1,25 @@
 import express from "express";
 import dotenv from "dotenv";
-import adminRoutes from "./routes/adminRoute/adminRoute.ts";
+import adminRoutes from "./routes/adminRoute/adminRoute";
 import cors from "cors";
 import morgan from "morgan";
 import { createServer } from "http";
 import { Server } from "socket.io";
-import { socketMethod } from "./socket.ts";
-import { JWTAdapter } from "./utils/jwtAdapter.ts";
-import { FixedDataService } from "./services/implimentaion/InterestAndFeaturesService.ts";
+import { socketMethod } from "./socket";
+import { JWTAdapter } from "./utils/jwtAdapter";
+import { FixedDataService } from "./services/implimentaion/InterestAndFeaturesService";
 import fs from 'fs'
 
 import cookieParser from "cookie-parser";
 const app = express();
 const server = createServer(app);
-import { job } from "./utils/cronJobAdapter.ts";
-import { globalErrorHandler } from "./middlewares/errorHandlerMiddleware.ts";
-import { connectMongdb } from "./config/mongodbConfig.ts";
-import { FeaturesRepository, InterestRepo, TokenRepository } from "./repository/implimention/otherRepository.ts";
-import { authService, messageService, partnerServiece } from "./routes/userRoutes/index.ts";
-import userRoute from './routes/userRoutes/userRoutes.ts'
-import { userProfileService } from "./routes/adminRoute/index.ts";
+import { job } from "./utils/cronJobAdapter";
+import { globalErrorHandler } from "./middlewares/errorHandlerMiddleware";
+import { connectMongdb } from "./config/mongodbConfig";
+import { FeaturesRepository, InterestRepo, TokenRepository } from "./repository/implimention/otherRepository";
+import { authService, messageService, partnerServiece } from "./routes/userRoutes/index";
+import userRoute from './routes/userRoutes/userRoutes'
+import { userProfileService } from "./routes/adminRoute/index";
 
 export const io = new Server(server, {
   cors: {

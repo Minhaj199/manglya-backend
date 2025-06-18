@@ -1,8 +1,8 @@
 import {
   IFeaturesRepository,
   IOtherRepositories,
-} from "../../repository/interface/IOtherRepositories.ts";
-import { IFixedDataService } from "../interfaces/IInterstAndFeatureSerivice.ts";
+} from "../../repository/interface/IOtherRepositories";
+import { IFixedDataService } from "../interfaces/IInterstAndFeatureSerivice";
 
 export class FixedDataService implements IFixedDataService {
   private interestRepo: IOtherRepositories;

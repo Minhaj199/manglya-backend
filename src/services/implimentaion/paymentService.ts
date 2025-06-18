@@ -1,17 +1,17 @@
-import { payment } from "../../utils/paymentAdapater.ts";
+import { payment } from "../../utils/paymentAdapater";
 import { Token } from "@stripe/stripe-js";
 import {
   IPlanOrder,
   IUserCurrentPlan,
   PlanOrderMongo,
-} from "../../types/TypesAndInterfaces.ts";
+} from "../../types/TypesAndInterfaces";
 
 import { Types } from "mongoose";
-import { GetExpiryPlan } from "../../utils/getExpiryDateOfPlan.ts";
-import { IPaymentSerivice } from "../interfaces/IPaymentService.ts";
-import { IUserRepository } from "../../repository/interface/IUserRepository.ts";
+import { GetExpiryPlan } from "../../utils/getExpiryDateOfPlan";
+import { IPaymentSerivice } from "../interfaces/IPaymentService";
+import { IUserRepository } from "../../repository/interface/IUserRepository";
 
-import { IPurchasedPlan } from "../../repository/interface/IOtherRepositories.ts";
+import { IPurchasedPlan } from "../../repository/interface/IOtherRepositories";
 
 export class PaymentSerivice implements IPaymentSerivice {
   private orderRepo: IPurchasedPlan;
