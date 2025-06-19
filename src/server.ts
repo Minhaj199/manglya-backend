@@ -20,6 +20,7 @@ import { FeaturesRepository, InterestRepo, TokenRepository } from "./repository/
 import { authService, messageService, partnerServiece } from "./routes/userRoutes/index";
 import userRoute from './routes/userRoutes/userRoutes'
 import { userProfileService } from "./routes/adminRoute/index";
+import { createUpload } from "./config/isUploadExist";
 
 export const io = new Server(server, {
   cors: {
@@ -89,6 +90,7 @@ async function createInterest() {
 }
 
 job.start();
+createUpload()
 createInterest();
 
 

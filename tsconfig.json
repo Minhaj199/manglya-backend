@@ -15,6 +15,6 @@
     "preserveSymlinks": false,
     "allowSyntheticDefaultImports": true                         /* Skip type checking all .d.ts files. */
   },
-  "include": ["src"],
+  "include": ["src","upload"],
   "exclude": ["node_modules", "dist"] , 
 }
