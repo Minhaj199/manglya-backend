@@ -56,6 +56,7 @@ export class ChatRoomRepository
     id: string
   ): Promise<{ chats: { _id: string } }[] | []> {
     try {
+      console.log(id)
       const response: { chats: { _id: string } }[] | [] =
         await chatModel.aggregate([
           { $match: { members: { $in: [new Types.ObjectId(id)] } } },
@@ -80,7 +81,7 @@ export class ChatRoomRepository
           },
           { $project: { "chats._id": 1 } },
         ]);
-
+        console.log(response)
       return response;
     } catch (error) {
       if (error instanceof Error) {

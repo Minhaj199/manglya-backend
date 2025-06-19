@@ -2,78 +2,77 @@ import {
   messageController,
   userAuthController,
   userController,
-  acceptAndRejectValidator,
-  acssTknRenualValidator,
-  addMatchValidator,
-  createTextsValidator,
-  emailValidator,
-  firstBatchDataValidator,
-  fromValidatorValidator,
-  loginValidator,
-  messageViewedValidator,
-  otpCreationValidator,
-  otpValidator,
-  passResetProfileValidator,
-  passwordResetValidator,
-  purchasePlanValidator,
-  reportAbuserUserValidator,
-  secondBatchValidator,
+ acceptAndRejectValidatorSchema,
+  acssTknRenualValidatorSchema,
+  addMatchValidatorSchema,
+  createTextsValidatorSchema,
+  emailValidatorSchema,
+  firstBatchDataValidatorSchema,
+  fromValidatorSchemaValidatorSchema,
+  loginValidatorSchema,
+  messageViewedValidatorSchema,
+  otpCreationValidatorSchema,
+  otpValidatorSchema,
+  passResetProfileValidatorSchema,
+  passwordResetValidatorSchema,
+  purchasePlanValidatorSchema,
+  reportAbuserUserValidatorSchema,
   userJwtAuthenticator,
-  upload,
   Router,
+  secondBatchValidatorSchema,upload
 } from "./index";
 import { dtoValidate } from "../adminRoute/index";
 
 const router = Router();
 
-router.post("/login", dtoValidate(loginValidator), userAuthController.login);
+router.post("/login", dtoValidate(loginValidatorSchema), userAuthController.login);
 router.post(
   "/firstBatchData",
-  dtoValidate(firstBatchDataValidator),
+  dtoValidate(firstBatchDataValidatorSchema),
   userAuthController.signup
 );
 router.get("/fetchforLanding", userController.fetchDataForProfile);
 router.post(
   "/otpCreation",
-  dtoValidate(otpCreationValidator),
+  dtoValidate(otpCreationValidatorSchema),
   userController.otpCreation
 );
 router.post(
   "/otpValidation",
-  dtoValidate(otpValidator),
+  dtoValidate(otpValidatorSchema),
   userController.otpValidation
 );
 router.patch(
   "/changePassword",
-  dtoValidate(passwordResetValidator),
+  dtoValidate(passwordResetValidatorSchema),
   userAuthController.changePassword
 );
 router.post(
   "/forgotEmail",
-  dtoValidate(emailValidator),
+  dtoValidate(emailValidatorSchema),
   userAuthController.forgotCheckValidateSigunp
 );
 router.post(
   "/uploadProfile",
   upload.single("file"),
-  dtoValidate(secondBatchValidator),
+  dtoValidate(secondBatchValidatorSchema),
   userController.secondBatch
 );
 router.get(
   "/forgotEmail",
-  dtoValidate(otpCreationValidator),
+  dtoValidate(otpCreationValidatorSchema),
   userAuthController.forgotCheckValidate
 );
 
 router.post(
   "/addMatch",
-  dtoValidate(addMatchValidator),
+  dtoValidate(addMatchValidatorSchema),
   userJwtAuthenticator,
   userController.addMatch
 );
 router.patch(
   "/manageReqRes",
-  dtoValidate(acceptAndRejectValidator),
+  dtoValidate(acceptAndRejectValidatorSchema),
   userJwtAuthenticator,
   userController.manageReqRes
 );
@@ -85,7 +84,7 @@ router.get(
 router.get("/fetchPlanData", userController.fetchPlanData);
 router.post(
   "/purchasePlan",
-  dtoValidate(purchasePlanValidator),
+  dtoValidate(purchasePlanValidatorSchema),
   userJwtAuthenticator,
   userController.purchasePlan
 );
@@ -108,13 +107,14 @@ router.post(
 );
 router.patch(
   "/resetPassword",
-  dtoValidate(passResetProfileValidator),
+  dtoValidate(passResetProfileValidatorSchema),
   userJwtAuthenticator,
   userAuthController.resetPassword
 );
 
 router.delete(
   "/deleteMatched/:id",
+
   userJwtAuthenticator,
   userController.deleteMatched
 );
@@ -128,7 +128,7 @@ router.put(
 router.get("/matchedUsers", userJwtAuthenticator, userController.matchedUser);
 router.post(
   "/reportAbuse",
-  dtoValidate(reportAbuserUserValidator),
+  dtoValidate(reportAbuserUserValidatorSchema),
   userJwtAuthenticator,
   userController.reportAbuse
 );
@@ -141,7 +141,7 @@ router.get(
 router.post("/getChats/:id", userJwtAuthenticator, messageController.fetchChats);
 router.post(
   "/createChats",
-  dtoValidate(createTextsValidator),
+  dtoValidate(createTextsValidatorSchema),
   userJwtAuthenticator,
   messageController.createTexts
 );
@@ -158,13 +158,13 @@ router.get(
 );
 router.get(
   "/countMessages",
-  dtoValidate(fromValidatorValidator),
+  dtoValidate(fromValidatorSchemaValidatorSchema),
   userJwtAuthenticator,
   messageController.MsgCount
 );
 router.patch(
   "/messageReaded",
-  dtoValidate(messageViewedValidator),
+  dtoValidate(messageViewedValidatorSchema),
   userJwtAuthenticator,
   messageController.MessageViewed
 );
@@ -176,7 +176,7 @@ router.post(
 );
 router.post(
   "/getNewToken",
-  dtoValidate(acssTknRenualValidator),
+  dtoValidate(acssTknRenualValidatorSchema),
   userAuthController.genetateNewToken
 );
 router.get(

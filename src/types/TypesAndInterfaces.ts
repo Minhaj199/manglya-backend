@@ -83,6 +83,9 @@ export interface ISubscriptionPlan {
   amount: string;
   connect: string;
 }
+export interface ISubscriptionPlanDocument extends ISubscriptionPlan, Document {
+  delete: boolean;
+}
 export interface IPlanOrders<ID> {
   userID: ID;
   name: string;
@@ -125,9 +128,7 @@ export interface PlanOrderMongo extends Document, IPlanOrder {}
 export interface IUserCurrentPlan extends ISubscriptionPlanModel {
   avialbleConnect: number;
 }
-export interface SubscriptionPlanDocument extends ISubscriptionPlan, Document {
-  delete: boolean;
-}
+
 export type CurrentPlanType = {
   request: IFindCurrentPlanAndRequests[];
   currertPlan: ICurrentPlan[];
@@ -323,3 +324,4 @@ export interface IRefreshWithPopulatedData extends Document {
 export interface ICloudinaryAdapter {
   upload(path: string): Promise<string>;
 }
+

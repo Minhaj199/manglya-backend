@@ -1,22 +1,20 @@
 import {
-  addPlanValidator,
-  blockAndUnblockValidator,
+  addPlanValidatorSchma,
   editPlanDtoShema,
-  reportAbuseActionValidator,
+  reportAbuseActionValidatorSchema,
   reportAbuseRejectShema,
   adminController,
   reportAbuseController,
   abuseMessageToggleShema,
   dtoValidate,
   Router,
+  blockAndUnblockValidatorSchema,
 } from "./index";
 import { adminJwtAuthenticator } from "../../middlewares/jwtAdminMiddleware";
 
 const router = Router();
 
-
-
-router.post('/login',adminController.login)
+router.post("/login", adminController.login);
 
 //fetch data to user table
 router.get("/fetchUserData", adminJwtAuthenticator, adminController.fetchData);
@@ -28,21 +26,16 @@ router.get(
 router.post(
   "/insertPlan",
   adminJwtAuthenticator,
-  dtoValidate(addPlanValidator),
+  dtoValidate(addPlanValidatorSchma),
   adminController.createPlan
 );
 router.patch(
   "/block&Unblock/:id",
   adminJwtAuthenticator,
-  dtoValidate(blockAndUnblockValidator),
+  dtoValidate(blockAndUnblockValidatorSchema),
   adminController.userBlockAndUnblock
 );
-router.post(
-  "/insertPlan",
-  adminJwtAuthenticator,
-  dtoValidate(addPlanValidator),
-  adminController.createPlan
-);
+
 router.put(
   "/editPlan/:id",
   adminJwtAuthenticator,
@@ -63,13 +56,13 @@ router.get(
 router.patch(
   "/sendWarningMail/:id",
   adminJwtAuthenticator,
-  dtoValidate(reportAbuseActionValidator),
+  dtoValidate(reportAbuseActionValidatorSchema),
   reportAbuseController.sendWarningMails
 );
 router.patch(
   "/blockAbuser/:id",
   adminJwtAuthenticator,
-  dtoValidate(reportAbuseActionValidator),
+  dtoValidate(reportAbuseActionValidatorSchema),
   reportAbuseController.blockAbuser
 );
 router.get(

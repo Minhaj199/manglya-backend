@@ -224,7 +224,6 @@ export class UserController implements IUserController {
   ): Promise<void> => {
     try {
       const response = await this.interestService.fetchInterestAsCategory();
-
       if (response) {
         res.json({ Data: response });
       } else {
@@ -356,14 +355,14 @@ export class UserController implements IUserController {
     }
   };
 
-  planHistoryAndRequest = async (req: Request, res: Response) => {
+  planHistoryAndRequest = async (req: Request, res: Response,next:NextFunction) => {
     try {
       const response = await this.userProfileService.planHistoryAndRequest(
         req.userID
       );
       res.json(response);
-    } catch {
-      res.json("error on validating token please login again");
+    } catch(error) {
+      next(error)
     }
   };
 }

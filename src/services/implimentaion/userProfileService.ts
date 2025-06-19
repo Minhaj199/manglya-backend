@@ -19,7 +19,7 @@ import { AppError } from "../../types/customErrorClass";
 import { UserFetchData, UserInfoDTO } from "../../dtos/userRelatedDTO";
 import { SubscriberPlanDTO } from "../../dtos/planRelatedDTO";
 import { zodDataValidator } from "../../utils/zodDataValidator";
-import { ProfileUpdateSchema} from "../../dtos/validator/userValidator";
+import { ProfileUpdateValidatorSchema } from "../../dtos/validator/userValidator"; 
 
 export class UserProfileService implements IUserProfileService {
   constructor(
@@ -285,7 +285,7 @@ export class UserProfileService implements IUserProfileService {
         return { status: true, newData: updateDetail };
       } else {
         const parsedData=JSON.parse(data)
-        const validate:DataToBeUpdatedType=zodDataValidator(parsedData,ProfileUpdateSchema)
+        const validate:DataToBeUpdatedType=zodDataValidator(parsedData,ProfileUpdateValidatorSchema)
         const updateDetail = await this.updateEditedData(
           validate,
           userID

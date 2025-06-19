@@ -98,7 +98,7 @@ export class AdminController implements IAdminController {
       if (!req.params || !req.params.id) {
         throw new AppError(ResponseMessage.ID_NOT_FOUND);
       }
-      const response = await this.planService.editPlan({
+      const {plans:response} = await this.planService.editPlan({
         ...req.body,
         _id: req.params.id,
       });

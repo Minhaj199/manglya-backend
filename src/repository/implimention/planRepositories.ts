@@ -1,23 +1,22 @@
-import { Document, UpdateWriteOpResult } from "mongoose";
-import { ISubscriptionPlan } from "../../types/TypesAndInterfaces";
+import {  Types, UpdateWriteOpResult } from "mongoose";
+import {  ISubscriptionPlanDocument,  } from "../../types/TypesAndInterfaces";
 import { planModel } from "../../models/planModel";
 import BaseRepository from "./baseRepository";
 import { IPlanRepository } from "../interface/IPlanRepository";
+import { ResponseMessage } from "../../constrain/ResponseMessageContrain";
 
-interface SubscriptionPlanDocument extends ISubscriptionPlan, Document {
-  delete: boolean;
-}
+
 export class PlanRepository
-  extends BaseRepository<SubscriptionPlanDocument>
+  extends BaseRepository<ISubscriptionPlanDocument>
   implements IPlanRepository
 {
   constructor() {
     super(planModel);
   }
 
-  async fetchAllPlans(): Promise<SubscriptionPlanDocument[] | []> {
+  async fetchAllPlans(): Promise<ISubscriptionPlanDocument[] | []> {
     try {
-      const response: SubscriptionPlanDocument[] | [] = await planModel.find({
+      const response: ISubscriptionPlanDocument[] | [] = await planModel.find({
         delete: false,
       });
       return response;
@@ -29,15 +28,17 @@ export class PlanRepository
       }
     }
   }
-  async editPlan(data: SubscriptionPlanDocument): Promise<boolean> {
+  async editPlan(data: ISubscriptionPlanDocument): Promise<boolean> {
     try {
       if (typeof data._id === "string") {
-        const response = await planModel.updateOne(
+        const response:UpdateWriteOpResult = await this.model.updateOne(
           { _id: data._id },
           { $set: data }
         );
-        if (response) {
+        if (response.modifiedCount) {
           return true;
+        }else{
+          return false
         }
       }
       throw new Error("Error on id");
@@ -82,4 +83,17 @@ export class PlanRepository
       }
     }
   }
+  async fetchPlan(id: Types.ObjectId): Promise<ISubscriptionPlanDocument|null> {
+    try {
+      const fetcheData:ISubscriptionPlanDocument=await this.model.findById(id)
+      return fetcheData
+    } catch (error) {
+        if(error instanceof Error){
+          throw new Error(error.message||ResponseMessage.SERVER_ERROR)
+        }else{
+          throw new Error(ResponseMessage.SERVER_ERROR)
+        }
+    }
+  }
+  
 }

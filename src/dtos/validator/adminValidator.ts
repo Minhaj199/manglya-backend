@@ -1,16 +1,16 @@
 import { array, boolean, number, string, z } from "zod";
 
-export const adminLoginValidator= z.object({
+export const adminLoginValidatoSchema= z.object({
   email: string({ required_error: "email" }).email("Not valid user name"),
   password: string({ required_error: "passoword" }).min(
     1,
     "Not a valid passoword"
   ),
 });
-export const blockAndUnblockValidator= z.object({
+export const blockAndUnblockValidatorSchema= z.object({
   updateStatus: boolean(),
 });
-export const addPlanValidator= z.object({
+export const addPlanValidatorSchma= z.object({
   datas: z.object({
     name: z
       .string({ required_error: "name required" })
@@ -41,7 +41,7 @@ export const editPlanDtoShema = z.object({
   duration: number().min(1, "enter valid duration").optional(),
   features: array(z.string().min(1, "atleast 1 feature")).optional(),
 });
-export const reportAbuseActionValidator= z.object({
+export const reportAbuseActionValidatorSchema= z.object({
   reporter: z
     .string({ required_error: "reporter id required" })
     .min(2, "missing a valid reporter id"),

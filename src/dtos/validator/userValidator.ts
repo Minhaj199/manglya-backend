@@ -2,7 +2,7 @@ import { array, boolean, number, string, z } from "zod";
 import { ResponseMessage } from "../../constrain/ResponseMessageContrain";
 
 ///////////////////user signup first batch data/////////////////
-export const firstBatchDataValidator= z.object({
+export const firstBatchDataValidatorSchema= z.object({
   "FIRST NAME": z
     .string({ required_error: "first name required" })
     .min(3, "first name shoud be more thant 3")
@@ -32,7 +32,7 @@ export const firstBatchDataValidator= z.object({
 });
 
 ////////////////////user loging//////////////
-export const loginValidator= z.object({
+export const loginValidatorSchema= z.object({
   email: string({ required_error: ResponseMessage.EMAIL_REQUIRED }).email(
     ResponseMessage.VALID_EMAIL
   ),
@@ -43,7 +43,7 @@ export const loginValidator= z.object({
 });
 
 ////////////////////otp creation///////////////////
-export const otpCreationValidator= z.object({
+export const otpCreationValidatorSchema= z.object({
   email: string({ required_error: ResponseMessage.EMAIL_REQUIRED }).email(
     ResponseMessage.VALID_EMAIL
   ),
@@ -54,7 +54,7 @@ export const otpCreationValidator= z.object({
 });
 
 /////////////////otp validation///////
-export const otpValidator= z.object({
+export const otpValidatorSchema= z.object({
   email: string({ required_error: ResponseMessage.EMAIL_REQUIRED }).email(
     ResponseMessage.VALID_EMAIL
   ),
@@ -69,7 +69,7 @@ export const otpValidator= z.object({
 
 ///////////pasword reset///////////
 const passwordRegex = new RegExp(process.env.PASSWORD_REGEX!);
-export const passwordResetValidator= z
+export const passwordResetValidatorSchema= z
   .object({
     email: string({ required_error: ResponseMessage.EMAIL_REQUIRED }).email(
       ResponseMessage.VALID_EMAIL
@@ -94,12 +94,12 @@ export const passwordResetValidator= z
   );
 
 //////////////emial validation///////////
-export const emailValidator= z.object({
+export const emailValidatorSchema= z.object({
   email: string({ required_error: ResponseMessage.EMAIL_REQUIRED }).email(
     ResponseMessage.VALID_EMAIL
   ),
 });
-export const secondBatchValidator= z.object({
+export const secondBatchValidatorSchema= z.object({
   email: string({ required_error: ResponseMessage.EMAIL_REQUIRED }).email(
     ResponseMessage.VALID_EMAIL
   ),
@@ -132,7 +132,7 @@ export const secondBatchValidator= z.object({
 
 
 ///////////////////passowrd reset from profile update ////''
-export const passResetProfileValidator= z
+export const passResetProfileValidatorSchema= z
   .object({
     password: string({ required_error: "password required" }).refine(
       (value) => passwordRegex.test(value),
@@ -154,7 +154,7 @@ export const passResetProfileValidator= z
   );
 
 ////////////////////// getting new token after expired
-export const acssTknRenualValidator= z.object({
+export const acssTknRenualValidatorSchema= z.object({
   refresh: string({ required_error: "refresh token required" }).min(
     3,
     "valid refresh token missing"
@@ -163,7 +163,7 @@ export const acssTknRenualValidator= z.object({
 
 ///////////////// message making viewed /////////
 
-export const messageViewedValidator= z.object({
+export const messageViewedValidatorSchema= z.object({
   ids: array(string({ required_error: ResponseMessage.ID_NOT_FOUND }).min(1)),
   from: string({ required_error: ResponseMessage.FROM_ARGUEMENT_MISSING }).min(
     3,
@@ -172,7 +172,7 @@ export const messageViewedValidator= z.object({
 });
 
 ///////////////from parameter checker
-export const fromValidatorValidator= z.object({
+export const fromValidatorSchemaValidatorSchema= z.object({
   from: string({ required_error: ResponseMessage.FROM_ARGUEMENT_MISSING }).min(
     3,
     ResponseMessage.FROM_ARGUEMENT_MISSING
@@ -180,7 +180,7 @@ export const fromValidatorValidator= z.object({
 });
 /////////////////crteatNew text message////////////
 
-export const createTextsValidator= z.object({
+export const createTextsValidatorSchema= z.object({
   chatId: string({ required_error: "chat id required" }).min(
     3,
     "not valid chatID"
@@ -198,7 +198,7 @@ export const createTextsValidator= z.object({
 });
 
 /////////////////// payement process///////////////
-export const purchasePlanValidator= z.object({
+export const purchasePlanValidatorSchema= z.object({
   planData: z.object({
     _id: string({ required_error: "plan id requred" }),
     name: string({ required_error: "plan name requred" }),
@@ -212,7 +212,7 @@ export const purchasePlanValidator= z.object({
 
 ////////////////report abuse user side/////////////
 
-export const reportAbuserUserValidator= z.object({
+export const reportAbuserUserValidatorSchema= z.object({
   profileId: string({ required_error: "profile id required" }).min(
     3,
     "enter a valid id"
@@ -229,14 +229,14 @@ export const reportAbuserUserValidator= z.object({
 
 ////////////add match dto//////////////
 
-export const addMatchValidator= z.object({
+export const addMatchValidatorSchema= z.object({
   matchId: string({ required_error: "mached id required" }).min(
     3,
     "valid match id required"
   ),
 });
 
-export const acceptAndRejectValidator= z.object({
+export const acceptAndRejectValidatorSchema= z.object({
   id: string({ required_error: "requester id required" }).min(
     3,
     "valid requester id required"
@@ -249,7 +249,7 @@ export const acceptAndRejectValidator= z.object({
 
 /////////////////delte matched //////////////
 
-export const deleteMatchedUser = z.object({
+export const deleteMatchedUserSchema = z.object({
   id: array(
     string({ required_error: ResponseMessage.ID_NOT_FOUND }).min(
       1,
@@ -276,7 +276,7 @@ const PersonalInfoSchema = z.object({
 const PartnerDataSchema = z.object({
   gender: z.string({ required_error: "paterner gender string type expected" }).optional(),
 }).partial();
- export const ProfileUpdateSchema = z.object({
+ export const ProfileUpdateValidatorSchema = z.object({
   PersonalInfo: PersonalInfoSchema.optional(),
   partnerData: PartnerDataSchema.optional(),
   email: z.string().refine((val) => val === "" || /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(val), {

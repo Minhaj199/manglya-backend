@@ -1,15 +1,15 @@
 import { IPlanDTO, planDTODataType } from "../types/dtoTypesAndInterfaces";
 import {
   IAdminPlanType,
-  SubscriptionPlanDocument,
+  ISubscriptionPlanDocument,
 } from "../types/TypesAndInterfaces";
 
 ///////////////plan management page admin
 export class PlanDTO implements IPlanDTO {
   plans: planDTODataType;
-  constructor(planData: SubscriptionPlanDocument[] | []) {
+  constructor(planData: ISubscriptionPlanDocument[] | []) {
     this.plans =
-      planData?.map((elem: SubscriptionPlanDocument) => {
+      planData?.map((elem: ISubscriptionPlanDocument) => {
         return {
           _id: elem._id,
           name: elem.name,

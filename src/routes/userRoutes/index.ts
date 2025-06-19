@@ -27,29 +27,27 @@ import { JWTAdapter } from "../../utils/jwtAdapter";
 import { userJwtAuthenticator } from "../../middlewares/jwtUserMiddleware";
 import { upload } from "../../config/multerConfig";
 import { Router } from "express";
-import {
-  acceptAndRejectValidator,
-  acssTknRenualValidator,
-  addMatchValidator,
-  createTextsValidator,
-  deleteMatchedUser,
-  emailValidator,
-  firstBatchDataValidator,
-  fromValidatorValidator,
-  loginValidator,
-  messageViewedValidator,
-  otpCreationValidator,
-  otpValidator,
-  passResetProfileValidator,
-  passwordResetValidator,
-  purchasePlanValidator,
-  reportAbuserUserValidator,
-  secondBatchValidator,
-} from "../../dtos/validator/userValidator";
+
 import { UserProfileRepository } from "../../repository/implimention/userProfileRepository";
 import { SuggestionRepository } from "../../repository/implimention/suggestionRepository";
 import { MatchRepository } from "../../repository/implimention/matchRepository";
 
+import { addMatchValidatorSchema,createTextsValidatorSchema,
+  deleteMatchedUserSchema,
+  acssTknRenualValidatorSchema,
+  emailValidatorSchema,
+  firstBatchDataValidatorSchema,
+  fromValidatorSchemaValidatorSchema,
+  loginValidatorSchema,
+  messageViewedValidatorSchema,
+  otpCreationValidatorSchema,
+  otpValidatorSchema,
+  passResetProfileValidatorSchema,
+  passwordResetValidatorSchema,
+  purchasePlanValidatorSchema,
+  acceptAndRejectValidatorSchema,
+  secondBatchValidatorSchema,
+  reportAbuserUserValidatorSchema } from "../../dtos/validator/userValidator";
 const otpService = new OtpService(
   new UserRepsitories(),new OtpRepository(),new EmailService()
 );
@@ -120,23 +118,24 @@ const userController: IUserController = new UserController(
 const messageController=new MessageController(chatRoom,messageService)
 const userAuthController=new UserAuthController( authService,otpService)
 
-export {userAuthController,messageController,userController,acceptAndRejectValidator,
-  acssTknRenualValidator,
-  addMatchValidator,
-  createTextsValidator,
-  deleteMatchedUser,
-  emailValidator,
-  firstBatchDataValidator,
-  fromValidatorValidator,
-  loginValidator,
-  messageViewedValidator,
-  otpCreationValidator,
-  otpValidator,
-  passResetProfileValidator,
-  passwordResetValidator,
-  purchasePlanValidator,
-  reportAbuserUserValidator,
+
+export {userAuthController,messageController,userController,acceptAndRejectValidatorSchema,
+  acssTknRenualValidatorSchema,
+  addMatchValidatorSchema,
+  createTextsValidatorSchema,
+  deleteMatchedUserSchema,
+  emailValidatorSchema,
+  firstBatchDataValidatorSchema,
+  fromValidatorSchemaValidatorSchema,
+  loginValidatorSchema,
+  messageViewedValidatorSchema,
+  otpCreationValidatorSchema,
+  otpValidatorSchema,
+  passResetProfileValidatorSchema,
+  passwordResetValidatorSchema,
+  purchasePlanValidatorSchema,
+  reportAbuserUserValidatorSchema,
   userJwtAuthenticator,
   Router,
-  secondBatchValidator,upload
+  secondBatchValidatorSchema,upload
 }

@@ -34,7 +34,7 @@ export class MessageRepository
           { chatRoomId: chatRoomId },
           { _id: 0, text: 1, createdAt: 1, receiverId: 1, image: 1 }
         )
-        .sort({ createdAt: 1 });
+        .sort({ _id: 1 }).limit(50)
     } catch (error) {
       if (error instanceof Error) {
         throw new Error(error.message);

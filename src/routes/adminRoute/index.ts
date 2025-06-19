@@ -23,11 +23,12 @@ import { EmailService } from "../../utils/emailAdapter";
 import { JWTAdapter } from "../../utils/jwtAdapter";
 import {
   abuseMessageToggleShema,
-  addPlanValidator,
-  blockAndUnblockValidator,
+  addPlanValidatorSchma,
+  adminLoginValidatoSchema,
   editPlanDtoShema,
-  reportAbuseActionValidator,
+  reportAbuseActionValidatorSchema,
   reportAbuseRejectShema,
+  blockAndUnblockValidatorSchema,
 } from "../../dtos/validator/adminValidator";
 import { Router } from "express";
 import { dtoValidate } from "../../middlewares/dtoValidatorMiddleware";
@@ -53,7 +54,7 @@ export const userProfileService = new UserProfileService(
   new UserRepsitories(),
   authService,
   planService,
-  new UserProfileRepository
+  new UserProfileRepository()
 );
 const dashService = new DashService(
   new UserRepsitories(),
@@ -79,11 +80,12 @@ export {
   adminController,
   reportAbuseController,
   abuseMessageToggleShema,
-  addPlanValidator,
-  blockAndUnblockValidator,
+  addPlanValidatorSchma,
+  adminLoginValidatoSchema,
   editPlanDtoShema,
-  reportAbuseActionValidator,
+  reportAbuseActionValidatorSchema,
   reportAbuseRejectShema,
+  blockAndUnblockValidatorSchema,
   dtoValidate,
-  Router
+  Router,
 };

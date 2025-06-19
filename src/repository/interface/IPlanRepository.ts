@@ -1,12 +1,14 @@
+import { Types } from "mongoose";
 import {
   ISubscriptionPlan,
-  SubscriptionPlanDocument,
+  ISubscriptionPlanDocument,
 } from "../../types/TypesAndInterfaces";
 
 export interface IPlanRepository {
-  create(plan: ISubscriptionPlan): Promise<SubscriptionPlanDocument>;
-  fetchAllPlans(): Promise<SubscriptionPlanDocument[] | []>;
-  editPlan(data: SubscriptionPlanDocument): Promise<boolean>;
+  create(plan: ISubscriptionPlan): Promise<ISubscriptionPlanDocument>;
+  fetchAllPlans(): Promise<ISubscriptionPlanDocument[] | []>;
+  editPlan(data: ISubscriptionPlanDocument): Promise<boolean>;
   softDlt(id: string): Promise<boolean>;
   fetchPlanAdmin(): Promise<{ name: string }[] | []>;
+  fetchPlan(id:Types.ObjectId):Promise<ISubscriptionPlanDocument|null>
 }
